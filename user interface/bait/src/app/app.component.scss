@@ -1,0 +1,19 @@
+.splash {
+  @media (max-width: 768px) {
+    display: block !important;
+    margin: auto;
+    text-align: center;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  gap: 24px;
+
+  img {
+    @media (max-width: 768px) {
+      width: 80vw;
+    }
+    width: 25vw;
+  }
+}
