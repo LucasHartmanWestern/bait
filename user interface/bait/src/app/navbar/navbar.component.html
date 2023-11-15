@@ -16,7 +16,7 @@
     <div class="actions">
       <button class="search"></button>
       <button class="cart"></button>
-      <a href="/login" class="login" >Login in/Register</a>
+      <a href="/login" class="login" [textContent]="this.currentRoute == '/user' ? 'My services' : 'Log in/Register'"></a>
     </div>
   </div>
 

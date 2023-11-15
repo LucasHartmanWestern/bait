@@ -5,11 +5,11 @@ import { LoginComponent } from "./login/login.component";
 import { SplashPageComponent } from "./splash-page/splash-page.component";
 
 const routes: Routes = [{
-  path: 'user', component: AccountComponent
+  path: 'user', component: AccountComponent, data: { title: 'User'}
 }, {
-  path: 'login', component: LoginComponent
+  path: 'login', component: LoginComponent, data: { title: 'Login'}
 }, {
-  path: '', component: SplashPageComponent
+  path: '', component: SplashPageComponent, data: { title: 'Home'}
 }];
 
 @NgModule({
