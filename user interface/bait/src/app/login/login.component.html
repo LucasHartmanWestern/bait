@@ -1,1 +1,82 @@
-<p>login works!</p>
+<div class="main">
+
+  <div class="content">
+
+    <h1>Self serve with MyBell</h1>
+
+
+    <div class="login_reg_form">
+
+      <div class="login">
+        <h2>Log in</h2>
+
+        <form (submit)="login($event)">
+
+          <input type="text" placeholder="Username">
+          <input type="text" placeholder="Password">
+
+          <div class="remember">
+            <input type="checkbox" name="remember" id="remember">
+            <label for="remember">Remember my username</label>
+          </div>
+
+          <input type="submit" value="Log in">
+
+          <a href="https://mybell.bell.ca/ForgotPassword/RecoverPassword/Loginhelp?lang=en" class="forgot">I forgot my username or password</a>
+
+        </form>
+
+        <span class="disclaimer">This site is protected by reCAPTCHA Enterprise. The Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a
+          href="https://policies.google.com/terms">Terms of Service</a> apply.</span>
+      </div>
+
+
+      <div class="register">
+
+        <div class="info">
+          <h2>Register</h2>
+
+          <span class="title">MyBell helps you do more</span>
+
+          <ul class="checklist">
+            <li>View your account balance and make payments</li>
+            <li>Get an explination of your charges</li>
+            <li>Check your usage</li>
+            <li>Review your plan or features</li>
+            <li>Sign up for paperless billing with e-bill</li>
+          </ul>
+
+          <a href="http://support.bell.ca/Mobility/Self_Serve_options/What_self_serve_tasks_can_I_do_online">See the full list of MyBell's features</a>
+
+          <button (click)="register()">Register now</button>
+
+        </div>
+
+        <img src="https://mybell-on.akamaized.net/Styles/RSX/mybell/img/img_login_MyBell_June2021.jpg?ver=202106071946" alt="">
+
+      </div>
+
+    </div>
+
+
+    <div class="app_download">
+
+      <img src="https://mybell-on.akamaized.net/styles/rsx/mybell/img/mybell-changing-plans-md.jpg?ver=202106071946" alt="" class="person_texting">
+
+      <div class="info">
+
+        <img src="https://mybell-on.akamaized.net/Styles/RSX/shop/img/69643-bell-icon-person.jpg?ver=202102011754" alt="" class="bell_logo_solo">
+
+        <span class="title">Manage your services with the MyBell app.</span>
+        <span class="desc">View and pay bills, monitor usage, update your services and add-ons, and more. On a computer? Scan the QR code with your smartphone camera to go to your app store.</span>
+        <a href="https://m.bell.ca/logine">Learn more</a>
+
+      </div>
+
+      <img src="https://mybell-on.akamaized.net/Styles/RSX/shop/img/LoginPageQRCode.jpg?ver=202303211822" alt="" class="qr">
+
+    </div>
+
+  </div>
+
+</div>
