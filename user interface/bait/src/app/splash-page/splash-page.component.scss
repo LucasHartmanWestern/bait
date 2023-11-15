@@ -1,0 +1,115 @@
+.main {
+
+  .hero {
+    background-color: #f6f6f6;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    .content {
+      width: 80%;
+      display: flex;
+      justify-content: center;
+
+      .hero_banner {
+        width: 50%;
+      }
+
+      .info {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 12px;
+
+        .head {
+          font-size: 40px;
+          font-weight: bold;
+        }
+
+        .desc {
+          font-size: 18px;
+          font-weight: 400;
+        }
+
+        .learn_more {
+          border-radius: 24px;
+          border: 2px solid transparent;
+          background-color: var(--bell-dark-blue);
+          color: var(--bell-white);
+          padding: 12px 32px;
+          font-size: 14px;
+          margin: 12px 0;
+          text-decoration: none;
+          transition: 0.25s ease;
+
+          &:hover {
+            border: 2px solid var(--bell-blue);
+            background-color: var(--bell-blue);
+            box-shadow: var(--bell-blue) 0 0 24px;
+          }
+        }
+      }
+    }
+
+  }
+
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 24px;
+
+    .notice {
+      border: 1px solid var(--bell-dark-blue);
+      border-radius: 12px;
+      padding: 24px;
+      font-size: 14px;
+      font-weight: bold;
+      width: 80%;
+    }
+
+    .list {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 24px 0;
+      width: 80%;
+
+      .link_item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+
+        .img {
+          background-color: var(--bell-dark-blue);
+          border-radius: 50%;
+          width: 72px;
+          height: 72px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .icon {
+            filter: invert(100%);
+          }
+        }
+
+        span {
+          color: var(--bell-dark-blue);
+          font-size: 18px;
+        }
+      }
+    }
+  }
+
+
+  .promos {
+
+  }
+}

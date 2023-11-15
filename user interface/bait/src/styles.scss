@@ -1,1 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+$image-path: '~src/assets/images/';
+
+body {
+  margin: 0;
+
+  --bell-blue: #00549a;
+  --bell-white: #fff;
+  --bell-dark-blue: #003778;
+  font-family: sans-serif;
+}
