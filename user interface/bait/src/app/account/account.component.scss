@@ -1,0 +1,141 @@
+.main {
+  background-color: var(--bell-background-grey);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+
+  .greeting {
+    width: 95%;
+    margin-top: 20px;
+  }
+
+  .carousel {
+    display: flex;
+    justify-content: space-around;
+    gap: 24px;
+    width: 95%;
+
+    .card {
+      scroll-snap-align: start;
+      width: 30%;
+      display: flex;
+      justify-content: space-between;
+      background-color: var(--bell-white);
+      align-items: center;
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      border-radius: 12px;
+      padding: 24px;
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        .title {
+          font-size: 18px;
+          font-weight: bold;
+        }
+
+        .bigger {
+          font-size: 14px;
+          margin-bottom: -8px;
+        }
+        span {
+          font-size: 12px;
+        }
+
+        .button {
+          margin: 24px 0;
+          text-decoration: none;
+          color: var(--bell-white);
+          border-radius: 24px;
+          background-color: var(--bell-blue);
+          width: 160px;
+          padding: 8px;
+          text-align: center;
+        }
+      }
+
+      img {
+        width: 50%;
+      }
+    }
+  }
+
+  .bills {
+    width: 95%;
+
+    .head {
+      background-color: var(--bell-blue);
+      padding: 24px;
+
+      hr {
+        margin: 24px 0;
+        color: var(--bell-dark-blue);
+        border: 1px solid var(--bell-dark-blue);
+      }
+
+      .billing_status {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+
+        .billing_info {
+          color: var(--bell-white);
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          .title {
+            font-size: 36px;
+          }
+
+          .desc {
+            font-size: 16px;
+          }
+        }
+
+        .payment_details {
+          display: flex;
+          gap: 24px;
+
+          .balance {
+            color: var(--bell-white);
+            font-size: 36px;
+          }
+
+          .payment {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+
+            button {
+              border-radius: 24px;
+              padding: 12px;
+              width: 190px;
+              border: none;
+              font-size: 18px;
+            }
+
+            .make_payment {
+              background-color: var(--bell-white);
+              color: var(--bell-blue);
+            }
+
+            .view_bill {
+              background-color: var(--bell-blue);
+              color: var(--bell-white);
+              border: 2px solid var(--bell-white);
+            }
+          }
+        }
+      }
+
+      .payment_method {
+        color: var(--bell-white);
+      }
+    }
+
+  }
+}

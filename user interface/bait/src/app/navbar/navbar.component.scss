@@ -1,0 +1,86 @@
+$image-path: '~src/assets/';
+
+div {
+  background-color: var(--bell-blue);
+  max-height: 60px;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+
+  .content {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .bell_logo {
+      width: 60px;
+      height: 32px;
+    }
+
+    .links {
+      display: flex;
+      justify-content: space-around;
+      width: 650px;
+      transition: 0.5s ease;
+
+      a {
+        text-decoration: none;
+        color: var(--bell-white);
+        opacity: 0.8;
+
+        &:hover {
+          text-decoration: underline;
+          opacity: 1;
+        }
+      }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      width: 30%;
+      gap: 16px;
+
+      button, a {
+        border: none;
+        background-color: transparent;
+        color: var(--bell-white);
+        padding: 4px;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        cursor: pointer;
+      }
+
+      .search {
+        background: url('#{$image-path}search_icon.png');
+        filter: invert(100%);
+        width: 32px;
+        height: 32px;
+      }
+
+      .cart {
+        background: url('#{$image-path}cart_icon.png');
+        filter: invert(100%);
+        width: 32px;
+        height: 32px;
+      }
+
+      .login {
+        border: 2px solid var(--bell-white);
+        border-radius: 24px;
+        padding: 4px 12px;
+        font-size: 14px;
+        transition: 0.25s ease;
+        text-decoration: none;
+        text-align: center;
+        line-height: 18px;
+
+        &:hover {
+          background-color: var(--bell-white);
+          color: var(--bell-blue);
+        }
+      }
+    }
+  }
+}
