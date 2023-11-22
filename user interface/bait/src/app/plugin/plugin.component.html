@@ -7,6 +7,10 @@
     </div>
 
     <div class="user_input">
+      <div class="file-upload-wrapper">
+        <button class="file-upload-button" [ngClass]="imageSrc ? 'uploaded' : ''" (click)="triggerFileInput()"></button>
+        <input type="file" #fileInput style="display: none;" (change)="onImageSelected($event)" accept="image/*"/>
+      </div>
       <textarea rows="1" class="message_input" placeholder="Type your message here..." [(ngModel)]="messageText"></textarea>
       <button class="send_button" (click)="sendMessage(messageText)"></button>
     </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-plugin',
@@ -7,9 +7,12 @@ import { Component } from '@angular/core';
 })
 export class PluginComponent {
 
+  @ViewChild('fileInput') fileInput: any;
+
   plugin_opened: boolean | undefined = undefined;
   plugin_closed: boolean | undefined = undefined;
   messageText: string = '';
+  imageSrc: string | ArrayBuffer | null = '';
 
   constructor() {
   }
@@ -23,6 +26,15 @@ export class PluginComponent {
     });
   }
 
+  onImageSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => this.imageSrc = reader.result;
+      reader.readAsDataURL(file);
+    }
+  }
+
   toggleFab(): void {
     if (this.plugin_opened == undefined) {
       this.plugin_opened = true;
@@ -33,9 +45,19 @@ export class PluginComponent {
     }
   }
 
+  triggerFileInput(): void {
+    if (this.imageSrc) {
+      this.imageSrc = null;
+    } else {
+      this.fileInput.nativeElement.click();
+    }
+  }
 
   sendMessage(message: string): void {
+    console.log('Text:', message);
+    console.log('Image Data:', this.imageSrc);
+
     this.messageText = '';
-    console.log(message);
+    this.imageSrc = null;
   }
 }
