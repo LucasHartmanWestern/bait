@@ -45,23 +45,44 @@ $image-path: '~src/assets/';
     .user_input {
       display: flex;
       justify-content: space-between;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      background: var(--bell-white);
+      border-radius: 18px;
+      padding: 0 12px;
 
       .message_input {
         border: none;
-        border-radius: 18px;
         outline: none;
-        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         resize: none;
         overflow-y: auto;
         box-sizing: border-box;
-        padding: 16px;
-        width: calc(100% - 48px);
+        padding: 16px 8px;
+        width: calc(100% - (32px * 2));
+      }
+
+      .file-upload-button {
+        width: 32px;
+        height: 32px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border: none;
+        background-image: url('#{$image-path}upload_image_icon.png');
+        background-size: inherit;
+        background-position: center;
+        background-color: orangered;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        filter: invert(100%);
+
+        &.uploaded {
+          background-image: url('#{$image-path}remove_image.png');
+        }
       }
 
       .send_button {
         width: 32px;
         height: 32px;
-        margin: 8px;
+        margin: 8px 0;
         border-radius: 50%;
         border: none;
         background-image: url('#{$image-path}send_icon.png');
