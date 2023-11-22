@@ -8,6 +8,7 @@ import { SplashPageComponent } from './splash-page/splash-page.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PluginComponent } from './plugin/plugin.component';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PluginComponent } from './plugin/plugin.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
