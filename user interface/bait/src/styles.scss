@@ -9,3 +9,31 @@ body {
   --bell-background-grey: #f6f6f6;
   font-family: sans-serif;
 }
+
+/* This styles the scrollbar track (the part the thumb slides along) */
+::-webkit-scrollbar-track {
+  background: var(--bell-background-grey); /* light grey track */
+}
+
+/* This styles the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 8px;
+  background: var(--bell-dark-blue); /* dark grey thumb */
+}
+
+/* Changes the thumb color on hover or when being clicked */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bell-blue); /* darker grey on hover */
+}
+
+/* This sets the width of the scrollbar */
+::-webkit-scrollbar {
+  width: 10px; /* width of the entire scrollbar */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: #888 #f1f1f1; /* thumb and track color */
+}
