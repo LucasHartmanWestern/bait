@@ -34,9 +34,44 @@ $image-path: '~src/assets/';
     height: 50vh;
     background: var(--bell-white);
     border-radius: 18px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
     padding: 12px;
-    border-bottom-right-radius: 0;
+    border-bottom-right-radius: 6px;
+    opacity: 0;
+  }
+
+  .slide_up {
+    animation-name: slide_up;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+  }
+
+  .slide_down {
+    animation-name: slide_down;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+  }
+
+  @keyframes slide_up {
+    from {
+      transform: translateY(10%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide_down {
+    to {
+      transform: translateY(10%);
+      opacity: 0;
+    }
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
 }

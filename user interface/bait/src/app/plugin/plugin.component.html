@@ -1,11 +1,11 @@
 <div class="fab">
 
-  <div class="chat_window">
+  <div class="chat_window" [class.slide_up]="plugin_opened" [class.slide_down]="plugin_closed">
 
     <span>Test</span>
 
   </div>
 
-  <button class="fab-btn"></button>
+  <button class="fab-btn" (click)="toggleFab()"></button>
 
 </div>
