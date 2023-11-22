@@ -41,17 +41,38 @@ $image-path: '~src/assets/';
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
 
-  .message_input {
-    border: none;
-    border-radius: 18px;
-    outline: none;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    resize: none;
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding: 16px;
+    .user_input {
+      display: flex;
+      justify-content: space-between;
+
+      .message_input {
+        border: none;
+        border-radius: 18px;
+        outline: none;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        resize: none;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 16px;
+        width: calc(100% - 48px);
+      }
+
+      .send_button {
+        width: 32px;
+        height: 32px;
+        margin: 8px;
+        border-radius: 50%;
+        border: none;
+        background-image: url('#{$image-path}send_icon.png');
+        background-size: inherit;
+        background-position: center;
+        background-color: orangered;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        filter: invert(100%);
+      }
+    }
   }
 
   .slide_up {

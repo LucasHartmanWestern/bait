@@ -6,7 +6,10 @@
 
     </div>
 
-    <textarea rows="1" class="message_input" placeholder="Type your message here..."></textarea>
+    <div class="user_input">
+      <textarea rows="1" class="message_input" placeholder="Type your message here..." [(ngModel)]="messageText"></textarea>
+      <button class="send_button" (click)="sendMessage(messageText)"></button>
+    </div>
 
   </div>
 

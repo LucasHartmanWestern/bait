@@ -9,8 +9,18 @@ export class PluginComponent {
 
   plugin_opened: boolean | undefined = undefined;
   plugin_closed: boolean | undefined = undefined;
+  messageText: string = '';
 
   constructor() {
+  }
+
+  ngOnInit(): void {
+    document?.querySelector('.message_input')?.addEventListener('keydown', (event) => {
+      if ((event as KeyboardEvent).key == 'Enter') {
+        event.preventDefault();
+        this.sendMessage(this.messageText);
+      }
+    });
   }
 
   toggleFab(): void {
@@ -23,4 +33,9 @@ export class PluginComponent {
     }
   }
 
+
+  sendMessage(message: string): void {
+    this.messageText = '';
+    console.log(message);
+  }
 }
