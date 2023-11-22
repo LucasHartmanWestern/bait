@@ -7,6 +7,7 @@ import { AccountComponent } from './account/account.component';
 import { SplashPageComponent } from './splash-page/splash-page.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { PluginComponent } from './plugin/plugin.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     AccountComponent,
     SplashPageComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    PluginComponent
   ],
   imports: [
     BrowserModule,

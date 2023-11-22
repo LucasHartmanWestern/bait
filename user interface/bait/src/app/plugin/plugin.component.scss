@@ -1,0 +1,27 @@
+$image-path: '~src/assets/';
+
+.fab {
+
+  .fab-btn {
+    width: 128px;
+    height: 128px;
+    background-image: url('#{$image-path}logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    outline: none;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 50%;
+    position: fixed;
+    right: 64px;
+    bottom: 64px;
+    cursor: pointer;
+    transition: 0.25s ease;
+
+    &:hover {
+      width: 142px;
+      height: 142px;
+    }
+  }
+
+}
