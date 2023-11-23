@@ -6,11 +6,14 @@ from pymongo import MongoClient
 from PIL import Image
 import io
 import db
+from openai import OpenAI
 
 app = Flask(__name__)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'aaaa'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
+
+client = OpenAI()
 
 @app.route("/api/v1/users", methods=["POST"])
 def register():
@@ -70,6 +73,65 @@ def sendImage():
         return jsonify({'msg': 'Image saved successfully'}), 200
     else:
          return jsonify({'msg': 'Profile not found'}), 404    
+
+@app.route("/api/v1/logConvo", methods=["POST"])
+@jwt_required(locations=["headers"])
+def saveConvo():
+    convo_details = request.get_json()
+
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": convo_details["query"]}
+        ]
+    )
+
+    convo_details["response"] = completion.choices[0].message.content
+    current_user = get_jwt_identity()
+    user_from_db = db.users_collection.find_one({'username': current_user})
+    convo_details["username"] = current_user
+    convo_details["model"] = "GPT"
+
+    if user_from_db:
+        if convo_details["queryImage"] is None:
+            db.users_collection.insert_one(convo_details)
+            return jsonify({'msg': 'Saved log'}), 200
+        else:
+            im = Image.open("./image.jpg")
+            image_bytes = io.BytesIO()
+            im.save(image_bytes, format='JPEG')
+            image = {
+                 'data': image_bytes.getvalue
+            }
+            convo_details["queryImage"] = image
+            db.users_collection.insert_one(convo_details)
+            return jsonify({'msg': 'Saved log'}), 200
+    else:
+        return jsonify({'msg': 'Profile not found'}), 404
+
+@app.route("/api/v1/getAllConvo", methods=["GET"])
+@jwt_required(locations=["headers"])
+def getAllConvo():
+    current_user = get_jwt_identity()
+    user_from_db = db.users_collection.find_one({'username': current_user})
+
+    if user_from_db:
+        convos = list(db.users_collection.find({}))
+        convoDict = []
+        for convo in convos:
+            tempDict = {}  
+            tempDict["_id"] = str(convo["_id"])
+            tempDict["username"] = convo["username"]
+            tempDict["model"] = convo["model"]
+            tempDict["timestamp"] = convo["timestamp"]
+            tempDict["query"] = convo["query"]
+            tempDict["queryImage"] = convo["queryImage"]
+            tempDict["response"] = convo["response"]
+            convoDict.append(tempDict)
+        
+        return jsonify(convoDict), 200
+    else:
+        return jsonify({'msg': 'Profile not found'}), 404
 
 if __name__ == '__main__':
     app.run(port=8000)
