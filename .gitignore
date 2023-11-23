@@ -41,3 +41,6 @@ venv/
 # System files
 .DS_Store
 Thumbs.db
+
+# virtual env 
+env
