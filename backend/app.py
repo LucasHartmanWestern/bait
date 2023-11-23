@@ -12,10 +12,6 @@ jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'aaaa'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
-@app.route('/')
-def flask_mongodb_atlas():
-    return "flask mongodb atlas!"
-
 @app.route("/api/v1/users", methods=["POST"])
 def register():
 	new_user = request.get_json() # store the json body request
