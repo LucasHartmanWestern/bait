@@ -7,23 +7,14 @@ from PIL import Image
 import io
 import db
 
-
 app = Flask(__name__)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'aaaa'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
-
 @app.route('/')
 def flask_mongodb_atlas():
     return "flask mongodb atlas!"
-
-
-@app.route("/test")
-def test():
-    db.db.collection.insert_one({"name": "John"})
-    return "Connected to the data base!"
-
 
 @app.route("/api/v1/users", methods=["POST"])
 def register():
@@ -35,7 +26,6 @@ def register():
 		return jsonify({'msg': 'User created successfully'}), 201
 	else:
 		return jsonify({'msg': 'Username already exists'}), 409
-
 
 @app.route("/api/v1/login", methods=["POST"])
 def login():
@@ -52,7 +42,6 @@ def login():
             
     return jsonify({'msg': 'The username or password is incorrect'}), 401
     
-
 @app.route("/api/v1/user", methods=["GET"])
 @jwt_required(locations=["headers"])
 def profile():
@@ -63,9 +52,8 @@ def profile():
         del user_from_db['_id'], user_from_db['password'] # delete what we don't want to show
         return jsonify({'profile': user_from_db}), 200
     
-    
-    return jsonify({'msg': 'Profile not found'}), 404
-
+    else: 
+        return jsonify({'msg': 'Profile not found'}), 404
 
 @app.route("/api/v1/sendImage", methods=["POST"])
 @jwt_required(locations=["headers"])
@@ -86,7 +74,6 @@ def sendImage():
         return jsonify({'msg': 'Image saved successfully'}), 200
     else:
          return jsonify({'msg': 'Profile not found'}), 404    
-  
-        
+
 if __name__ == '__main__':
     app.run(port=8000)
