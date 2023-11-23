@@ -7,6 +7,7 @@ from PIL import Image
 import io
 import db
 from openai import OpenAI
+from datetime import datetime as dt
 
 app = Flask(__name__)
 jwt = JWTManager(app)
@@ -78,6 +79,7 @@ def sendImage():
 @jwt_required(locations=["headers"])
 def saveConvo():
     convo_details = request.get_json()
+    jwtData = request.headers.get('Authorization')
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -91,6 +93,8 @@ def saveConvo():
     user_from_db = db.users_collection.find_one({'username': current_user})
     convo_details["username"] = current_user
     convo_details["model"] = "GPT"
+    convo_details["timestamp"] = dt.now()
+    convo_details["jwtData"] = jwtData
 
     if user_from_db:
         if convo_details["queryImage"] is None:
@@ -127,6 +131,7 @@ def getAllConvo():
             tempDict["query"] = convo["query"]
             tempDict["queryImage"] = convo["queryImage"]
             tempDict["response"] = convo["response"]
+            tempDict["jwtData"] = convo["jwtData"]
             convoDict.append(tempDict)
         
         return jsonify(convoDict), 200
