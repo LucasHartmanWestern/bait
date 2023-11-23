@@ -137,6 +137,25 @@ def getAllConvo():
         return jsonify(convoDict), 200
     else:
         return jsonify({'msg': 'Profile not found'}), 404
+    
+@app.route("/api/v1/getAllNames", methods=["GET"])
+@jwt_required(locations=["headers"])
+def getAllNames():
+    current_user = get_jwt_identity()
+    user_from_db = db.users_collection.find_one({'username': current_user})
+
+    if user_from_db:
+        names = list(db.users_collection.find())
+        convoDict = []
+        for convo in names:
+            tempDict = {}  
+            tempDict["username"] = convo["username"]
+            tempDict["timestamp"] = convo["timestamp"]
+            convoDict.append(tempDict)
+        
+        return jsonify(convoDict), 200
+    else:
+         return jsonify({'msg': 'Profile not found'}), 404
 
 if __name__ == '__main__':
     app.run(port=8000)
