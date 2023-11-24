@@ -21,6 +21,7 @@ def register():
 	new_user = request.get_json() # store the json body request
 	new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest() # encrpt password
 	doc = db.users_collection.find_one({"username": new_user["username"]}) # check if user exist
+
 	if not doc:
 		db.users_collection.insert_one(new_user)
 		return jsonify({'msg': 'User created successfully'}), 201
@@ -94,20 +95,25 @@ def sendFeedbackForm():
 @app.route("/api/v1/getAllFeedback", methods=["GET"])
 @jwt_required(locations=["headers"])
 def getAllFeedbackForms():
-    allFeedback = list(db.users_collection.find({}))
-    listFeedback = []
-    print(allFeedback)
-    for feedback in allFeedback:
-        tempDict = {}
-        tempDict["_id"] = str(feedback["_id"])
-        tempDict["username"] = allFeedback["username"]
-        tempDict["timestamp"] = allFeedback["timestamp"]
-        tempDict["text"] = allFeedback["text"]
-        listFeedback.append(tempDict)
+    current_user = get_jwt_identity()
+    user_from_db = db.users_collection.find_one({'username': current_user})
 
-    	return jsonify(listFeedback), 200
+    if user_from_db:
 
-	else:
+        allFeedback = list(db.users_collection.find({}))
+        listFeedback = []
+    
+        for feedback in allFeedback:
+            tempDict = {}
+            tempDict["_id"] = str(feedback["_id"])
+            tempDict["username"] = allFeedback["username"]
+            tempDict["timestamp"] = allFeedback["timestamp"]
+            tempDict["text"] = allFeedback["text"]
+            listFeedback.append(tempDict)
+            
+        return jsonify(listFeedback), 200
+    
+    else:
 	    return jsonify({'msg': 'Profile not found'}), 404
 
 @app.route("/api/v1/logConvo", methods=["POST"])
