@@ -33,15 +33,15 @@ def login():
     
 @app.route("/api/v1/users", methods=["POST"])
 def register():
-	new_user = request.get_json()
+    new_user = request.get_json()
     new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest() # encrpt password
     doc = db.users_collection.find_one({"username": new_user["username"]}) # check if user exist
-
-	if not doc:
-		db.users_collection.insert_one(new_user)
-		return jsonify({'msg': 'User created successfully'}), 201
-	else:
-		return jsonify({'msg': 'Username already exists'}), 409
+    
+    if not doc:
+        db.users_collection.insert_one(new_user)
+        return jsonify({'msg': 'User created successfully'}), 201       
+    else:
+        return jsonify({'msg': 'Username already exists'}), 409
 
 @app.route("/api/v1/user", methods=["GET"])
 @jwt_required(locations=["headers"])
