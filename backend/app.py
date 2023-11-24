@@ -104,7 +104,6 @@ def getAllFeedbackForms():
             tempDict["username"] = allFeedback["username"]
             tempDict["timestamp"] = allFeedback["timestamp"]
             tempDict["text"] = allFeedback["text"]
-
             listFeedback.append(tempDict)
 
         return jsonify(listFeedback), 200
