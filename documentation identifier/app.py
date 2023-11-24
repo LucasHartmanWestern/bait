@@ -14,6 +14,8 @@ pdf_file_paths = [
     "TempDocs/What is the Bell Wi-Fi app and how do I use it_ _ Block or pause Internet access by user.pdf",
     # Add more paths as needed
 ]
+
+
 def read_pdf(file_path):
     with open(file_path, 'rb') as file:
         pdf_reader = PyPDF2.PdfReader(file)
@@ -22,9 +24,11 @@ def read_pdf(file_path):
             text += page.extract_text() + "\n"
         return text
 
+
 documents = [read_pdf(path) for path in pdf_file_paths]
 
-def find_best_match(documents, input_sentence):
+
+def find_best_match(documents, input_sentence, file_paths):
     # Combine documents and the input sentence for vectorization
     all_docs = documents + [input_sentence]
 
@@ -39,11 +43,17 @@ def find_best_match(documents, input_sentence):
 
     # Find the best match
     best_match_index = cosine_similarities.argsort()[0][-1]
-    return documents[best_match_index]
+    return file_paths[best_match_index]
 
-input_sentence = "Parental controls"
-best_match = find_best_match(documents, input_sentence)
-print("Best matching document:", best_match)
+
+while True:
+    input_sentence = input("Enter query (type exit to exit): ")
+
+    if input_sentence.lower() == 'exit':
+        break
+
+    best_match = find_best_match(documents, input_sentence, pdf_file_paths)
+    print("Best matching document:", best_match)
 
 
 
