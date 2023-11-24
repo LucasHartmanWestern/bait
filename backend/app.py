@@ -6,6 +6,7 @@ from pymongo import MongoClient
 from PIL import Image
 import io
 import db
+from datetime import datetime as dt
 
 app = Flask(__name__)
 jwt = JWTManager(app)
@@ -70,6 +71,48 @@ def sendImage():
         return jsonify({'msg': 'Image saved successfully'}), 200
     else:
          return jsonify({'msg': 'Profile not found'}), 404    
+
+@app.route("/api/v1/sendFeedback", methods=["POST"])
+@jwt_required(locations=["headers"])
+def sendFeedbackForm():
+    current_user = get_jwt_identity()
+    user_from_db = db.users_collection.find_one({'username': current_user})
+    feedback = request.get_json()
+    feedback["timestamp"] = dt.now()
+    feedback["username"] = current_user
+
+    if user_from_db:
+        db.users_collection.insert_one(feedback)
+        return jsonify({'msg': 'Inserted successfully'}), 200
+    
+    else:
+        return jsonify({'msg': 'Profile not found'}), 404
+    
+@app.route("/api/v1/getAllFeedback", methods=["GET"])
+@jwt_required(locations=["headers"])
+def getAllFeedbackForms():
+    current_user = get_jwt_identity()
+    user_from_db = db.users_collection.find_one({'username': current_user})
+
+    if user_from_db:
+        allFeedback = list(db.users_collection.find({}))
+        listFeedback = []
+        print(allFeedback)
+        for feedback in allFeedback:
+            tempDict = {}
+            tempDict["_id"] = str(feedback["_id"])
+            tempDict["username"] = allFeedback["username"]
+            tempDict["timestamp"] = allFeedback["timestamp"]
+            tempDict["text"] = allFeedback["text"]
+
+            listFeedback.append(tempDict)
+
+        return jsonify(listFeedback), 200
+
+    else:
+        return jsonify({'msg': 'Profile not found'}), 404
+
+        
 
 if __name__ == '__main__':
     app.run(port=8000)
