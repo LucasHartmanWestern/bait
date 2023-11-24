@@ -16,23 +16,11 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
 client = OpenAI()
 
-@app.route("/api/v1/users", methods=["POST"])
-def register():
-	new_user = request.get_json() # store the json body request
-	new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest() # encrpt password
-	doc = db.users_collection.find_one({"username": new_user["username"]}) # check if user exist
-
-	if not doc:
-		db.users_collection.insert_one(new_user)
-		return jsonify({'msg': 'User created successfully'}), 201
-	else:
-		return jsonify({'msg': 'Username already exists'}), 409
 
 @app.route("/api/v1/login", methods=["POST"])
 def login():
     login_details = request.get_json()
     user_from_db = db.users_collection.find_one({'username': login_details['username']})
-
 
     if user_from_db:
         encrypted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
@@ -42,6 +30,18 @@ def login():
 
 
     return jsonify({'msg': 'The username or password is incorrect'}), 401
+    
+@app.route("/api/v1/users", methods=["POST"])
+def register():
+	new_user = request.get_json()
+    new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest() # encrpt password
+    doc = db.users_collection.find_one({"username": new_user["username"]}) # check if user exist
+
+	if not doc:
+		db.users_collection.insert_one(new_user)
+		return jsonify({'msg': 'User created successfully'}), 201
+	else:
+		return jsonify({'msg': 'Username already exists'}), 409
 
 @app.route("/api/v1/user", methods=["GET"])
 @jwt_required(locations=["headers"])
