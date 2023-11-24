@@ -7,4 +7,6 @@ CONNECTION_STRING = "mongodb+srv://2andrewmalcolm:astupidpassword@cluster0.mv0wo
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('baitdb')
 users_collection = db["userInformation"]
+convo_collection = db["conversationData"]
+feedback_collection = db["forumData"]
 #user_collection = pymongo.collection.Collection(db, 'user_collection')
