@@ -14,8 +14,6 @@ pdf_file_paths = [
     "TempDocs/What is the Bell Wi-Fi app and how do I use it_ _ Block or pause Internet access by user.pdf",
     # Add more paths as needed
 ]
-
-
 def read_pdf(file_path):
     with open(file_path, 'rb') as file:
         pdf_reader = PyPDF2.PdfReader(file)
