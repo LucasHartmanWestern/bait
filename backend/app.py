@@ -112,7 +112,5 @@ def getAllFeedbackForms():
     else:
         return jsonify({'msg': 'Profile not found'}), 404
 
-        
-
 if __name__ == '__main__':
     app.run(port=8000)
