@@ -2,6 +2,7 @@ import hashlib
 import datetime
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_cors import CORS
 from pymongo import MongoClient
 from PIL import Image
 import io
@@ -12,6 +13,7 @@ from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
+CORS(app)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'aaaa'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
