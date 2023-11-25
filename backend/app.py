@@ -8,13 +8,16 @@ import io
 import db
 from openai import OpenAI
 from datetime import datetime as dt
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'aaaa'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
-client = OpenAI()
+load_dotenv()
+client = OpenAI(api_key=os.environ.get('OPEN_AI_API_KEY'))
 
 @app.route("/api/v1/users", methods=["POST"])
 def register():
@@ -31,7 +34,6 @@ def register():
 def login():
     login_details = request.get_json()
     user_from_db = db.users_collection.find_one({'username': login_details['username']})
-
 
     if user_from_db:
         encrypted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
@@ -96,19 +98,20 @@ def sendFeedbackForm():
 def getAllFeedbackForms():
     allFeedback = list(db.users_collection.find({}))
     listFeedback = []
-    print(allFeedback)
-    for feedback in allFeedback:
-        tempDict = {}
-        tempDict["_id"] = str(feedback["_id"])
-        tempDict["username"] = allFeedback["username"]
-        tempDict["timestamp"] = allFeedback["timestamp"]
-        tempDict["text"] = allFeedback["text"]
-        listFeedback.append(tempDict)
 
-    	return jsonify(listFeedback), 200
+    if allFeedback:
+        for feedback in allFeedback:
+            tempDict = {}
+            tempDict["_id"] = str(feedback["_id"])
+            tempDict["username"] = allFeedback["username"]
+            tempDict["timestamp"] = allFeedback["timestamp"]
+            tempDict["text"] = allFeedback["text"]
+            listFeedback.append(tempDict)
 
-	else:
-	    return jsonify({'msg': 'Profile not found'}), 404
+        return jsonify(listFeedback), 200
+
+    else:
+        return jsonify({'msg': 'Profile not found'}), 404
 
 @app.route("/api/v1/logConvo", methods=["POST"])
 @jwt_required(locations=["headers"])
