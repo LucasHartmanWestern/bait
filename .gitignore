@@ -45,3 +45,4 @@ Thumbs.db
 # virtual env
 env
 backend/.env
+*.pyc
