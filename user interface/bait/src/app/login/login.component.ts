@@ -39,6 +39,7 @@ export class LoginComponent {
       }, error => {
         console.log(error);
         this.errorMsg = error.error;
+        setTimeout(() => this.errorMsg = null, 10000);
       });
     } else {
       this.errorMsg = "Username or Password missing";
