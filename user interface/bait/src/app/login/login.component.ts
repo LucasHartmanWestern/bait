@@ -38,7 +38,7 @@ export class LoginComponent {
         this.router.navigate(['user']);
       }, error => {
         console.log(error);
-        this.errorMsg = error;
+        this.errorMsg = error.error;
       });
     } else {
       this.errorMsg = "Username or Password missing";
