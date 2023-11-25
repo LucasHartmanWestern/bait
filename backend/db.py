@@ -3,7 +3,7 @@ from flask_pymongo import pymongo
 from app import app
 import hashlib
 
-CONNECTION_STRING = "mongodb+srv://bcowleyadam:awvLMgRsZYwtLoxA@testproject1.qcpy2vf.mongodb.net/?retryWrites=true&w=majority"
+CONNECTION_STRING = "mongodb+srv://bcowleyadam:awvLMgRsZYwtLoxA@testproject1.qcpy2vf.mongodb.net/?retryWrites=true&w=majority&ssl=true"
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('flask_mongodb_atlas')
 users_collection = db["flask-mongodb-atlas"]

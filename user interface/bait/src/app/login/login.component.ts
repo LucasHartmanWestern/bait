@@ -12,18 +12,38 @@ export class LoginComponent {
   constructor(private router: Router, private userService: UserService) {
   }
 
-  login(event: any): void {
-    event.preventDefault();
+  ngOnInit(): void {
+    let user = localStorage.getItem('username');
+    let pass = localStorage.getItem('password');
 
-    console.log(event);
+    if (user && pass) this.login(null, user, pass, true);
+  }
 
-    this.userService.login("username1", "password1").subscribe(res => {
-      console.log(res);
-    }, error => {
-      console.log(error);
-    });
+  errorMsg: string | null = null;
 
-    //this.router.navigate(['user']);
+  login(event: any, username: string, password: string, remember: boolean): void {
+    event?.preventDefault();
+
+    if (username && password) {
+
+      this.userService.login(username, password).subscribe(res => {
+
+        console.log(res);
+
+        if (remember) {
+          localStorage.setItem('username', username);
+          localStorage.setItem('password', username)
+        }
+
+        this.router.navigate(['user']);
+      }, error => {
+        console.log(error);
+        this.errorMsg = error;
+      });
+    } else {
+      this.errorMsg = "Username or Password missing";
+      setTimeout(() => this.errorMsg = null, 10000);
+    }
   }
 
   register(): void {

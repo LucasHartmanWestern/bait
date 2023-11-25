@@ -9,15 +9,17 @@
       <div class="login">
         <h2>Log in</h2>
 
-        <form (submit)="login($event)">
+        <form (submit)="login($event, user.value, pass.value, remember.checked)">
 
-          <input type="text" placeholder="Username">
-          <input type="text" placeholder="Password">
+          <input type="text" placeholder="Username" #user>
+          <input type="text" placeholder="Password" #pass>
 
           <div class="remember">
-            <input type="checkbox" name="remember" id="remember">
+            <input type="checkbox" name="remember" id="remember" #remember>
             <label for="remember">Remember my username</label>
           </div>
+
+          <span id="error_msg" [textContent]="errorMsg" [className]="!errorMsg ? 'hidden' : ''"></span>
 
           <input type="submit" value="Log in">
 

@@ -34,17 +34,20 @@ def register():
 
 @app.route("/api/v1/login", methods=["POST"])
 def login():
-    login_details = request.get_json()
-    user_from_db = db.users_collection.find_one({'username': login_details['username']})
+    try:
+        login_details = request.get_json()
+        user_from_db = db.users_collection.find_one({'username': login_details['username']})
 
-    if user_from_db:
-        encrypted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
-        if encrypted_password == user_from_db['password']:
-            access_token = create_access_token(identity=user_from_db['username'])
-            return jsonify(access_token=access_token), 200
-
-
-    return jsonify({'msg': 'The username or password is incorrect'}), 401
+        if user_from_db:
+            encrypted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
+            if encrypted_password == user_from_db['password']:
+                access_token = create_access_token(identity=user_from_db['username'])
+                return jsonify(access_token=access_token), 200
+        else:
+            return jsonify({'msg': 'The username or password is incorrect'}), 401
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route("/api/v1/user", methods=["GET"])
 @jwt_required(locations=["headers"])

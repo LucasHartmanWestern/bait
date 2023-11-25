@@ -43,6 +43,18 @@ $image-path: '~src/assets/';
           align-items: flex-start;
           gap: 12px;
 
+          #error_msg {
+            color: red;
+            font-size: 1rem;
+            transition: 0.5s ease;
+            opacity: 1;
+
+            &.hidden {
+              opacity: 0;
+              transform: translateY(-100%);
+            }
+          }
+
           input[type=text] {
             border: 1px solid black;
             background-color: var(--bell-background-grey);
