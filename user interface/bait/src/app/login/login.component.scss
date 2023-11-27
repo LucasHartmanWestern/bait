@@ -59,7 +59,7 @@ $image-path: '~src/assets/';
             }
           }
 
-          input[type=text] {
+          input[type=username], input[type=password] {
             border: 1px solid black;
             background-color: var(--bell-background-grey);
             color: black;

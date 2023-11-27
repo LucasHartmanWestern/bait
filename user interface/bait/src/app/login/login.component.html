@@ -11,8 +11,8 @@
 
         <form (submit)="login($event, user.value, pass.value, remember.checked)">
 
-          <input type="text" placeholder="Username" #user>
-          <input type="text" placeholder="Password" #pass>
+          <input type="username" placeholder="Username" #user>
+          <input type="password" placeholder="Password" #pass>
 
           <div class="remember">
             <input type="checkbox" name="remember" id="remember" #remember>
