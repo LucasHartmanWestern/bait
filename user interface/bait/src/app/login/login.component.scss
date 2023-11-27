@@ -43,7 +43,23 @@ $image-path: '~src/assets/';
           align-items: flex-start;
           gap: 12px;
 
-          input[type=text] {
+          #error_msg {
+            color: red;
+            font-size: 1rem;
+            transition: 0.5s ease;
+            opacity: 1;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 60%;
+            overflow: hidden;
+
+            &.hidden {
+              opacity: 0;
+              transform: translateY(-100%);
+            }
+          }
+
+          input[type=username], input[type=password] {
             border: 1px solid black;
             background-color: var(--bell-background-grey);
             color: black;

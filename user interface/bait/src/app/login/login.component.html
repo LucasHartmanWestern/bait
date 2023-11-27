@@ -9,15 +9,17 @@
       <div class="login">
         <h2>Log in</h2>
 
-        <form (submit)="login($event)">
+        <form (submit)="login($event, user.value, pass.value, remember.checked)">
 
-          <input type="text" placeholder="Username">
-          <input type="text" placeholder="Password">
+          <input type="username" placeholder="Username" #user>
+          <input type="password" placeholder="Password" #pass>
 
           <div class="remember">
-            <input type="checkbox" name="remember" id="remember">
+            <input type="checkbox" name="remember" id="remember" #remember>
             <label for="remember">Remember my username</label>
           </div>
+
+          <span id="error_msg" [textContent]="errorMsg" [className]="!errorMsg ? 'hidden' : ''"></span>
 
           <input type="submit" value="Log in">
 
@@ -47,7 +49,7 @@
 
           <a href="http://support.bell.ca/Mobility/Self_Serve_options/What_self_serve_tasks_can_I_do_online">See the full list of MyBell's features</a>
 
-          <button (click)="register()">Register now</button>
+          <button (click)="register(user.value, pass.value)">Register now</button>
 
         </div>
 
