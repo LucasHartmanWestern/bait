@@ -49,6 +49,13 @@ $image-path: '~src/assets/';
       overflow-x: hidden;
       padding: 0 12px;
 
+      ::ng-deep {
+        img {
+          width: 100%;
+          margin-bottom: -5px;
+        }
+      }
+
       .left, .right {
         width: 100%;
         display: flex;
@@ -72,6 +79,12 @@ $image-path: '~src/assets/';
         position: relative;
         margin-bottom: 10px;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+        &:has(img) {
+          padding: 0 !important;
+          background: transparent !important;
+          overflow: hidden;
+        }
 
         &.user {
           background-color: #009688; /* A teal color */

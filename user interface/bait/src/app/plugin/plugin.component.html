@@ -4,7 +4,7 @@
 
     <div class="chat">
       <div *ngFor="let message of messages.slice(2)" [classList]="message?.role == 'user' ? 'right' : 'left'">
-        <span [textContent]="message.content" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'"></span>
+        <div [innerHTML]="message.content" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'"></div>
       </div>
       <div [hidden]="!loading">
         <span class="message_bubble system loading"></span>

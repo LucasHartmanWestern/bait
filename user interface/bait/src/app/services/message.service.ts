@@ -15,7 +15,9 @@ export class MessageService {
   constructor(private http: HttpClient) { }
 
   sendMessage(messages: any, queryImage: string | ArrayBuffer | null): Observable<any> {
-    let body: any = { messages: messages }
+    let body: any = { messages: messages.filter((message: any) => {
+        return (message?.sendAPI != false);
+      }) }
     if (queryImage) body['queryImage'] = queryImage;
 
     return this.http.post<any>(`${Constants.apiPaths.sendMessage}`, body, {headers: this.httpHeaders}).pipe(

@@ -17,7 +17,7 @@ export class PluginComponent {
   imageSrc: string | ArrayBuffer | null = '';
   loading: boolean = false;
 
-  messages: {role: string, content: string}[] = [
+  messages: {role: string, content: string, sendAPI?: boolean}[] = [
     { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell support when I send you questions and images pertaining to Bell.' },
     { role: 'system', content: 'Understood, please proceed.' }
   ];
@@ -30,6 +30,31 @@ export class PluginComponent {
       if ((event as KeyboardEvent).key == 'Enter') {
         event.preventDefault();
         this.sendMessage(this.messageText);
+      }
+    });
+
+    document.addEventListener('paste', (event) => {
+      let clipboardData = event.clipboardData;
+      let items = clipboardData?.items;
+      if (items) {
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf('image') === 0) {
+            let file = items[i].getAsFile();
+            if (file) { // Check that the file is not null
+              let blob = file as Blob; // Type assertion: File is a Blob
+              let reader = new FileReader();
+
+              reader.onload = (event) => {
+                let base64String = event?.target?.result;
+                if (base64String) {
+                  this.imageSrc = base64String;
+                }
+              };
+
+              reader.readAsDataURL(blob);
+            }
+          }
+        }
       }
     });
 
@@ -83,10 +108,10 @@ export class PluginComponent {
   }
 
   sendMessage(message: string): void {
-    console.log('Text:', message);
-    console.log('Image Data:', this.imageSrc);
-
-    this.messages.push({role: 'user', content: message})
+    if (message)
+      this.messages.push({role: 'user', content: message})
+    if (this.imageSrc)
+      this.messages.push({role: 'user', content: `<img src='${this.imageSrc}' />`, sendAPI: false})
 
     this.loading = true;
     this.messageService.sendMessage(this.messages, this.imageSrc).subscribe(res => {
