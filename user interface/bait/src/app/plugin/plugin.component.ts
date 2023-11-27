@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MessageService } from "../services/message.service";
+import {load} from "@angular-devkit/build-angular/src/utils/server-rendering/esm-in-memory-file-loader";
 
 @Component({
   selector: 'app-plugin',
@@ -14,8 +15,12 @@ export class PluginComponent {
   plugin_closed: boolean | undefined = undefined;
   messageText: string = '';
   imageSrc: string | ArrayBuffer | null = '';
+  loading: boolean = false;
 
-  messages: {role: string, content: string}[] = [];
+  messages: {role: string, content: string}[] = [
+    { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell support when I send you questions and images pertaining to Bell.' },
+    { role: 'system', content: 'Understood, please proceed.' }
+  ];
 
   constructor(private messageService: MessageService) {
   }
@@ -27,6 +32,27 @@ export class PluginComponent {
         this.sendMessage(this.messageText);
       }
     });
+
+    setInterval(() => {
+      let loading = document.querySelector('.loading');
+      if (loading) {
+        let dots = loading.textContent;
+        switch(dots) {
+          case '':
+            loading.textContent = '.';
+            break;
+          case '.':
+            loading.textContent = '..';
+            break;
+          case '..':
+            loading.textContent = '...';
+            break;
+          case '...':
+            loading.textContent = '';
+            break;
+        }
+      }
+    }, 250);
   }
 
   onImageSelected(event: Event): void {
@@ -62,9 +88,12 @@ export class PluginComponent {
 
     this.messages.push({role: 'user', content: message})
 
+    this.loading = true;
     this.messageService.sendMessage(this.messages, this.imageSrc).subscribe(res => {
+      this.loading = false;
       this.messages.push({role: 'system', content: res?.response})
     }, error => {
+      this.loading = false;
       console.log(error);
     });
 
