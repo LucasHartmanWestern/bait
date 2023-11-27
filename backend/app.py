@@ -49,8 +49,10 @@ def login():
             if encrypted_password == user_from_db['password']:
                 access_token = create_access_token(identity=user_from_db['username'])
                 return jsonify(access_token=access_token), 200
+            else:
+                return jsonify({'error': 'The username or password is incorrect'}), 401
         else:
-            return jsonify({'msg': 'The username or password is incorrect'}), 401
+            return jsonify({'error': 'The username or password is incorrect'}), 401
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -132,7 +134,7 @@ def saveConvo():
         jwtData = request.headers.get('Authorization')
 
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             messages=convo_details["messages"]
         )
 
@@ -145,25 +147,14 @@ def saveConvo():
         convo_details["jwtData"] = jwtData
 
         if user_from_db:
-            if 'queryImage' not in convo_details:
-                db.users_collection.insert_one(convo_details)
+            db.users_collection.insert_one(convo_details)
 
-                # Convert the document for JSON serialization
-                serializable_convo_details = {
-                    key: str(value) if isinstance(value, (ObjectId, datetime.datetime)) else value
-                    for key, value in convo_details.items()
-                }
-                return jsonify(serializable_convo_details), 200
-            else:
-                im = Image.open("./image.jpg")
-                image_bytes = io.BytesIO()
-                im.save(image_bytes, format='JPEG')
-                image = {
-                     'data': image_bytes.getvalue
-                }
-                convo_details["queryImage"] = image
-                db.users_collection.insert_one(convo_details)
-                return jsonify({'msg': 'Saved log'}), 200
+            # Convert the document for JSON serialization
+            serializable_convo_details = {
+                key: str(value) if isinstance(value, (ObjectId, datetime.datetime)) else value
+                for key, value in convo_details.items()
+            }
+            return jsonify(serializable_convo_details), 200
         else:
             return jsonify({'msg': 'Profile not found'}), 404
 
