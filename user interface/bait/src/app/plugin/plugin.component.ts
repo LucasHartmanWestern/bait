@@ -1,4 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MessageService } from "../services/message.service";
 
 @Component({
   selector: 'app-plugin',
@@ -14,7 +15,9 @@ export class PluginComponent {
   messageText: string = '';
   imageSrc: string | ArrayBuffer | null = '';
 
-  constructor() {
+  messages: {role: string, content: string}[] = [];
+
+  constructor(private messageService: MessageService) {
   }
 
   ngOnInit(): void {
@@ -56,6 +59,14 @@ export class PluginComponent {
   sendMessage(message: string): void {
     console.log('Text:', message);
     console.log('Image Data:', this.imageSrc);
+
+    this.messages.push({role: 'user', content: message})
+
+    this.messageService.sendMessage(this.messages, this.imageSrc).subscribe(res => {
+      this.messages.push({role: 'system', content: res?.response})
+    }, error => {
+      console.log(error);
+    });
 
     this.messageText = '';
     this.imageSrc = null;

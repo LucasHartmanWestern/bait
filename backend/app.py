@@ -1,5 +1,7 @@
 import hashlib
 import datetime
+
+from bson import ObjectId
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
@@ -125,40 +127,48 @@ def getAllFeedbackForms():
 @app.route("/api/v1/logConvo", methods=["POST"])
 @jwt_required(locations=["headers"])
 def saveConvo():
-    convo_details = request.get_json()
-    jwtData = request.headers.get('Authorization')
+    try:
+        convo_details = request.get_json()
+        jwtData = request.headers.get('Authorization')
 
-    completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": convo_details["query"]}
-        ]
-    )
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=convo_details["messages"]
+        )
 
-    convo_details["response"] = completion.choices[0].message.content
-    current_user = get_jwt_identity()
-    user_from_db = db.users_collection.find_one({'username': current_user})
-    convo_details["username"] = current_user
-    convo_details["model"] = "GPT"
-    convo_details["timestamp"] = dt.now()
-    convo_details["jwtData"] = jwtData
+        convo_details["response"] = completion.choices[0].message.content
+        current_user = get_jwt_identity()
+        user_from_db = db.users_collection.find_one({'username': current_user})
+        convo_details["username"] = current_user
+        convo_details["model"] = "GPT-3.5 turbo"
+        convo_details["timestamp"] = dt.now()
+        convo_details["jwtData"] = jwtData
 
-    if user_from_db:
-        if convo_details["queryImage"] is None:
-            db.users_collection.insert_one(convo_details)
-            return jsonify({'msg': 'Saved log'}), 200
+        if user_from_db:
+            if 'queryImage' not in convo_details:
+                db.users_collection.insert_one(convo_details)
+
+                # Convert the document for JSON serialization
+                serializable_convo_details = {
+                    key: str(value) if isinstance(value, (ObjectId, datetime.datetime)) else value
+                    for key, value in convo_details.items()
+                }
+                return jsonify(serializable_convo_details), 200
+            else:
+                im = Image.open("./image.jpg")
+                image_bytes = io.BytesIO()
+                im.save(image_bytes, format='JPEG')
+                image = {
+                     'data': image_bytes.getvalue
+                }
+                convo_details["queryImage"] = image
+                db.users_collection.insert_one(convo_details)
+                return jsonify({'msg': 'Saved log'}), 200
         else:
-            im = Image.open("./image.jpg")
-            image_bytes = io.BytesIO()
-            im.save(image_bytes, format='JPEG')
-            image = {
-                 'data': image_bytes.getvalue
-            }
-            convo_details["queryImage"] = image
-            db.users_collection.insert_one(convo_details)
-            return jsonify({'msg': 'Saved log'}), 200
-    else:
-        return jsonify({'msg': 'Profile not found'}), 404
+            return jsonify({'msg': 'Profile not found'}), 404
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route("/api/v1/getAllConvo", methods=["GET"])
 @jwt_required(locations=["headers"])

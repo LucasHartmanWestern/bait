@@ -24,6 +24,8 @@ export class LoginComponent {
   register(username: string, password: string): void {
     this.userService.register(username, password).subscribe(res => {
       this.login(null, username, password, true);
+    }, error => {
+      console.log(error);
     });
   }
 

@@ -11,7 +11,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   httpHeaders = new HttpHeaders({
-    'Authorization': localStorage.getItem('token') || 'N/A'
+    'Authorization': 'Bearer ' + localStorage.getItem('token') || 'N/A'
   });
 
   login(username: string, password: string): Observable<any> {
