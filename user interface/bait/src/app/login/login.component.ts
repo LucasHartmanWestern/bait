@@ -21,6 +21,12 @@ export class LoginComponent {
 
   errorMsg: string | null = null;
 
+  register(username: string, password: string): void {
+    this.userService.register(username, password).subscribe(res => {
+      this.login(null, username, password, true);
+    });
+  }
+
   login(event: any, username: string, password: string, remember: boolean): void {
     event?.preventDefault();
 
@@ -28,11 +34,11 @@ export class LoginComponent {
 
       this.userService.login(username, password).subscribe(res => {
 
-        console.log(res);
+        localStorage.setItem('token', res['access_token']);
 
         if (remember) {
           localStorage.setItem('username', username);
-          localStorage.setItem('password', username)
+          localStorage.setItem('password', password)
         }
 
         this.router.navigate(['user']);
@@ -45,10 +51,6 @@ export class LoginComponent {
       this.errorMsg = "Username or Password missing";
       setTimeout(() => this.errorMsg = null, 10000);
     }
-  }
-
-  register(): void {
-
   }
 
 }

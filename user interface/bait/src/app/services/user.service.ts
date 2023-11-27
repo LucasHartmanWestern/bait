@@ -21,6 +21,13 @@ export class UserService {
     );
   }
 
+  register(username: string, password: string): Observable<any> {
+    return this.http.post<any>(`${Constants.apiPaths.register}`, {username: username, password: password}, {headers: this.httpHeaders}).pipe(
+      map((data: FormData) => data),
+      catchError(this.handleError)
+    );
+  }
+
   // Handle errors
   private handleError(err: HttpErrorResponse) {
     let errorMessage = '';

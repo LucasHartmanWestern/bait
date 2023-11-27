@@ -3,6 +3,7 @@ const serverPrefix = 'http://127.0.0.1:8000';
 
 export const Constants = {
   apiPaths: {
-    login: `${serverPrefix}/api/v1/login`
+    login: `${serverPrefix}/api/v1/login`,
+    register: `${serverPrefix}/api/v1/users`
   }
 }

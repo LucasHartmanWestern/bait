@@ -23,14 +23,18 @@ client = OpenAI(api_key=os.environ.get('OPEN_AI_API_KEY'))
 
 @app.route("/api/v1/users", methods=["POST"])
 def register():
-	new_user = request.get_json() # store the json body request
-	new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest() # encrpt password
-	doc = db.users_collection.find_one({"username": new_user["username"]}) # check if user exist
-	if not doc:
-		db.users_collection.insert_one(new_user)
-		return jsonify({'msg': 'User created successfully'}), 201
-	else:
-		return jsonify({'msg': 'Username already exists'}), 409
+    try:
+        new_user = request.get_json() # store the json body request
+        new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest() # encrpt password
+        doc = db.users_collection.find_one({"username": new_user["username"]}) # check if user exist
+        if not doc:
+            db.users_collection.insert_one(new_user)
+            return jsonify({'msg': 'User created successfully'}), 201
+        else:
+            return jsonify({'msg': 'Username already exists'}), 409
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route("/api/v1/login", methods=["POST"])
 def login():
@@ -45,7 +49,7 @@ def login():
                 return jsonify(access_token=access_token), 200
         else:
             return jsonify({'msg': 'The username or password is incorrect'}), 401
-        
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
