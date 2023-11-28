@@ -1,3 +1,5 @@
+import Transformer
+
 if __name__ == '__main__':
     print("Running Documentation Identifier")
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -5,6 +7,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 import nltk
 from nltk.corpus import stopwords
 import PyPDF2
+import torch
+import torch.nn as nn
 nltk.download('stopwords')
 
 pdf_file_paths = [
@@ -44,6 +48,27 @@ def find_best_match(documents, input_sentence, file_paths):
     # Find the best match
     best_match_index = cosine_similarities.argsort()[0][-1]
     return file_paths[best_match_index]
+
+
+
+def transformerTest():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(device)
+
+    x = torch.tensor([[1, 5, 6, 4, 3, 9, 5, 2, 0], [1, 8, 7, 3, 4, 5, 6, 7, 2]]).to(
+        device
+    )
+    trg = torch.tensor([[1, 7, 4, 3, 5, 9, 2, 0], [1, 5, 6, 2, 4, 7, 6, 2]]).to(device)
+
+    src_pad_idx = 0
+    trg_pad_idx = 0
+    src_vocab_size = 10
+    trg_vocab_size = 10
+    model = Transformer(src_vocab_size, trg_vocab_size, src_pad_idx, trg_pad_idx, device=device).to(
+        device
+    )
+    out = model(x, trg[:, :-1])
+    print(out.shape)
 
 
 while True:
