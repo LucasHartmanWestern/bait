@@ -113,6 +113,7 @@ $image-path: '~src/assets/';
       background: var(--bell-white);
       border-radius: 18px;
       padding: 0 12px;
+      align-items: center;
 
       .message_input {
         border: none;
@@ -122,6 +123,7 @@ $image-path: '~src/assets/';
         box-sizing: border-box;
         padding: 16px 8px;
         width: calc(100% - (32px * 2));
+        max-height: 100px;
       }
 
       .file-upload-button {

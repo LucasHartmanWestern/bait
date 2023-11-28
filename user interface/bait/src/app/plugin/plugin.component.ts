@@ -18,8 +18,8 @@ export class PluginComponent {
   loading: boolean = false;
 
   messages: {role: string, content: string, sendAPI?: boolean}[] = [
-    { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell support when I send you questions and images pertaining to Bell.' },
-    { role: 'system', content: 'Understood, please proceed.' }
+    { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell.' },
+    { role: 'system', content: 'Understood, I am now Bell Customer support. Please proceed.' }
   ];
 
   constructor(private messageService: MessageService) {
@@ -31,6 +31,19 @@ export class PluginComponent {
         event.preventDefault();
         this.sendMessage(this.messageText);
       }
+    });
+
+    document?.querySelector('.message_input')?.addEventListener('input', (event) => {
+      const target = event.target as HTMLTextAreaElement;
+      target.style.height = 'auto';
+      if (target.scrollHeight > 100) {
+        target.style.overflowY = 'auto';
+        target.style.height = '100px';
+      } else {
+        target.style.overflowY = 'hidden';
+        target.style.height = target.scrollHeight + 'px';
+      }
+      target.scrollTop = target.scrollHeight;
     });
 
     document.addEventListener('paste', (event) => {
@@ -124,5 +137,9 @@ export class PluginComponent {
 
     this.messageText = '';
     this.imageSrc = null;
+
+    const target = document?.querySelector('.message_input') as HTMLTextAreaElement;
+    target.style.height = 'auto';
+    target.style.overflowY = 'hidden';
   }
 }

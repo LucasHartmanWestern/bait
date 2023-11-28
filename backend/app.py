@@ -134,7 +134,7 @@ def saveConvo():
         jwtData = request.headers.get('Authorization')
 
         completion = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             messages=convo_details["messages"]
         )
 
