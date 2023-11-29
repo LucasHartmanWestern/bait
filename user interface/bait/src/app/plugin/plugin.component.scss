@@ -41,6 +41,89 @@ $image-path: '~src/assets/';
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 8px;
+
+    .chat {
+      max-height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0 12px;
+
+      ::ng-deep {
+        img {
+          width: 100%;
+          margin-bottom: -5px;
+        }
+      }
+
+      .left, .right {
+        width: 100%;
+        display: flex;
+      }
+
+      .left {
+        justify-content: flex-start;
+      }
+
+      .right {
+        justify-content: flex-end;
+      }
+
+      .message_bubble {
+        padding: 10px 20px;
+        border-radius: 20px;
+        margin: 5px 0;
+        max-width: 80%;
+        word-wrap: break-word;
+        position: relative;
+        margin-bottom: 10px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        display: inline-block;
+
+        ::ng-deep {
+          div {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 12px;
+          }
+
+          span {
+            border: 2px solid #009688;
+            color: black;
+            border-radius: 12px;
+            padding: 4px 8px;
+            grid-column: span 1;
+            font-size: 12px;
+            cursor: pointer;
+          }
+        }
+
+        &:has(img) {
+          padding: 0 !important;
+          background: transparent !important;
+          overflow: hidden;
+        }
+
+        &.user {
+          background-color: #009688; /* A teal color */
+          color: white;
+          margin-left: auto;
+          border-bottom-right-radius: 0;
+        }
+
+        &.system {
+          background-color: #f0f0f0; /* A light grey color */
+          color: black;
+          margin-right: auto;
+          border-bottom-left-radius: 0;
+        }
+
+        &.loading {
+          height: 16px;
+        }
+      }
+    }
 
     .user_input {
       display: flex;
@@ -49,6 +132,7 @@ $image-path: '~src/assets/';
       background: var(--bell-white);
       border-radius: 18px;
       padding: 0 12px;
+      align-items: center;
 
       .message_input {
         border: none;
@@ -58,6 +142,7 @@ $image-path: '~src/assets/';
         box-sizing: border-box;
         padding: 16px 8px;
         width: calc(100% - (32px * 2));
+        max-height: 100px;
       }
 
       .file-upload-button {
@@ -129,5 +214,4 @@ $image-path: '~src/assets/';
       opacity: 1;
     }
   }
-
 }

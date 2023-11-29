@@ -18,4 +18,11 @@ export class NavbarComponent {
       }
     });
   }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
+    this.router.navigate(['login']);
+  }
 }
