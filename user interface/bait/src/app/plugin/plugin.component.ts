@@ -16,7 +16,8 @@ export class PluginComponent {
   messageText: string = '';
   imageSrc: string | ArrayBuffer | null = '';
   loading: boolean = false;
-  feedbackRating: number = 0;
+  feedbackRating: number = 0
+  callEnded: boolean = false;
 
   messages: {role: string, content: string, sendAPI?: boolean}[] = [
     { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: "Response goes here" <div><span>"Follow up 1 goes here"</span><span>"Follow up 2 goes here"</span></div> Here is an example: Hello, I\'m sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don\'t know what my router is?</span><span>How do I find that info?</span></div>' },
@@ -95,6 +96,7 @@ export class PluginComponent {
   }
 
   endSession(): void {
+    this.callEnded = true;
     let feedbackMessage = {
       role: 'system',
       content: `
@@ -210,7 +212,7 @@ export class PluginComponent {
         <div>Sorry you had a below-average experience. Would you like to submit a support ticket?</div>
         <div class="jiraText"></div>
         <div>
-            <span class="submit-btn">Submit</span>
+            <span class="submit-jira">Submit</span>
         </div>`
     }
 
@@ -221,7 +223,24 @@ export class PluginComponent {
       let textInput = document.createElement('textarea');
       textInput.placeholder = 'Submit Concern Here...';
       jiraTextEl.appendChild(textInput);
+      document.querySelector('.submit-jira')?.addEventListener('click', (event) => {
+        let textBox = (event.target as HTMLElement)?.parentNode?.parentNode?.querySelector('textarea');
+        let feedback = textBox?.value;
+        (event.target as HTMLElement)?.parentNode?.parentNode?.removeChild(document.querySelector('.jiraText') || document.createElement('button'));
+        (event.target as HTMLElement)?.parentNode?.removeChild((event.target as HTMLElement));
+        this.messages.push({role: 'user', content: feedback || ''})
+        this.submitJiraTicket(feedback);
+      });
     }, 100);
+  }
+
+  submitJiraTicket(message: string | undefined): void {
+    let feedbackMessage = {
+      role: 'system',
+      content: 'Thank you, your ticket has been created'
+    }
+
+    this.messages.push(feedbackMessage);
   }
 
   removeQuickResponses(): void {

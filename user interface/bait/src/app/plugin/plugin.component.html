@@ -1,7 +1,7 @@
 <div class="fab">
 
   <div class="chat_window" [class.slide_up]="plugin_opened" [class.slide_down]="plugin_closed">
-    <div class="close">
+    <div class="close" *ngIf="!callEnded">
       <img src="assets/call_end.png" alt="Close Button" (click)="endSession()">
     </div>
     <div class="chat">
