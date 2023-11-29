@@ -43,11 +43,55 @@ $image-path: '~src/assets/';
     justify-content: space-between;
     gap: 8px;
 
+    .close {
+      position: absolute;
+      display: flex;
+      justify-content: flex-end;
+      right: 16px;
+      top: 16px;
+
+      img {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        filter: brightness(1.5) sepia(1) hue-rotate(-50deg) contrast(1.2);
+      }
+    }
+
     .chat {
+      margin-top: 24px;
       max-height: 100%;
       overflow-y: auto;
       overflow-x: hidden;
       padding: 0 12px;
+
+
+      ::ng-deep {
+        .star-rating {
+          font-size: 2rem;
+          color: #ccc;
+          cursor: pointer;
+        }
+
+        .star-rating span {
+          border: none !important;
+          font-size: 24px !important;
+        }
+
+        .star-rating .selected {
+          color: gold !important;
+        }
+
+        textarea {
+          width: 100%;
+          outline: none;
+          border: none;
+          height: 100px;
+          resize: none;
+          padding: 4px;
+          border-radius: 8px;
+        }
+      }
 
       ::ng-deep {
         img {

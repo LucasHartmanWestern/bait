@@ -16,6 +16,7 @@ export class PluginComponent {
   messageText: string = '';
   imageSrc: string | ArrayBuffer | null = '';
   loading: boolean = false;
+  feedbackRating: number = 0;
 
   messages: {role: string, content: string, sendAPI?: boolean}[] = [
     { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: "Response goes here" <div><span>"Follow up 1 goes here"</span><span>"Follow up 2 goes here"</span></div> Here is an example: Hello, I\'m sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don\'t know what my router is?</span><span>How do I find that info?</span></div>' },
@@ -93,6 +94,48 @@ export class PluginComponent {
     }, 250);
   }
 
+  endSession(): void {
+    let feedbackMessage = {
+      role: 'system',
+      content: `
+        <div>Please leave a rating on your experience today</div>
+        <div class="star-rating">
+          <span title="1">&#9733;</span>
+          <span title="2">&#9733;</span>
+          <span title="3">&#9733;</span>
+          <span title="4">&#9733;</span>
+          <span title="5">&#9733;</span>
+        </div>
+        <div>
+            <span class="submit-btn">Submit</span>
+        </div>`
+    }
+
+    this.messages.push(feedbackMessage);
+    this.removeQuickResponses();
+    setTimeout(() => {
+      document.querySelector('.submit-btn')?.addEventListener('click', (event) => {
+        this.submitFeedback(this.feedbackRating);
+      });
+
+      document.querySelector('.star-rating')?.addEventListener('click', (event) => {
+        if((event.target as HTMLElement).tagName === 'SPAN') {
+          let rating = Number((event.target as HTMLElement).getAttribute('title'));
+          this.feedbackRating = rating;
+          let stars = (event.target as HTMLElement).parentNode?.querySelectorAll('span');
+          stars?.forEach((star: HTMLElement) => {
+            let starVal = Number(star.getAttribute('title'));
+            if(starVal <= rating) {
+              star.classList.add('selected');
+            } else {
+              star.classList.remove('selected');
+            }
+          });
+        }
+      });
+    }, 500);
+  }
+
   onImageSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
@@ -145,6 +188,48 @@ export class PluginComponent {
     const target = document?.querySelector('.message_input') as HTMLTextAreaElement;
     target.style.height = 'auto';
     target.style.overflowY = 'hidden';
+  }
+
+  submitFeedback(rating: number): void {
+    let btn = document.querySelector('.submit-btn') as HTMLElement;
+    btn?.parentNode?.removeChild(btn || document.createElement('button'));
+    let stars = document.querySelector('.message_bubble.system > .star-rating');
+    let new_stars = stars?.cloneNode(true);
+    if (new_stars)
+      stars?.parentNode?.replaceChild(new_stars, stars);
+
+
+    if (rating < 3)
+      this.askJIRA();
+  }
+
+  askJIRA(): void {
+    let feedbackMessage = {
+      role: 'system',
+      content: `
+        <div>Sorry you had a below-average experience. Would you like to submit a support ticket?</div>
+        <div class="jiraText"></div>
+        <div>
+            <span class="submit-btn">Submit</span>
+        </div>`
+    }
+
+    this.messages.push(feedbackMessage);
+
+    setTimeout(() => {
+      let jiraTextEl = document.querySelector('.jiraText') as HTMLElement;
+      let textInput = document.createElement('textarea');
+      textInput.placeholder = 'Submit Concern Here...';
+      jiraTextEl.appendChild(textInput);
+    }, 100);
+  }
+
+  removeQuickResponses(): void {
+    let spans = document.querySelectorAll('.message_bubble.system > div > span');
+    spans.forEach(span => {
+      if (span.innerHTML != '&#9733')
+        span?.parentNode?.removeChild(span);
+    });
   }
 
   updateQuickResponseEvents(): void {

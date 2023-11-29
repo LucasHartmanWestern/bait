@@ -1,7 +1,9 @@
 <div class="fab">
 
   <div class="chat_window" [class.slide_up]="plugin_opened" [class.slide_down]="plugin_closed">
-
+    <div class="close">
+      <img src="assets/call_end.png" alt="Close Button" (click)="endSession()">
+    </div>
     <div class="chat">
       <div *ngFor="let message of messages.slice(1)" [classList]="message?.role == 'user' ? 'right' : 'left'">
         <div [innerHTML]="message.content" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'"></div>
