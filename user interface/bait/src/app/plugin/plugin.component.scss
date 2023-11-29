@@ -70,7 +70,6 @@ $image-path: '~src/assets/';
       }
 
       .message_bubble {
-        display: inline-block;
         padding: 10px 20px;
         border-radius: 20px;
         margin: 5px 0;
@@ -79,6 +78,26 @@ $image-path: '~src/assets/';
         position: relative;
         margin-bottom: 10px;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        display: inline-block;
+
+        ::ng-deep {
+          div {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 12px;
+          }
+
+          span {
+            border: 2px solid #009688;
+            color: black;
+            border-radius: 12px;
+            padding: 4px 8px;
+            grid-column: span 1;
+            font-size: 12px;
+            cursor: pointer;
+          }
+        }
 
         &:has(img) {
           padding: 0 !important;
