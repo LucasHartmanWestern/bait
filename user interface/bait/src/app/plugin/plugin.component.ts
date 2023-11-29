@@ -19,7 +19,7 @@ export class PluginComponent {
 
   messages: {role: string, content: string, sendAPI?: boolean}[] = [
     { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell.' },
-    { role: 'system', content: 'Understood, I am now Bell Customer support. Please proceed.' }
+    { role: 'system', content: 'Hello, I am Bell Customer support. How can I help you today?' }
   ];
 
   constructor(private messageService: MessageService) {

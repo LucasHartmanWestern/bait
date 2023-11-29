@@ -3,7 +3,7 @@
   <div class="chat_window" [class.slide_up]="plugin_opened" [class.slide_down]="plugin_closed">
 
     <div class="chat">
-      <div *ngFor="let message of messages.slice(2)" [classList]="message?.role == 'user' ? 'right' : 'left'">
+      <div *ngFor="let message of messages.slice(1)" [classList]="message?.role == 'user' ? 'right' : 'left'">
         <div [innerHTML]="message.content" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'"></div>
       </div>
       <div [hidden]="!loading">
