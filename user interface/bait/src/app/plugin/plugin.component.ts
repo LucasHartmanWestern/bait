@@ -18,8 +18,8 @@ export class PluginComponent {
   loading: boolean = false;
 
   messages: {role: string, content: string, sendAPI?: boolean}[] = [
-    { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell.' },
-    { role: 'system', content: 'Hello, I am Bell Customer support. How can I help you today?' }
+    { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: "Response goes here" <div><span>"Follow up 1 goes here"</span><span>"Follow up 2 goes here"</span></div> Here is an example: Hello, I\'m sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don\'t know what my router is?</span><span>How do I find that info?</span></div>' },
+    { role: 'system', content: 'Hello, I am Bell Customer support. How can I help you today?<div><span>I need help with my wifi</span><span>Tell me about the new promos</span></div>' },
   ];
 
   constructor(private messageService: MessageService) {
@@ -104,6 +104,7 @@ export class PluginComponent {
 
   toggleFab(): void {
     if (this.plugin_opened == undefined) {
+      this.updateQuickResponseEvents();
       this.plugin_opened = true;
       this.plugin_closed = false;
     } else {
@@ -129,7 +130,10 @@ export class PluginComponent {
     this.loading = true;
     this.messageService.sendMessage(this.messages, this.imageSrc).subscribe(res => {
       this.loading = false;
-      this.messages.push({role: 'system', content: res?.response})
+      this.messages.push({role: 'system', content: res?.response});
+      setTimeout(() => {
+        this.updateQuickResponseEvents();
+      }, 500);
     }, error => {
       this.loading = false;
       console.log(error);
@@ -141,5 +145,18 @@ export class PluginComponent {
     const target = document?.querySelector('.message_input') as HTMLTextAreaElement;
     target.style.height = 'auto';
     target.style.overflowY = 'hidden';
+  }
+
+  updateQuickResponseEvents(): void {
+    let quickResponses = document.querySelectorAll('.message_bubble.system > div > span');
+    console.log(quickResponses);
+    quickResponses.forEach(span => {
+      let new_span = span.cloneNode(true);
+      new_span.addEventListener("click", (event) => {
+        this.sendMessage((event.target as HTMLElement).textContent || '');
+        (event?.target as HTMLElement)?.parentNode?.parentNode?.removeChild((event?.target as HTMLElement)?.parentNode || document.createElement('button'));
+      });
+      span?.parentNode?.replaceChild(new_span, span);
+    });
   }
 }
