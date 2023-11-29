@@ -11,6 +11,8 @@ import io
 import db
 from openai import OpenAI
 from datetime import datetime as dt
+from jira import JIRA
+from bson.binary import Binary
 from dotenv import load_dotenv
 import os
 
@@ -19,6 +21,11 @@ CORS(app)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'aaaa'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
+jira_connection = JIRA(
+    basic_auth=('workspace_email', 'api_token'),
+    server="https://lhartma8.atlassian.net"
+)
+
 
 load_dotenv()
 client = OpenAI(api_key=os.environ.get('OPEN_AI_API_KEY'))
@@ -63,32 +70,11 @@ def profile():
     current_user = get_jwt_identity()
     user_from_db = db.users_collection.find_one({'username': current_user})
 
-    if user_from_db:
+    if user_from_db["admin"] == "True":
         del user_from_db['_id'], user_from_db['password'] # delete what we don't want to show
         return jsonify({'profile': user_from_db}), 200
 
     else:
-        return jsonify({'msg': 'Profile not found'}), 404
-
-@app.route("/api/v1/sendImage", methods=["POST"])
-@jwt_required(locations=["headers"])
-def sendImage():
-    current_user = get_jwt_identity()
-    user_from_db = db.users_collection.find_one({'username': current_user})
-
-    if user_from_db:
-        im = Image.open("./image.jpg")
-        image_bytes = io.BytesIO()
-        im.save(image_bytes, format='JPEG')
-
-        image = {
-            'data': image_bytes.getvalue()
-        }
-
-        db.users_collection.insert_one(image)
-        return jsonify({'msg': 'Image saved successfully'}), 200
-    else:
-         return jsonify({'msg': 'Profile not found'}), 404
 
 @app.route("/api/v1/sendFeedback", methods=["POST"])
 @jwt_required(locations=["headers"])
@@ -100,7 +86,7 @@ def sendFeedbackForm():
     feedback["username"] = current_user
 
     if user_from_db:
-        db.users_collection.insert_one(feedback)
+        db.feedback_collection.insert_one(feedback)
         return jsonify({'msg': 'Inserted successfully'}), 200
 
     else:
@@ -109,22 +95,27 @@ def sendFeedbackForm():
 @app.route("/api/v1/getAllFeedback", methods=["GET"])
 @jwt_required(locations=["headers"])
 def getAllFeedbackForms():
-    allFeedback = list(db.users_collection.find({}))
-    listFeedback = []
+    current_user = get_jwt_identity()
+    user_from_db = db.users_collection.find_one({'username': current_user})
 
-    if allFeedback:
+    if user_from_db["admin"] == "True":
+
+        allFeedback = list(db.feedback_collection.find({}))
+        listFeedback = []
+    
         for feedback in allFeedback:
             tempDict = {}
             tempDict["_id"] = str(feedback["_id"])
-            tempDict["username"] = allFeedback["username"]
-            tempDict["timestamp"] = allFeedback["timestamp"]
-            tempDict["text"] = allFeedback["text"]
+            tempDict["username"] = feedback["username"]
+            tempDict["timestamp"] = feedback["timestamp"]
+            tempDict["text"] = feedback["text"]
             listFeedback.append(tempDict)
-
+            
         return jsonify(listFeedback), 200
-
+    
     else:
-        return jsonify({'msg': 'Profile not found'}), 404
+	    return jsonify({'msg': 'Profile not found or user is not admin'}), 404
+
 
 @app.route("/api/v1/logConvo", methods=["POST"])
 @jwt_required(locations=["headers"])
@@ -166,9 +157,10 @@ def saveConvo():
 def getAllConvo():
     current_user = get_jwt_identity()
     user_from_db = db.users_collection.find_one({'username': current_user})
+    print("here")
 
-    if user_from_db:
-        convos = list(db.users_collection.find({}))
+    if user_from_db["admin"] == "True":
+        convos = list(db.convo_collection.find({}))
         convoDict = []
         for convo in convos:
             tempDict = {}
@@ -177,11 +169,12 @@ def getAllConvo():
             tempDict["model"] = convo["model"]
             tempDict["timestamp"] = convo["timestamp"]
             tempDict["query"] = convo["query"]
-            tempDict["queryImage"] = convo["queryImage"]
+            #tempDict["queryImage"] = convo["queryImage"]
             tempDict["response"] = convo["response"]
             tempDict["jwtData"] = convo["jwtData"]
             convoDict.append(tempDict)
 
+        print(convoDict)
         return jsonify(convoDict), 200
     else:
         return jsonify({'msg': 'Profile not found'}), 404
@@ -192,7 +185,7 @@ def getAllNames():
     current_user = get_jwt_identity()
     user_from_db = db.users_collection.find_one({'username': current_user})
 
-    if user_from_db:
+    if user_from_db["admin"] == "True":
         names = list(db.users_collection.find())
         convoDict = []
         for convo in names:
@@ -204,6 +197,37 @@ def getAllNames():
         return jsonify(convoDict), 200
     else:
          return jsonify({'msg': 'Profile not found'}), 404
+    
+@app.route("/api/v1/sendToJira", methods=["GET"])
+@jwt_required(locations=["headers"])
+def makeJiraTicket():
+    issue = request.get_json()
+    current_user = get_jwt_identity()
+    user_from_db = db.users_collection.find_one({'username':current_user})
+
+    if user_from_db:
+        allConvos = list(db.users_collection.find({'username': current_user}))
+        convoDict = []
+        for convo in allConvos:
+            tempDict = {}
+            tempDict["model"] = convo["model"]
+            tempDict["timestamp"] = convo["timestamp"]
+            tempDict["query"] = convo["query"]
+            tempDict["response"] = convo["response"]
+            convoDict.append(tempDict)
+    
+        issue_dict = {
+        'project': {'key': 'CAP'},
+        'summary': 'BAIT bug: ' + current_user,
+        'description': 'Detailed ticket description.',
+        'issuetype': {'name': 'Bug'},
+        }  
+        new_issue = jira_connection.create_issue(fields=issue_dict)
+
+        return jsonify({'msg': 'JIRA ticket created'})
+    
+    else:
+        return jsonify({'msg': 'Profile not found'})
 
 if __name__ == '__main__':
     app.run(port=8000)

@@ -5,6 +5,8 @@ import hashlib
 
 CONNECTION_STRING = "mongodb+srv://2andrewmalcolm:astupidpassword@cluster0.mv0wogx.mongodb.net/?retryWrites=true&w=majority"
 client = pymongo.MongoClient(CONNECTION_STRING)
-db = client.get_database('flask_mongodb_atlas')
-users_collection = db["flask-mongodb-atlas"]
-user_collection = pymongo.collection.Collection(db, 'user_collection')
+db = client.get_database('baitdb')
+users_collection = db["userInformation"]
+convo_collection = db["conversationData"]
+feedback_collection = db["forumData"]
+#user_collection = pymongo.collection.Collection(db, 'user_collection')
