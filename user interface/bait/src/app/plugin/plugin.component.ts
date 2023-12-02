@@ -200,6 +200,9 @@ export class PluginComponent {
     if (new_stars)
       stars?.parentNode?.replaceChild(new_stars, stars);
 
+    this.messageService.sendFeedback(this.messages, rating).subscribe(res => {
+      console.log("Feedback Submitted");
+    }, error => console.log(error));
 
     if (rating < 3)
       this.askJIRA();
@@ -241,6 +244,10 @@ export class PluginComponent {
     }
 
     this.messages.push(feedbackMessage);
+
+    this.messageService.sendJIRA(message || '').subscribe(res => {
+      console.log("Feedback Submitted");
+    }, error => console.log(error))
   }
 
   removeQuickResponses(): void {

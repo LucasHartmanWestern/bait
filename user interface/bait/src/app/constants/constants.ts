@@ -5,6 +5,8 @@ export const Constants = {
   apiPaths: {
     login: `${serverPrefix}/api/v1/login`,
     register: `${serverPrefix}/api/v1/users`,
-    sendMessage: `${serverPrefix}/api/v1/logConvo`
+    sendMessage: `${serverPrefix}/api/v1/logConvo`,
+    sendFeedback: `${serverPrefix}/api/v1/sendFeedback`,
+    sendJIRA: `${serverPrefix}/api/v1/sendToJira`
   }
 }

@@ -21,14 +21,13 @@ CORS(app)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'aaaa'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
-jira_connection = JIRA(
-    basic_auth=('workspace_email', 'api_token'),
-    server="https://lhartma8.atlassian.net"
-)
-
 
 load_dotenv()
 client = OpenAI(api_key=os.environ.get('OPEN_AI_API_KEY'))
+jira_connection = JIRA(
+    basic_auth=(os.environ.get('JIRA_EMAIL'), os.environ.get('JIRA_KEY')),
+    server=os.environ.get('JIRA_ADDRESS')
+)
 
 @app.route("/api/v1/users", methods=["POST"])
 def register():
@@ -73,8 +72,6 @@ def profile():
     if user_from_db["admin"] == "True":
         del user_from_db['_id'], user_from_db['password'] # delete what we don't want to show
         return jsonify({'profile': user_from_db}), 200
-
-    else:
 
 @app.route("/api/v1/sendFeedback", methods=["POST"])
 @jwt_required(locations=["headers"])
@@ -198,36 +195,49 @@ def getAllNames():
     else:
          return jsonify({'msg': 'Profile not found'}), 404
     
-@app.route("/api/v1/sendToJira", methods=["GET"])
+@app.route("/api/v1/sendToJira", methods=["POST"])
 @jwt_required(locations=["headers"])
 def makeJiraTicket():
-    issue = request.get_json()
-    current_user = get_jwt_identity()
-    user_from_db = db.users_collection.find_one({'username':current_user})
+    try:
+        issue = request.get_json()
+        current_user = get_jwt_identity()
+        user_from_db = db.users_collection.find_one({'username':current_user})
 
-    if user_from_db:
-        allConvos = list(db.users_collection.find({'username': current_user}))
-        convoDict = []
-        for convo in allConvos:
-            tempDict = {}
-            tempDict["model"] = convo["model"]
-            tempDict["timestamp"] = convo["timestamp"]
-            tempDict["query"] = convo["query"]
-            tempDict["response"] = convo["response"]
-            convoDict.append(tempDict)
-    
-        issue_dict = {
-        'project': {'key': 'CAP'},
-        'summary': 'BAIT bug: ' + current_user,
-        'description': 'Detailed ticket description.',
-        'issuetype': {'name': 'Bug'},
-        }  
-        new_issue = jira_connection.create_issue(fields=issue_dict)
+        if user_from_db:
+            allConvos = list(db.users_collection.find({'username': current_user}))
+            formatted_message_history = format_message_history(allConvos)
 
-        return jsonify({'msg': 'JIRA ticket created'})
-    
-    else:
-        return jsonify({'msg': 'Profile not found'})
+            issue_dict = {
+                'project': {'key': 'BELL'},
+                'summary': 'BAIT bug',
+                'description': f'{issue["description"]}\n\n\n{formatted_message_history}',
+                'issuetype': {'name': 'Emailed request'},
+                'reporter': {'name': current_user}
+            }
+            new_issue = jira_connection.create_issue(fields=issue_dict)
+
+            return jsonify({'msg': 'JIRA ticket created'})
+        else:
+            return jsonify({'msg': 'Profile not found'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+def format_message_history(allConvos):
+    formatted_messages = []
+
+    for convo in allConvos:
+        messages = convo.get("messages")
+        if messages:
+            for message in messages:
+                role = message.get("role", "Unknown role")
+                content = message.get("content", "No content")
+                formatted_message = f'<p><strong>{role}:</strong> {content}</p>\n\n\n'
+                formatted_messages.append(formatted_message)
+        else:
+            formatted_messages.append('<p>No messages found.</p>')
+
+    return ''.join(formatted_messages)
 
 if __name__ == '__main__':
     app.run(port=8000)
