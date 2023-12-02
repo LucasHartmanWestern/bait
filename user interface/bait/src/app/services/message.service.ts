@@ -26,6 +26,25 @@ export class MessageService {
     );
   }
 
+  sendFeedback(messages: any, rating: number): Observable<any> {
+    let body: any = { messages: messages.filter((message: any) => {
+        return (message?.sendAPI != false);
+      }), rating: rating
+    }
+
+    return this.http.post<any>(`${Constants.apiPaths.sendFeedback}`, body, {headers: this.httpHeaders}).pipe(
+      map((data: FormData) => data),
+      catchError(this.handleError)
+    );
+  }
+
+  sendJIRA(description: string): Observable<any> {
+    return this.http.post<any>(`${Constants.apiPaths.sendJIRA}`, {description: description}, {headers: this.httpHeaders}).pipe(
+      map((data: FormData) => data),
+      catchError(this.handleError)
+    );
+  }
+
   // Handle errors
   private handleError(err: HttpErrorResponse) {
     let errorMessage = '';
