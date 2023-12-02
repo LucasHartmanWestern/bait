@@ -6,7 +6,13 @@
     </div>
     <div class="chat">
       <div *ngFor="let message of messages.slice(1)" [classList]="message?.role == 'user' ? 'right' : 'left'">
-        <div [innerHTML]="message.content" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'"></div>
+
+        <div *ngIf="message.content[0]?.type == 'text'" [innerHTML]="message.content[0].text" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'"></div>
+
+        <div *ngIf="message.content[0]?.type == 'image_url'" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'">
+          <img [src]="message.content[0]?.image_url.url">
+        </div>
+
       </div>
       <div [hidden]="!loading">
         <span class="message_bubble system loading"></span>

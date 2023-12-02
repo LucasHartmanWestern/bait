@@ -19,9 +19,9 @@ export class PluginComponent {
   feedbackRating: number = 0
   callEnded: boolean = false;
 
-  messages: {role: string, content: string, sendAPI?: boolean}[] = [
-    { role: 'user', content: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: "Response goes here" <div><span>"Follow up 1 goes here"</span><span>"Follow up 2 goes here"</span></div> Here is an example: Hello, I\'m sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don\'t know what my router is?</span><span>How do I find that info?</span></div>' },
-    { role: 'system', content: 'Hello, I am Bell Customer support. How can I help you today?<div><span>I need help with my wifi</span><span>Tell me about the new promos</span></div>' },
+  messages: any[] = [
+    { role: 'user', content: [{ type: 'text', text: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: "Response goes here" <div><span>"Follow up 1 goes here"</span><span>"Follow up 2 goes here"</span></div> Here is an example: Hello, I\'m sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don\'t know what my router is?</span><span>How do I find that info?</span></div>'}]},
+    { role: 'system', content: [{type: 'text', text: 'Hello, I am Bell Customer support. How can I help you today?<div><span>I need help with my wifi</span><span>Tell me about the new promos</span></div>'}]},
   ];
 
   constructor(private messageService: MessageService) {
@@ -99,7 +99,7 @@ export class PluginComponent {
     this.callEnded = true;
     let feedbackMessage = {
       role: 'system',
-      content: `
+      content: [{type: 'text', text: `
         <div>Please leave a rating on your experience today</div>
         <div class="star-rating">
           <span title="1">&#9733;</span>
@@ -110,7 +110,7 @@ export class PluginComponent {
         </div>
         <div>
             <span class="submit-btn">Submit</span>
-        </div>`
+        </div>`}]
     }
 
     this.messages.push(feedbackMessage);
@@ -168,14 +168,14 @@ export class PluginComponent {
 
   sendMessage(message: string): void {
     if (message)
-      this.messages.push({role: 'user', content: message})
+      this.messages.push({role: 'user', content: [{type: 'text', text: message}]})
     if (this.imageSrc)
-      this.messages.push({role: 'user', content: `<img src='${this.imageSrc}' />`, sendAPI: false})
+      this.messages.push({role: 'user', content: [{type: 'image_url', image_url: {url: this.imageSrc}}]})
 
     this.loading = true;
     this.messageService.sendMessage(this.messages, this.imageSrc).subscribe(res => {
       this.loading = false;
-      this.messages.push({role: 'system', content: res?.response});
+      this.messages.push({role: 'system', content: [{type: 'text', text: res?.response}]});
       setTimeout(() => {
         this.updateQuickResponseEvents();
       }, 500);
@@ -211,12 +211,12 @@ export class PluginComponent {
   askJIRA(): void {
     let feedbackMessage = {
       role: 'system',
-      content: `
+      content: [{type: 'text', text:`
         <div>Sorry you had a below-average experience. Would you like to submit a support ticket?</div>
         <div class="jiraText"></div>
         <div>
             <span class="submit-jira">Submit</span>
-        </div>`
+        </div>`}]
     }
 
     this.messages.push(feedbackMessage);
@@ -231,7 +231,7 @@ export class PluginComponent {
         let feedback = textBox?.value;
         (event.target as HTMLElement)?.parentNode?.parentNode?.removeChild(document.querySelector('.jiraText') || document.createElement('button'));
         (event.target as HTMLElement)?.parentNode?.removeChild((event.target as HTMLElement));
-        this.messages.push({role: 'user', content: feedback || ''})
+        this.messages.push({role: 'user', content: [{type: 'text', text: feedback || ''}]})
         this.submitJiraTicket(feedback);
       });
     }, 100);
@@ -240,7 +240,7 @@ export class PluginComponent {
   submitJiraTicket(message: string | undefined): void {
     let feedbackMessage = {
       role: 'system',
-      content: 'Thank you, your ticket has been created'
+      content: [{type: 'text', text: 'Thank you, your ticket has been created'}]
     }
 
     this.messages.push(feedbackMessage);

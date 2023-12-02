@@ -121,8 +121,11 @@ def saveConvo():
         convo_details = request.get_json()
         jwtData = request.headers.get('Authorization')
 
+        # model = "gpt-4-vision-preview" # more expensive, use while demoing
+        model = "gpt-3.5-turbo" # less expensive, use while testing
+
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model=model,
             messages=convo_details["messages"]
         )
 
@@ -130,7 +133,7 @@ def saveConvo():
         current_user = get_jwt_identity()
         user_from_db = db.users_collection.find_one({'username': current_user})
         convo_details["username"] = current_user
-        convo_details["model"] = "GPT-3.5 turbo"
+        convo_details["model"] = model
         convo_details["timestamp"] = dt.now()
         convo_details["jwtData"] = jwtData
 
@@ -227,17 +230,28 @@ def format_message_history(allConvos):
     formatted_messages = []
 
     for convo in allConvos:
-        messages = convo.get("messages")
-        if messages:
-            for message in messages:
-                role = message.get("role", "Unknown role")
-                content = message.get("content", "No content")
-                formatted_message = f'<p><strong>{role}:</strong> {content}</p>\n\n\n'
-                formatted_messages.append(formatted_message)
-        else:
-            formatted_messages.append('<p>No messages found.</p>')
 
-    return ''.join(formatted_messages)
+        time = convo.get("timestamp")
+        if (time):
+            formatted_messages.append(f'====== Conversation on {time} ======\n\n')
+
+            messages = convo.get("messages")
+            if messages:
+                for message in messages[2:]:
+                    role = message.get("role", "Unknown role")
+                    content = message.get("content", [{"type": "text", "text": "No content"}])
+
+                    for msg in content:
+                        text = msg.get("text", "No text")
+                        formatted_message = f'{role}: "{text}"\n\n'
+                        if len(''.join(formatted_messages)) + len(formatted_message) > 30000:
+                            break
+                        formatted_messages.append(formatted_message)
+
+            if len(''.join(formatted_messages)) > 30000:
+                break
+
+    return ''.join(formatted_messages)[:30000]
 
 if __name__ == '__main__':
     app.run(port=8000)
