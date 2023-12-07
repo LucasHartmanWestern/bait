@@ -28,7 +28,7 @@
       "user_input": ["here", "image", "router", "my"],
       "bot_response": 
       "Thank you, the problem seems to be how your router was configured here are some possible solutions:\n1.Solution retrieved from router documentation.\n2.Solution retrieved from router documentation\n3.Solution retrieved from router documentation\nThis solution was retrieved from this router documentation: Download PDF",
-      "required_words": ["image", "router"]
+      "required_words": ["picture","image", "router"]
     },
     {
       "response_type": "question",

@@ -14,7 +14,6 @@ loaded_model = load_model(model_load_path)
 print("############ MODEL LOADED ############")
 
 while True:
-    print("Hi, I am Bell's customer support, How may I assist you today?")
     user_input = input("You: ")
     print("Bot:", get_response(user_input))
 
