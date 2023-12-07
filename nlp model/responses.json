@@ -1,0 +1,45 @@
+[
+    {
+      "response_type": "greeting",
+      "user_input": ["hello", "hi", "hey"],
+      "bot_response": "Hello, how can I help you?",
+      "required_words": []
+    },
+    {
+      "response_type": "greeting",
+      "user_input": ["see you", "goodbye", "bye"],
+      "bot_response": "Thank you for using B.A.I.T!",
+      "required_words": ["see you", "goodbye", "bye"]
+    },
+    {
+        "response_type": "greeting",
+        "user_input": ["thanks", "thank you", "thank"],
+        "bot_response": "No problem, and thank you for using B.A.I.T!",
+        "required_words": []
+    },
+    {
+      "response_type": "question",
+      "user_input": [ "fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
+      "bot_response": "Please provide an image of your router so I can better assist you",
+      "required_words": ["router"]
+    },
+    {
+      "response_type": "question",
+      "user_input": ["here", "image", "router", "my"],
+      "bot_response": 
+      "Thank you, the problem seems to be how your router was configured here are some possible solutions:\n1.Solution retrieved from router documentation.\n2.Solution retrieved from router documentation\n3.Solution retrieved from router documentation\nThis solution was retrieved from this router documentation: Download PDF",
+      "required_words": ["picture","image", "router"]
+    },
+    {
+      "response_type": "question",
+      "user_input": ["hello", "hi", "hey","billing", "charge", "bill","payment","date"],
+      "bot_response": "I beleive you are reffering to the below bill from this date,\nand you were charged extra because you exceeded your data limit. ",
+      "required_words": ["date"]
+    },
+    {
+      "response_type": "question",
+      "user_input": ["hello", "hi", "hey","billing", "charge", "bill","payment"],
+      "bot_response": "Please provide the date of the bill from which your concern arises from.",
+      "required_words": ["bell"]
+    }
+  ]
