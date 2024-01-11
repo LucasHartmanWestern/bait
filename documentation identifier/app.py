@@ -1,4 +1,5 @@
 import Transformer
+import BERT
 
 if __name__ == '__main__':
     print("Running Documentation Identifier")
@@ -77,7 +78,8 @@ while True:
     if input_sentence.lower() == 'exit':
         break
 
-    best_match = find_best_match(documents, input_sentence, pdf_file_paths)
+    # best_match = find_best_match(documents, input_sentence, pdf_file_paths)
+    best_match = BERT.best_match(documents, input_sentence)
     print("Best matching document:", best_match)
 
 
