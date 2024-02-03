@@ -46,3 +46,7 @@ Thumbs.db
 env
 backend/.env
 *.pyc
+
+# Training data images
+image classifier/data/formatted
+image classifier/data/unformatted
