@@ -49,4 +49,4 @@ backend/.env
 
 # Training data images
 image classifier/data/formatted
-image classifier/data/unformatted
+image classifier/data/augmented
