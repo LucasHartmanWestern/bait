@@ -15,18 +15,21 @@ import io
 # Custom dataset class for loading images and labels
 class ImageDataset(Dataset):
     def __init__(self, images, product_labels, light_status_labels, transform=None):
+        # Initialize dataset with images and labels
         self.images = images
         self.product_labels = product_labels
         self.light_status_labels = light_status_labels
-        self.transform = transform
+        self.transform = transform  # Transformation to be applied on images
 
     def __len__(self):
+        # Return the total number of samples in the dataset
         return len(self.images)
 
     def __getitem__(self, idx):
-        image = Image.fromarray(self.images[idx])
+        # Get an image and its corresponding labels by index
+        image = Image.fromarray(self.images[idx])  # Convert numpy array to PIL image
         if self.transform:
-            image = self.transform(image)
+            image = self.transform(image)  # Apply transformation if any
         return image, self.product_labels[idx], self.light_status_labels[idx]
 
 # Function to load images and extract labels from filenames
@@ -35,63 +38,66 @@ def load_images(directory):
     product_labels = []
     light_status_labels = []
     for filename in os.listdir(directory):
-        if filename.endswith('.png'):
-            image = Image.open(os.path.join(directory, filename))
-            image = np.array(image)
+        if filename.endswith('.png'):  # Check if the file is a PNG image
+            image = Image.open(os.path.join(directory, filename))  # Open the image
+            image = np.array(image)  # Convert the image to a numpy array
             images.append(image)
-            labels = filename.split(',')
+            labels = filename.split(',')  # Extract labels from the filename
             product_labels.append(labels[0].strip())
             light_status_labels.append(labels[1].strip())
     return np.array(images), np.array(product_labels), np.array(light_status_labels)
 
 # Function to encode labels as integers
 def encode_labels(labels):
-    encoder = LabelEncoder()
-    encoded_labels = encoder.fit_transform(labels)
+    encoder = LabelEncoder()  # Create a label encoder object
+    encoded_labels = encoder.fit_transform(labels)  # Fit and transform labels to integer values
     return encoded_labels, encoder
 
 # Define the CNN architecture for product label classification
 class ProductCNN(nn.Module):
     def __init__(self, num_classes):
         super(ProductCNN, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, kernel_size=3)
-        self.relu = nn.ReLU()
-        self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=3)
-        self.flatten = nn.Flatten()
-        # Corrected calculation for fc1_input_size based on 230x230 images
-        self.fc1_input_size = 64 * 56 * 56
-        self.fc1 = nn.Linear(self.fc1_input_size, 64)
-        self.fc2 = nn.Linear(64, num_classes)
+        # Define layers of the CNN
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3)  # First convolutional layer
+        self.relu = nn.ReLU()  # ReLU activation function
+        self.pool = nn.MaxPool2d(2, 2)  # Max pooling layer
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3)  # Second convolutional layer
+        self.flatten = nn.Flatten()  # Flatten layer to convert 2D features to 1D
+        self.fc1_input_size = 64 * 56 * 56  # Calculate input size for the first fully connected layer
+        self.fc1 = nn.Linear(self.fc1_input_size, 64)  # First fully connected layer
+        self.fc2 = nn.Linear(64, num_classes)  # Second fully connected layer (output layer)
 
     def forward(self, x):
-        x = self.pool(self.relu(self.conv1(x)))
-        x = self.pool(self.relu(self.conv2(x)))
-        x = self.flatten(x)
-        x = self.relu(self.fc1(x))
-        x = self.fc2(x)
+        # Define the forward pass through the network
+        x = self.pool(self.relu(self.conv1(x)))  # Apply first conv layer, ReLU, and pooling
+        x = self.pool(self.relu(self.conv2(x)))  # Apply second conv layer, ReLU, and pooling
+        x = self.flatten(x)  # Flatten the features
+        x = self.relu(self.fc1(x))  # Apply first fully connected layer and ReLU
+        x = self.fc2(x)  # Apply second fully connected layer (output layer)
         return x
 
 # Define the CNN architecture for light status classification, which takes both the image and product label as inputs
 class LightStatusCNN(nn.Module):
     def __init__(self, num_product_classes, num_light_status_classes):
         super(LightStatusCNN, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, kernel_size=3)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=3)
-        self.flatten = nn.Flatten()
-        self.relu = nn.ReLU()
-        self.fc1_input_size = 64 * 56 * 56 + num_product_classes  # Adjusted for 230x230 images and product label size
-        self.fc1 = nn.Linear(self.fc1_input_size, 64)
-        self.fc2 = nn.Linear(64, num_light_status_classes)
+        # Define layers of the CNN
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3)  # First convolutional layer
+        self.pool = nn.MaxPool2d(2, 2)  # Max pooling layer
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3)  # Second convolutional layer
+        self.flatten = nn.Flatten()  # Flatten layer to convert 2D features to 1D
+        self.relu = nn.ReLU()  # ReLU activation function
+        self.fc1_input_size = 64 * 56 * 56 + num_product_classes  # Calculate input size for the first fully connected layer
+        self.fc1 = nn.Linear(self.fc1_input_size, 64)  # First fully connected layer
+        self.fc2 = nn.Linear(64, num_light_status_classes)  # Second fully connected layer (output layer)
 
     def forward(self, x, product_label):
-        x = self.pool(self.relu(self.conv1(x)))
-        x = self.pool(self.relu(self.conv2(x)))
-        x = self.flatten(x)
-        x = torch.cat((x, product_label), dim=1)
-        x = self.relu(self.fc1(x))
-        x = self.fc2(x)
+        # Define the forward pass through the network
+        x = self.pool(self.relu(self.conv1(x)))  # Apply first conv layer, ReLU, and pooling
+        x = self.pool(self.relu(self.conv2(x)))  # Apply second conv layer, ReLU, and pooling
+        x = self.flatten(x)  # Flatten the features
+        x = torch.cat((x, product_label), dim=1)  # Concatenate the image features with the product label
+        x = self.relu(self.fc1(x))  # Apply first fully connected layer and ReLU
+        x = self.fc2(x)  # Apply second fully connected layer (output layer)
         return x
 
 # Function to train a model
@@ -99,44 +105,44 @@ def train_model(model, dataloader, criterion, optimizer, num_epochs=10, model_ty
     for epoch in range(num_epochs):
         running_loss = 0.0
         for images, product_labels, light_status_labels in dataloader:
-            optimizer.zero_grad()
+            optimizer.zero_grad()  # Zero the gradients
 
             if model_type == 'product':
-                outputs = model(images)
+                outputs = model(images)  # Forward pass for product model
                 labels = product_labels
             elif model_type == 'light_status':
-                outputs = model(images, one_hot(product_labels, num_classes=total_product_classes))
+                outputs = model(images, one_hot(product_labels, num_classes=total_product_classes))  # Forward pass for light status model
                 labels = light_status_labels
             else:
                 raise ValueError("Invalid model_type. Must be 'product' or 'light_status'.")
 
-            loss = criterion(outputs, labels)
-            loss.backward()
-            optimizer.step()
-            running_loss += loss.item()
+            loss = criterion(outputs, labels)  # Calculate loss
+            loss.backward()  # Backward pass
+            optimizer.step()  # Update weights
+            running_loss += loss.item()  # Accumulate loss
 
-        print(f'Model {model_type}, Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss / len(dataloader)}')
+        print(f'Model {model_type}, Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss / len(dataloader)}')  # Print loss for each epoch
 
 # Function to evaluate a model
 def evaluate_model(model, dataloader, label_type='product', total_product_classes=None):
     correct = 0
     total = 0
-    with torch.no_grad():
+    with torch.no_grad():  # Disable gradient calculation for evaluation
         for images, product_labels, light_status_labels in dataloader:
             if label_type == 'product':
                 labels = product_labels
-                outputs = model(images)
+                outputs = model(images)  # Forward pass for product model
             elif label_type == 'light_status':
                 labels = light_status_labels
                 product_labels_one_hot = one_hot(product_labels, num_classes=total_product_classes)
-                outputs = model(images, product_labels_one_hot)
+                outputs = model(images, product_labels_one_hot)  # Forward pass for light status model
             else:
                 raise ValueError("Invalid label_type. Must be 'product' or 'light_status'.")
 
-            _, predicted = torch.max(outputs.data, 1)
+            _, predicted = torch.max(outputs.data, 1)  # Get the predicted labels
             total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-    print(f'Model {label_type}, Accuracy: {100 * correct / total}%')
+            correct += (predicted == labels).sum().item()  # Count correct predictions
+    print(f'Model {label_type}, Accuracy: {100 * correct / total}%')  # Print accuracy
 
 # Main function
 def generate_models():
@@ -196,6 +202,7 @@ def generate_models():
     torch.save(product_model.state_dict(), 'product_model.pth')
     torch.save(light_status_model.state_dict(), 'light_status_model.pth')
 
+    # Save the label encoders
     joblib.dump(product_encoder, 'product_encoder.joblib')
     joblib.dump(light_status_encoder, 'light_status_encoder.joblib')
 
@@ -210,12 +217,12 @@ def predict(image_bytestream):
     # Load the trained models
     product_model = ProductCNN(num_classes=len(product_encoder.classes_))
     product_model.load_state_dict(torch.load('product_model.pth'))
-    product_model.eval()
+    product_model.eval()  # Set the model to evaluation mode
 
     light_status_model = LightStatusCNN(num_product_classes=total_product_classes,
                                         num_light_status_classes=len(light_status_encoder.classes_))
     light_status_model.load_state_dict(torch.load('light_status_model.pth'))
-    light_status_model.eval()
+    light_status_model.eval()  # Set the model to evaluation mode
 
     # Preprocess the input image
     transform = transforms.Compose([
@@ -223,17 +230,17 @@ def predict(image_bytestream):
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
-    image = Image.open(io.BytesIO(image_bytestream))
-    image = transform(image).unsqueeze(0)  # Add batch dimension
+    image = Image.open(io.BytesIO(image_bytestream))  # Load the image from a bytestream
+    image = transform(image).unsqueeze(0)  # Apply transformations and add a batch dimension
 
     # Predict the product label
-    with torch.no_grad():
+    with torch.no_grad():  # Disable gradient calculation for prediction
         product_output = product_model(image)
         product_pred = torch.argmax(product_output, dim=1)
         product_label = product_encoder.inverse_transform([product_pred.item()])[0]
 
     # Predict the light status label
-    with torch.no_grad():
+    with torch.no_grad():  # Disable gradient calculation for prediction
         product_label_one_hot = one_hot(product_pred, num_classes=total_product_classes)
         light_status_output = light_status_model(image, product_label_one_hot)
         light_status_pred = torch.argmax(light_status_output, dim=1)
@@ -243,9 +250,3 @@ def predict(image_bytestream):
 
 if __name__ == '__main__':
     generate_models()
-
-    # Example usage
-    product_label, light_status_label = predict(image_bytestream='data/predict_this.png')
-
-    print(f'Product label: {product_label}')
-    print(f'Light status label: {light_status_label}')
