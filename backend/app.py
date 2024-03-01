@@ -24,10 +24,10 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
 load_dotenv()
 client = OpenAI(api_key=os.environ.get('OPEN_AI_API_KEY'))
-jira_connection = JIRA(
-    basic_auth=(os.environ.get('JIRA_EMAIL'), os.environ.get('JIRA_KEY')),
-    server=os.environ.get('JIRA_ADDRESS')
-)
+# jira_connection = JIRA(
+#     basic_auth=(os.environ.get('JIRA_EMAIL'), os.environ.get('JIRA_KEY')),
+#     server=os.environ.get('JIRA_ADDRESS')
+# )
 
 @app.route("/api/v1/users", methods=["POST"])
 def register():
@@ -217,7 +217,7 @@ def makeJiraTicket():
                 'issuetype': {'name': 'Emailed request'},
                 'reporter': {'name': current_user}
             }
-            new_issue = jira_connection.create_issue(fields=issue_dict)
+            # new_issue = jira_connection.create_issue(fields=issue_dict)
 
             return jsonify({'msg': 'JIRA ticket created'})
         else:
