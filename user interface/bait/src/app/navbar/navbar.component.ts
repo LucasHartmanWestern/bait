@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -8,21 +7,32 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class NavbarComponent {
 
-  currentRoute: any;
+  _navPage: string = localStorage.getItem('page') || "Main";
+  @Output() navPage = new EventEmitter<string>();
 
-  constructor(private router: Router) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.currentRoute = event.url;
-        console.log(this.currentRoute);
-      }
-    });
+  constructor() {}
+
+  ngOnInit(): void {
+      this.navigate(localStorage.getItem('page') || 'Main');
+      this._navPage = localStorage.getItem('page') || "Main";
+  }
+
+  navigate(value: string) {
+    localStorage.setItem('page', value);
+    this._navPage = value;
+    this.navPage.emit(this._navPage);
   }
 
   logout(): void {
+    localStorage.setItem('page', 'Login');
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('password');
-    this.router.navigate(['login']);
+    this.navigate('Login')
+  }
+
+  login(): void {
+    localStorage.setItem('page', 'Login');
+    this.navigate('Login')
   }
 }

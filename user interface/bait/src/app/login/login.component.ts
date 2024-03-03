@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from "../services/user.service";
 
@@ -8,6 +8,8 @@ import { UserService } from "../services/user.service";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+
+  @Output() navPage = new EventEmitter<string>();
 
   constructor(private router: Router, private userService: UserService) {
   }
@@ -36,6 +38,9 @@ export class LoginComponent {
 
       this.userService.login(username, password).subscribe(res => {
 
+        this.navPage.emit('User');
+        localStorage.setItem('page', 'User');
+
         localStorage.setItem('token', res['access_token']);
 
         if (remember) {
@@ -43,7 +48,7 @@ export class LoginComponent {
           localStorage.setItem('password', password)
         }
 
-        this.router.navigate(['user']);
+        location.reload();
       }, error => {
         console.log(error);
         this.errorMsg = error.error;
