@@ -3,9 +3,9 @@
 <head>
     <title>Redirecting...</title>
     <script>
-        sessionStorage.redirect = location.href;
+        var path = window.location.pathname;
+        window.location.href = path;
     </script>
-    <meta http-equiv="refresh" content="0; URL=/" />
 </head>
 <body>
 Redirecting...
