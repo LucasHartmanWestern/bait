@@ -1,3 +1,11 @@
+<script>
+  if (sessionStorage.redirect) {
+    const redirect = sessionStorage.redirect;
+    delete sessionStorage.redirect;
+    window.location = redirect;
+  }
+</script>
+
 <!doctype html>
 <html lang="en">
 <head>

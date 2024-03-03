@@ -1,9 +1,17 @@
+<script>
+  if (sessionStorage.redirect) {
+    const redirect = sessionStorage.redirect;
+    delete sessionStorage.redirect;
+    window.location = redirect;
+  }
+</script>
+
 <!doctype html>
 <html lang="en" data-critters-container>
 <head>
   <meta charset="utf-8">
   <title>Bait</title>
-  <base href="/">
+  <base href="/bait/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="assets/favicon.png">
 <style>body{margin:0;--bell-blue:#00549a;--bell-white:#fff;--bell-dark-blue:#003778;--bell-background-grey:#f6f6f6;font-family:sans-serif}*{scrollbar-width:thin;scrollbar-color:#888 #f1f1f1}</style><link rel="stylesheet" href="styles.b59679a7704f963a.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.b59679a7704f963a.css"></noscript></head>
