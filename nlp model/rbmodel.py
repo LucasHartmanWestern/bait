@@ -12,7 +12,7 @@ def load_json(file):
 # Store JSON data
 response_data = load_json("responses.json")
 
-model_load_path = "bigram_language_model2.pt"
+model_load_path = "test_model.pt"
 loaded_model = load_model(model_load_path)
 
 def get_response(input_string):
