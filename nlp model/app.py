@@ -2,9 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from model_utils import load_model, generate_text
 from rbmodel import get_response
-from openai import OpenAI
-
-client = OpenAI(api_key=os.environ.get('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'))
 
 app = Flask(__name__)
 CORS(app)
