@@ -2,6 +2,11 @@ import json
 import re
 import random
 from model_utils import load_model, generate_text
+from openai import OpenAI
+import os
+
+client = OpenAI(api_key=os.environ.get('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'))
+
 
 # Load JSON data
 def load_json(file):
