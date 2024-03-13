@@ -7,6 +7,10 @@
     <div class="chat">
       <div *ngFor="let message of messages.slice(1)" [classList]="message?.role == 'user' ? 'right' : 'left'">
 
+        <div *ngIf="message.content[0]?.type == 'text' && message?.role != 'user'" class="mic_container">
+          <button (click)="speakAI(message.content[0].text)" class="tts_mic"></button>
+        </div>
+
         <div *ngIf="message.content[0]?.type == 'text'" [innerHTML]="message.content[0].text" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'"></div>
 
         <div *ngIf="message.content[0]?.type == 'image_url'" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'">

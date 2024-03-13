@@ -65,6 +65,22 @@ $image-path: '~src/assets/';
       overflow-x: hidden;
       padding: 0 12px;
 
+      .mic_container {
+        display: flex;
+        align-items: flex-end;
+        margin: 0 5px 10px 0;
+
+        .tts_mic {
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          width: 16px;
+          height: 16px;
+          background-image: url('#{$image-path}mic_icon.png');
+          background-size: contain;
+          outline: none;
+        }
+      }
 
       ::ng-deep {
         .star-rating {
