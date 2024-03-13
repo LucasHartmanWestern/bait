@@ -21,7 +21,7 @@ export class PluginComponent {
 
   messages: any[] = [
     { role: 'user', content: [{ type: 'text', text: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: "Response goes here" <div><span>"Follow up 1 goes here"</span><span>"Follow up 2 goes here"</span></div> Here is an example: Hello, I\'m sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don\'t know what my router is?</span><span>How do I find that info?</span></div>'}]},
-    { role: 'system', content: [{type: 'text', text: 'Hello, I am Bell Customer support. How can I help you today?<div><span>I need help with my wifi</span><span>Tell me about the new promos</span></div>'}]},
+    { role: 'system', content: [{type: 'text', text: 'Hello, I am Bell Customer support. How can I help you today?<div><span>I need help with my wifi.</span><span>Tell me about the new promos.</span></div>'}]},
   ];
 
   constructor(private messageService: MessageService) {
@@ -93,6 +93,24 @@ export class PluginComponent {
         }
       }
     }, 250);
+  }
+
+  speakAI(text: string): void {
+    let final = '';
+    let output = text.split('<div><span>')
+    if (output.length > 1) {
+      let options = output[1].split('</span><span>')
+      options[1] = options[1].replace('</span></div>', '')
+
+      final = `${output[0]} Suggested option 1: ${options[0]} Suggested option 2: ${options[1]}`;
+    } else {
+      final = output[0];
+    }
+
+    console.log(final);
+
+    const speech = new SpeechSynthesisUtterance(final);
+    window.speechSynthesis.speak(speech);
   }
 
   endSession(): void {
