@@ -8,6 +8,9 @@ div {
   justify-content: center;
 
   .content {
+    @media (max-width: 768px) {
+      width: 95%;
+    }
     width: 80%;
     display: flex;
     justify-content: space-between;
@@ -19,6 +22,10 @@ div {
     }
 
     .links {
+      @media (max-width: 1112px) {
+        display: none;
+      }
+
       display: flex;
       justify-content: space-around;
       width: 650px;
@@ -37,6 +44,9 @@ div {
     }
 
     .actions {
+      @media (max-width: 768px) {
+        width: 75%;
+      }
       display: flex;
       justify-content: flex-end;
       width: 30%;
@@ -53,6 +63,9 @@ div {
       }
 
       .search {
+        @media (max-width: 1112px) {
+          display: none;
+        }
         background: url('#{$image-path}search_icon.png');
         filter: invert(100%);
         width: 32px;
@@ -60,6 +73,9 @@ div {
       }
 
       .cart {
+        @media (max-width: 1112px) {
+          display: none;
+        }
         background: url('#{$image-path}cart_icon.png');
         filter: invert(100%);
         width: 32px;
