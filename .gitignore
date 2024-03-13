@@ -46,6 +46,8 @@ image captioner/Demo2/model_epoch_1.pkl
 image captioner/Demo2/my_checkpoint.pth
 image captioner/Demo2/my_checkpoint.pth.tar
 image captioner/Demo2/vocab.pkl
+image captioner/Demo2/myenv
+.venv
 
 # System files
 .DS_Store

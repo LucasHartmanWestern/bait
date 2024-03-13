@@ -2,7 +2,7 @@ import torch
 import torchvision.transforms as transforms
 from PIL import Image
 
-
+# Used to print the test results on the model
 def print_examples(model, device, dataset):
     transform = transforms.Compose(
         [
@@ -34,7 +34,23 @@ def print_examples(model, device, dataset):
     print("Example 5 OUTPUT: " + " ".join(model.caption_image(test_img5.to(device), dataset.vocab)))
     model.train()
 
+def test_model_on_images(model, device, image_paths, dataset):
+    # Set model to evaluation mode
+    model.eval()  
+    transform = transforms.Compose([
+        transforms.Resize((299, 299)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    ])
 
+    for image_path in image_paths:
+        image = transform(Image.open(image_path).convert("RGB")).unsqueeze(0).to(device)
+        caption = model.caption_image(image, dataset.vocab)
+        print(f"Caption for {image_path}: {' '.join(caption)}")
+
+    model.train()
+
+# Save and load data
 def save_checkpoint(state, filename="my_checkpoint.pth.tar"):
     print("=> Saving checkpoint")
     torch.save(state, filename)
