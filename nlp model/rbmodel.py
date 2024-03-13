@@ -2,6 +2,11 @@ import json
 import re
 import random
 from model_utils import load_model, generate_text
+from openai import OpenAI
+import os
+
+client = OpenAI(api_key=os.environ.get('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'))
+
 
 # Load JSON data
 def load_json(file):
@@ -12,7 +17,7 @@ def load_json(file):
 # Store JSON data
 response_data = load_json("responses.json")
 
-model_load_path = "bigram_language_model2.pt"
+model_load_path = "test_model.pt"
 loaded_model = load_model(model_load_path)
 
 def get_response(input_string):

@@ -8,7 +8,7 @@ CORS(app)
 
 print("############ APP STARTED ############")
 
-model_load_path = "bigram_language_model2.pt"
+model_load_path = "test_model2.pt"
 loaded_model = load_model(model_load_path)
 
 print("############ MODEL LOADED ############")
