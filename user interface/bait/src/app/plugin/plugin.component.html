@@ -7,6 +7,10 @@
     <div class="chat" id="chat">
       <div *ngFor="let message of messages.slice(1)" [classList]="message?.role == 'user' ? 'right' : 'left'">
 
+        <div *ngIf="message.content[0]?.type == 'text' && message?.role != 'user'" class="mic_container">
+          <button (click)="speakAI(message.content[0].text)" class="tts_mic"></button>
+        </div>
+
         <div *ngIf="message.content[0]?.type == 'text'" [innerHTML]="message.content[0].text" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'"></div>
 
         <div *ngIf="message.content[0]?.type == 'image_url'" [classList]="message?.role == 'user' ? 'message_bubble user' : 'message_bubble system'">
@@ -19,13 +23,17 @@
       </div>
     </div>
 
-    <div class="user_input">
-      <div class="file-upload-wrapper">
-        <button class="file-upload-button" [ngClass]="imageSrc ? 'uploaded' : ''" (click)="triggerFileInput()"></button>
-        <input type="file" #fileInput style="display: none;" (change)="onImageSelected($event)" accept="image/*"/>
+    <div class="input">
+      <img *ngIf="imageSrc" class="img_preview" [src]="imageSrc">
+
+      <div class="user_input">
+        <div class="file-upload-wrapper">
+          <button class="file-upload-button" [ngClass]="imageSrc ? 'uploaded' : ''" (click)="triggerFileInput()"></button>
+          <input type="file" #fileInput style="display: none;" (change)="onImageSelected($event)" accept="image/*"/>
+        </div>
+        <textarea rows="1" class="message_input" placeholder="Type your message here..." [(ngModel)]="messageText"></textarea>
+        <button class="send_button" (click)="sendMessage(messageText)"></button>
       </div>
-      <textarea rows="1" class="message_input" placeholder="Type your message here..." [(ngModel)]="messageText"></textarea>
-      <button class="send_button" (click)="sendMessage(messageText)"></button>
     </div>
 
   </div>
