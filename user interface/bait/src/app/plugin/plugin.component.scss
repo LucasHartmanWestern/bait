@@ -68,6 +68,7 @@ $image-path: '~src/assets/';
 
       ::ng-deep {
         .star-rating {
+          flex-direction: row !important;
           font-size: 2rem;
           color: #ccc;
           cursor: pointer;
