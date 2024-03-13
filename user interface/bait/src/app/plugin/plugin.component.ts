@@ -170,7 +170,7 @@ export class PluginComponent {
     if (message)
       this.messages.push({role: 'user', content: [{type: 'text', text: message}]})
     if (this.imageSrc)
-      this.messages.push({role: 'user', content: [{type: 'image_url', image_url: {url: this.imageSrc}}]})
+      this.messages.push({role: 'user', content: [{type: 'image_url', image_url: {url: this.imageSrc}}], sendAPI: false})
 
     this.loading = true;
     this.messageService.sendMessage(this.messages, this.imageSrc).subscribe(res => {
