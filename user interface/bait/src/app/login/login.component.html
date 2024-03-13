@@ -1,5 +1,21 @@
 <div class="main">
 
+  <dialog #dialogElement>
+    <form (submit)="register(user.value, pass.value)">
+
+      <input type="username" placeholder="Username" #user>
+      <input type="password" placeholder="Password" #pass>
+
+      <span id="error_msg_reg" [textContent]="errorMsgReg" [className]="!errorMsgReg ? 'hidden' : ''"></span>
+
+      <div class="buttons">
+        <input type="submit" value="Register">
+        <button (click)="dialogElement.close()">Cancel</button>
+      </div>
+    </form>
+
+  </dialog>
+
   <div class="content">
 
     <h1>Self serve with MyBell</h1>
@@ -49,7 +65,7 @@
 
           <a href="http://support.bell.ca/Mobility/Self_Serve_options/What_self_serve_tasks_can_I_do_online">See the full list of MyBell's features</a>
 
-          <button (click)="register(user.value, pass.value)">Register now</button>
+          <button (click)="dialogElement.showModal()">Register now</button>
 
         </div>
 

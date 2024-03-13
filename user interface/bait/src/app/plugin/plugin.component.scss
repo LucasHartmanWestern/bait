@@ -1,6 +1,11 @@
 $image-path: '~src/assets/';
 
 .fab {
+  @media (max-width: 768px) {
+    right: 18px;
+    bottom: 18px;
+  }
+
   position: fixed;
   right: 64px;
   bottom: 64px;

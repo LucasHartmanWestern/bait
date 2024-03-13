@@ -22,12 +22,15 @@ export class LoginComponent {
   }
 
   errorMsg: string | null = null;
+  errorMsgReg: string | null = null;
 
   register(username: string, password: string): void {
     this.userService.register(username, password).subscribe(res => {
       this.login(null, username, password, true);
     }, error => {
       console.log(error);
+      this.errorMsgReg = error.msg;
+      setTimeout(() => this.errorMsgReg = null, 10000);
     });
   }
 
