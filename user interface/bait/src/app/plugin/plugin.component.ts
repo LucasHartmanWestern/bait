@@ -173,6 +173,7 @@ export class PluginComponent {
       this.messages.push({role: 'user', content: [{type: 'image_url', image_url: {url: this.imageSrc}}]})
 
     this.loading = true;
+
     this.messageService.sendMessage(this.messages, this.imageSrc).subscribe(res => {
       this.loading = false;
       this.messages.push({role: 'system', content: [{type: 'text', text: res?.response}]});
@@ -269,5 +270,13 @@ export class PluginComponent {
       });
       span?.parentNode?.replaceChild(new_span, span);
     });
+
+    let chatDiv = document.querySelector('.chat');
+    if (chatDiv) {
+      chatDiv.scrollTo({
+        top: chatDiv.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }
 }

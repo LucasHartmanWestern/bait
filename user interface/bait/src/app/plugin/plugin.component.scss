@@ -128,13 +128,14 @@ $image-path: '~src/assets/';
         ::ng-deep {
           div {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             gap: 8px;
             margin-top: 12px;
           }
 
           span {
-            border: 2px solid #009688;
+            border: 2px solid var(--user-msg-blue);
             color: black;
             border-radius: 12px;
             padding: 4px 8px;
@@ -151,7 +152,7 @@ $image-path: '~src/assets/';
         }
 
         &.user {
-          background-color: #009688; /* A teal color */
+          background-color: var(--user-msg-blue); /* A teal color */
           color: white;
           margin-left: auto;
           border-bottom-right-radius: 0;
