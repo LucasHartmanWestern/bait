@@ -148,26 +148,59 @@ $image-path: '~src/assets/';
         display: inline-block;
 
         ::ng-deep {
-          div {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 8px;
-            margin-top: 12px;
+          .message_content {
+            div {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              gap: 8px;
+              margin-top: 12px;
+            }
+
+            span {
+              border: 2px solid var(--user-msg-blue);
+              color: black;
+              border-radius: 12px;
+              padding: 4px 8px;
+              grid-column: span 1;
+              font-size: 12px;
+              cursor: pointer;
+            }
           }
 
-          span {
-            border: 2px solid var(--user-msg-blue);
-            color: black;
-            border-radius: 12px;
-            padding: 4px 8px;
-            grid-column: span 1;
-            font-size: 12px;
-            cursor: pointer;
+          .pdf_div {
+            margin-top: 4px;
+
+            .pdf_anchor {
+              text-decoration: none;
+
+              .pdf_download {
+                display: flex;
+                align-items: center;
+                background-color: var(--bell-white);
+                padding: 8px;
+                cursor: pointer;
+                outline: none;
+                border: 1px solid black;
+                border-radius: 12px;
+                gap: 8px;
+                transition: 0.25s ease;
+
+                &:hover {
+                  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                }
+
+                .pdf_icon {
+                  margin: 4px 0;
+                  width: 30px;
+                  height: 30px;
+                }
+              }
+            }
           }
         }
 
-        &:has(img) {
+        &:has(img.img_msg) {
           padding: 0 !important;
           background: transparent !important;
           overflow: hidden;
