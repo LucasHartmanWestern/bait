@@ -4,7 +4,7 @@
     <div class="close" *ngIf="!callEnded">
       <img src="assets/call_end.png" alt="Close Button" (click)="endSession()">
     </div>
-    <div class="chat">
+    <div class="chat" id="chat">
       <div *ngFor="let message of messages.slice(1)" [classList]="message?.role == 'user' ? 'right' : 'left'">
 
         <div *ngIf="message.content[0]?.type == 'text' && message?.role != 'user'" class="mic_container">
