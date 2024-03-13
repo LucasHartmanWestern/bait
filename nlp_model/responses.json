@@ -1,0 +1,44 @@
+[
+    {
+      "response_type": "greeting",
+      "user_input": ["hello", "hi", "hey"],
+      "bot_response": "Hello, I am Bell's Customer support how can I help you?",
+      "required_words": []
+    },
+    {
+      "response_type": "greeting",
+      "user_input": ["see you", "goodbye", "bye"],
+      "bot_response": "Thank you for using B.A.I.T!",
+      "required_words": ["see you", "goodbye", "bye"]
+    },
+    {
+        "response_type": "greeting",
+        "user_input": ["thanks", "thank you", "thank"],
+        "bot_response": "No problem, and thank you for using B.A.I.T!",
+        "required_words": []
+    },
+    {
+      "response_type": "question",
+      "user_input": ["billing", "charge", "bill","payment"],
+      "bot_response": "Please provide the date of the bill from which your concern arises from.",
+      "required_words": ["bell"]
+    },
+    {
+      "response_type": "question",
+      "user_input": [ "fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
+      "bot_response": "{ role: 'user', content: [{ type: 'text', text: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>' Here is the question: ",
+      "required_words": ["router"]
+    },
+    {
+      "response_type": "question",
+      "user_input": ["billing", "charge", "bill","payment","date"],
+      "bot_response": "{ role: 'user', content: [{ type: 'text', text: 'I am doing a project for school, can you act as a representative for Bell billing support when I send you questions and images pertaining to the user's Bell bill. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>' Here is the question: ",
+      "required_words": ["bill"]
+    },
+    {
+      "response_type": "question",
+      "user_input": [ "help","fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
+      "bot_response": "{ role: 'user', content: [{ type: 'text', text: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>' Here is the question: ",
+      "required_words": []
+    }
+  ]

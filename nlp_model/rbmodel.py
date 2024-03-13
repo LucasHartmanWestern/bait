@@ -2,11 +2,7 @@ import json
 import re
 import random
 from model_utils import load_model, generate_text
-from openai import OpenAI
-import os
-
-client = OpenAI(api_key=os.environ.get('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'))
-
+import imghdr
 
 # Load JSON data
 def load_json(file):
@@ -14,13 +10,20 @@ def load_json(file):
         print(f"Loaded '{file}' successfully!")
         return json.load(bot_responses)
 
+def is_image_content(filepath):
+    image_type = imghdr.what(filepath)
+    return image_type in ['jpeg', 'png']
+
+def find_match(string):
+    return True
+
 # Store JSON data
 response_data = load_json("responses.json")
 
 model_load_path = "test_model.pt"
 loaded_model = load_model(model_load_path)
 
-def get_response(input_string):
+def get_response(input_string, image_details,caption_details,):
     split_message = re.split(r'\s+|[,;?!.-]\s*', input_string.lower())
     score_list = []
 
@@ -57,8 +60,14 @@ def get_response(input_string):
     if input_string == "":
         return "Please type something so we can chat :("
 
-    # If there is no good response, return a random one.
+    if image_details !="":
+        return response_data[5]["bot_response"] + input_string + "}]}"
+    # If there is no good response, return a gpt.
     if best_response != 0:
-        return response_data[response_index]["bot_response"]
-
-    return generate_text(loaded_model, 500, input_string)
+        if response_index <=2:
+            return response_data[response_index]["bot_response"]
+        else:
+            return response_data[response_index]["bot_response"] + input_string + "}]}"
+    
+    #return generate_text(loaded_model, 500, input_string)
+    
