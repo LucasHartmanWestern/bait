@@ -229,11 +229,11 @@ def makeJiraTicket():
 def format_message_history(allConvos):
     formatted_messages = []
 
-    time = allConvos[len(allConvos)].get("timestamp")
+    time = allConvos[len(allConvos) - 1].get("timestamp")
     if (time):
         formatted_messages.append(f'====== Conversation on {time} ======\n\n')
 
-        messages = allConvos[len(allConvos)].get("messages")
+        messages = allConvos[len(allConvos) - 1].get("messages")
         if messages:
             for message in messages[2:]:
                 role = message.get("role", "Unknown role")
