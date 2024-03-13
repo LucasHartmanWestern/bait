@@ -1,17 +1,19 @@
 if __name__ == '__main__':
     print("Running Documentation Identifier")
 
+import fitz
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from bson.binary import Binary
 import nltk
 from nltk.corpus import stopwords
+
 nltk.download('stopwords')
 import pymongo
 from pymongo import MongoClient
 import sys  # Import sys for reading command line arguments
 
-
-mongo_connection_string = 'mongodb+srv://<username>:<password>@cluster0.mv0wogx.mongodb.net/'
+mongo_connection_string = 'mongodb+srv://ethanp:pigouEthan@cluster0.mv0wogx.mongodb.net/'
 
 # Connect to the MongoDB client
 client = MongoClient(mongo_connection_string)
@@ -22,11 +24,49 @@ db = client['baitdb']
 # Select your collection
 collection = db['ethanData']
 
+collectionDocuments = db['documentData']
+
+# List of paths to your PDF files
+pdf_file_paths = [
+    'C:/Users\epigo/Documents/TempDocs/How to stay connected during a power outage to your fibre-to-the-home phone service using the Giga Hub_Home Hub 4000.pdf',
+    'C:/Users/epigo/Documents/TempDocs/Manage Bell usernames and passwords _ Bell Wi-Fi and modem administrator.pdf',
+    'C:/Users/epigo\Documents/TempDocs/Rebooting my Home Hub modem _ Reboot directly from the modem.pdf',
+    'C:/Users/epigo\Documents/TempDocs/What is the Bell Wi-Fi app and how do I use it_ _ Block or pause Internet access by user.pdf'
+    ]
+
+# Prepare a list to hold documents
+pdf_documents = []
+
+# for path in pdf_file_paths:
+#     # Open each PDF file in binary read mode for binary data
+#     with open(path, 'rb') as pdf_file:
+#         binary_pdf = Binary(pdf_file.read())
+#
+#     # Open the PDF file with PyMuPDF for text extraction
+#     doc = fitz.open(path)
+#     text = ""
+#     for page in doc:
+#         text += page.get_text()
+#
+#     # Create a document including the binary data and extracted text
+#     pdf_document = {
+#         "name": path.split('/')[-1],  # Extract the file name from the path
+#         "data": binary_pdf,
+#         "text": text  # Add the extracted text
+#     }
+#
+#     # Append the document to the list
+#     pdf_documents.append(pdf_document)
+#
+# # Insert the documents into your collection
+# collectionDocuments.insert_many(pdf_documents)
+
 # Fetch documents from MongoDB
-mongo_documents = collection.find({})  # Adjust the query as needed
+mongo_documents = collectionDocuments.find({})  # Adjust the query as needed
 
 # Extract the text and filename from documents
-documents = [(doc['text'], doc['title']) for doc in mongo_documents if 'text' in doc]
+documents = [(doc['text'], doc['name']) for doc in mongo_documents if 'text' in doc]
+
 
 def find_best_match(documents, input_sentence):
     # Separate titles and texts from documents
@@ -67,7 +107,8 @@ def find_best_match(documents, input_sentence):
 
     return top_matches
 
-while(True):
+
+while (True):
     print("Please enter search:")
     input_sentence = input()  # Ask for input interactively
 
