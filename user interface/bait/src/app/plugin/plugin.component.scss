@@ -175,10 +175,28 @@ $image-path: '~src/assets/';
       }
     }
 
+    .input {
+      background-color: var(--bell-white);
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      border-radius: 18px;
+      transition: 0.5s ease;
+    }
+
+    .img_preview {
+      display: flex;
+      width: 50%;
+      height: auto;
+      max-height: 75px;
+      border-radius: 12px;
+      object-fit: cover;
+      background-repeat: no-repeat;
+      padding: 0 12px;
+      margin: 12px 0;
+    }
+
     .user_input {
       display: flex;
       justify-content: space-between;
-      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       background: var(--bell-white);
       border-radius: 18px;
       padding: 0 12px;
