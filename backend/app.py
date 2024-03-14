@@ -121,12 +121,13 @@ def saveConvo():
         convo_details = request.get_json()
         jwtData = request.headers.get('Authorization')
 
-        model = "gpt-4-vision-preview" # more expensive, use while demoing
-        # model = "gpt-3.5-turbo" # less expensive, use while testing
+        # model = "gpt-4-vision-preview" # more expensive, use while demoing
+        model = "gpt-3.5-turbo" # less expensive, use while testing
 
         completion = client.chat.completions.create(
             model=model,
-            messages=convo_details["messages"]
+            messages=convo_details["messages"],
+            max_tokens = 1024
         )
 
         convo_details["response"] = completion.choices[0].message.content

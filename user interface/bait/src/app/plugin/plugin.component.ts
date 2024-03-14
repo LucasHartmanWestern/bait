@@ -268,7 +268,7 @@ export class PluginComponent {
   }
 
   removeQuickResponses(): void {
-    let spans = document.querySelectorAll('.message_bubble.system > div > span');
+    let spans = document.querySelectorAll('.message_bubble.system > .message_content > div > span');
     spans.forEach(span => {
       if (span.innerHTML != '&#9733')
         span?.parentNode?.removeChild(span);
@@ -276,7 +276,7 @@ export class PluginComponent {
   }
 
   updateQuickResponseEvents(): void {
-    let quickResponses = document.querySelectorAll('.message_bubble.system > div > span');
+    let quickResponses = document.querySelectorAll('.message_bubble.system > .message_content > div > span');
     console.log(quickResponses);
     quickResponses.forEach(span => {
       let new_span = span.cloneNode(true);
