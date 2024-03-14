@@ -15,6 +15,7 @@ from jira import JIRA
 from bson.binary import Binary
 from dotenv import load_dotenv
 import os
+from nlp_model.rbmodel import get_response
 
 app = Flask(__name__)
 CORS(app)
@@ -121,10 +122,15 @@ def saveConvo():
         convo_details = request.get_json()
         jwtData = request.headers.get('Authorization')
 
-        model = "gpt-4-vision-preview" # more expensive, use while demoing
-        # model = "gpt-3.5-turbo" # less expensive, use while testing
+        #model = "gpt-4-vision-preview" # more expensive, use while demoing
+        model = "gpt-3.5-turbo" # less expensive, use while testing
 
         completion = client.chat.completions.create(
+            model=model,
+            messages=convo_details["messages"]
+        )
+
+        completion2 = client.chat.completions.create(
             model=model,
             messages=convo_details["messages"]
         )

@@ -46,7 +46,7 @@ Thumbs.db
 env
 backend/.env
 *.pyc
-
+*.pth
 # Training data images
 image classifier/data/formatted
 image classifier/data/augmented
