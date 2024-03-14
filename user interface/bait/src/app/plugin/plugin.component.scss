@@ -1,6 +1,11 @@
 $image-path: '~src/assets/';
 
 .fab {
+  @media (max-width: 768px) {
+    right: 18px;
+    bottom: 18px;
+  }
+
   position: fixed;
   right: 64px;
   bottom: 64px;
@@ -65,9 +70,26 @@ $image-path: '~src/assets/';
       overflow-x: hidden;
       padding: 0 12px;
 
+      .mic_container {
+        display: flex;
+        align-items: flex-end;
+        margin: 0 5px 10px 0;
+
+        .tts_mic {
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          width: 16px;
+          height: 16px;
+          background-image: url('#{$image-path}mic_icon.png');
+          background-size: contain;
+          outline: none;
+        }
+      }
 
       ::ng-deep {
         .star-rating {
+          flex-direction: row !important;
           font-size: 2rem;
           color: #ccc;
           cursor: pointer;
@@ -126,32 +148,66 @@ $image-path: '~src/assets/';
         display: inline-block;
 
         ::ng-deep {
-          div {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-            margin-top: 12px;
+          .message_content {
+            div {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              gap: 8px;
+              margin-top: 12px;
+            }
+
+            span {
+              border: 2px solid var(--user-msg-blue);
+              color: black;
+              border-radius: 12px;
+              padding: 4px 8px;
+              grid-column: span 1;
+              font-size: 12px;
+              cursor: pointer;
+            }
           }
 
-          span {
-            border: 2px solid #009688;
-            color: black;
-            border-radius: 12px;
-            padding: 4px 8px;
-            grid-column: span 1;
-            font-size: 12px;
-            cursor: pointer;
+          .pdf_div {
+            margin-top: 4px;
+
+            .pdf_anchor {
+              text-decoration: none;
+
+              .pdf_download {
+                display: flex;
+                align-items: center;
+                background-color: var(--bell-white);
+                padding: 8px;
+                cursor: pointer;
+                outline: none;
+                border: 1px solid black;
+                border-radius: 12px;
+                gap: 8px;
+                transition: 0.25s ease;
+
+                &:hover {
+                  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                }
+
+                .pdf_icon {
+                  margin: 4px 0;
+                  width: 30px;
+                  height: 30px;
+                }
+              }
+            }
           }
         }
 
-        &:has(img) {
+        &:has(img.img_msg) {
           padding: 0 !important;
           background: transparent !important;
           overflow: hidden;
         }
 
         &.user {
-          background-color: #009688; /* A teal color */
+          background-color: var(--user-msg-blue); /* A teal color */
           color: white;
           margin-left: auto;
           border-bottom-right-radius: 0;
@@ -170,10 +226,28 @@ $image-path: '~src/assets/';
       }
     }
 
+    .input {
+      background-color: var(--bell-white);
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      border-radius: 18px;
+      transition: 0.5s ease;
+    }
+
+    .img_preview {
+      display: flex;
+      width: 50%;
+      height: auto;
+      max-height: 75px;
+      border-radius: 12px;
+      object-fit: cover;
+      background-repeat: no-repeat;
+      padding: 0 12px;
+      margin: 12px 0;
+    }
+
     .user_input {
       display: flex;
       justify-content: space-between;
-      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       background: var(--bell-white);
       border-radius: 18px;
       padding: 0 12px;

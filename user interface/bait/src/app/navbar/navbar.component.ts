@@ -17,6 +17,10 @@ export class NavbarComponent {
       this._navPage = localStorage.getItem('page') || "Main";
   }
 
+  home(): void {
+    this.navigate('Main')
+  }
+
   navigate(value: string) {
     localStorage.setItem('page', value);
     this._navPage = value;
@@ -24,7 +28,6 @@ export class NavbarComponent {
   }
 
   logout(): void {
-    localStorage.setItem('page', 'Login');
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('password');
@@ -32,7 +35,6 @@ export class NavbarComponent {
   }
 
   login(): void {
-    localStorage.setItem('page', 'Login');
     this.navigate('Login')
   }
 }

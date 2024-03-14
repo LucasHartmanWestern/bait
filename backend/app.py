@@ -25,10 +25,10 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
 load_dotenv()
 client = OpenAI(api_key=os.environ.get('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'))
-# jira_connection = JIRA(
-#     basic_auth=(os.environ.get('JIRA_EMAIL'), os.environ.get('JIRA_KEY')),
-#     server=os.environ.get('JIRA_ADDRESS')
-# )
+jira_connection = JIRA(
+    basic_auth=(os.environ.get('JIRA_EMAIL'), os.environ.get('JIRA_KEY')),
+    server=os.environ.get('JIRA_ADDRESS')
+)
 
 @app.route("/api/v1/users", methods=["POST"])
 def register():
@@ -122,12 +122,13 @@ def saveConvo():
         convo_details = request.get_json()
         jwtData = request.headers.get('Authorization')
 
-        #model = "gpt-4-vision-preview" # more expensive, use while demoing
+        # model = "gpt-4-vision-preview" # more expensive, use while demoing
         model = "gpt-3.5-turbo" # less expensive, use while testing
 
         completion = client.chat.completions.create(
             model=model,
-            messages=convo_details["messages"]
+            messages=convo_details["messages"],
+            max_tokens = 1024
         )
 
         completion2 = client.chat.completions.create(
@@ -223,7 +224,7 @@ def makeJiraTicket():
                 'issuetype': {'name': 'Emailed request'},
                 'reporter': {'name': current_user}
             }
-            # new_issue = jira_connection.create_issue(fields=issue_dict)
+            new_issue = jira_connection.create_issue(fields=issue_dict)
 
             return jsonify({'msg': 'JIRA ticket created'})
         else:
@@ -235,27 +236,22 @@ def makeJiraTicket():
 def format_message_history(allConvos):
     formatted_messages = []
 
-    for convo in allConvos:
+    time = allConvos[len(allConvos) - 1].get("timestamp")
+    if (time):
+        formatted_messages.append(f'====== Conversation on {time} ======\n\n')
 
-        time = convo.get("timestamp")
-        if (time):
-            formatted_messages.append(f'====== Conversation on {time} ======\n\n')
+        messages = allConvos[len(allConvos) - 1].get("messages")
+        if messages:
+            for message in messages[2:]:
+                role = message.get("role", "Unknown role")
+                content = message.get("content", [{"type": "text", "text": "No content"}])
 
-            messages = convo.get("messages")
-            if messages:
-                for message in messages[2:]:
-                    role = message.get("role", "Unknown role")
-                    content = message.get("content", [{"type": "text", "text": "No content"}])
-
-                    for msg in content:
-                        text = msg.get("text", "No text")
-                        formatted_message = f'{role}: "{text}"\n\n'
-                        if len(''.join(formatted_messages)) + len(formatted_message) > 30000:
-                            break
-                        formatted_messages.append(formatted_message)
-
-            if len(''.join(formatted_messages)) > 30000:
-                break
+                for msg in content:
+                    text = msg.get("text", "No text")
+                    formatted_message = f'{role}: "{text}"\n\n'
+                    if len(''.join(formatted_messages)) + len(formatted_message) > 30000:
+                        break
+                    formatted_messages.append(formatted_message)
 
     return ''.join(formatted_messages)[:30000]
 

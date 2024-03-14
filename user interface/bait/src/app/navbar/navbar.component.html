@@ -17,7 +17,8 @@
       <button class="search"></button>
       <button class="cart"></button>
 
-      <button (click)="this._navPage == 'User' ? logout() : login()" class="login" [textContent]="this._navPage == 'User' ? 'Log out' : 'Log in/Register'"></button>
+      <button (click)="this._navPage == 'User' ? logout() : this._navPage == 'Main' ? login() : home()" class="login"
+              [textContent]="this._navPage == 'User' ? 'Log out' : this._navPage == 'Main' ? 'Log in/Register' : 'Home'"></button>
     </div>
   </div>
 
