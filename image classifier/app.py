@@ -1,9 +1,17 @@
 from model_generator import predict
 from PIL import Image
 import io
+import base64
 
 def make_square_and_resize_bytestream(image_bytestream, size=(230, 230)):
-    with Image.open(io.BytesIO(image_bytestream)) as img:
+    # Decode the base64 string to bytes
+    image_bytes = base64.b64decode(image_bytestream.split(",")[1])
+
+    with Image.open(io.BytesIO(image_bytes)) as img:
+        # Convert to RGB if the image has an alpha channel
+        if img.mode == 'RGBA':
+            img = img.convert('RGB')
+
         # Determine the size for cropping
         width, height = img.size
         min_side = min(width, height)
@@ -29,7 +37,7 @@ def make_square_and_resize_bytestream(image_bytestream, size=(230, 230)):
 def get_prediction(bytestream_image):
     product_label, light_status_label = predict(image_bytestream=make_square_and_resize_bytestream(bytestream_image))
 
-    return (product_label, light_status_label)
+    return f'{product_label}, {light_status_label}'
 
 # Run this file for an example
 if __name__ == '__main__':

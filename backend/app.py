@@ -15,6 +15,7 @@ from jira import JIRA
 from bson.binary import Binary
 from dotenv import load_dotenv
 import os
+from nlp_model.rbmodel import get_response
 
 app = Flask(__name__)
 CORS(app)
@@ -128,6 +129,11 @@ def saveConvo():
             model=model,
             messages=convo_details["messages"],
             max_tokens = 1024
+        )
+
+        completion2 = client.chat.completions.create(
+            model=model,
+            messages=convo_details["messages"]
         )
 
         convo_details["response"] = completion.choices[0].message.content

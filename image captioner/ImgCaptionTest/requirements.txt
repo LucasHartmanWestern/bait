@@ -1,0 +1,16 @@
+packaging==24.0
+Pillow==10.2.0
+pytesseract==0.3.10  
+torch==1.8.1 
+torchvision==0.9.1  
+pandas  
+spacy
+easyocr
+
+
+
+
+#run pip install -r requirements.txt
+#run python -m spacy download en_core_web_sm
+
+#replace vocab.pkl and my_checkpoint.pth with most recent iterations for best results
