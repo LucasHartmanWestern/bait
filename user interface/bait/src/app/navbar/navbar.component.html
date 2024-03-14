@@ -16,7 +16,9 @@
     <div class="actions">
       <button class="search"></button>
       <button class="cart"></button>
-      <a href="/login" (click)="logout()" class="login" [textContent]="this.currentRoute == '/user' ? 'Log out' : 'Log in/Register'"></a>
+
+      <button (click)="this._navPage == 'User' ? logout() : this._navPage == 'Main' ? login() : home()" class="login"
+              [textContent]="this._navPage == 'User' ? 'Log out' : this._navPage == 'Main' ? 'Log in/Register' : 'Home'"></button>
     </div>
   </div>
 

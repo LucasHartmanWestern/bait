@@ -1,3 +1,13 @@
-<app-navbar></app-navbar>
+<app-navbar (navPage)="onNavPageChange($event)"></app-navbar>
 
-<router-outlet></router-outlet>
+<div *ngIf="page == 'Login'">
+  <app-login (navPage)="onNavPageChange($event)"></app-login>
+</div>
+
+<div *ngIf="page == 'User'">
+  <app-account></app-account>
+</div>
+
+<div *ngIf="page == 'Main'">
+  <app-splash-page></app-splash-page>
+</div>

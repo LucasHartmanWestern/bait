@@ -11,6 +11,7 @@ import { PluginComponent } from './plugin/plugin.component';
 import { FormsModule } from "@angular/forms";
 import { UserService } from "./services/user.service";
 import { HttpClientModule } from "@angular/common/http";
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from "@angular/common/http";
     SplashPageComponent,
     LoginComponent,
     NavbarComponent,
-    PluginComponent
+    PluginComponent,
+    TruncatePipe
   ],
   imports: [
     BrowserModule,

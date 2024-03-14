@@ -17,3 +17,12 @@
     width: 25vw;
   }
 }
+
+app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}

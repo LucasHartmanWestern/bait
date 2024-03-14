@@ -2,28 +2,35 @@
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
+import spacy
 
+nlp = spacy.load("en_core_web_sm")
 
 # **** hyperparameters ****
 batch_size = 64 # how many independent sequences to be processed in parallel
 block_size = 256 # the maximum context length for predictions
-max_iters = 2000
+max_iters = 3000
 eval_interval = 500
 learning_rate = 3e-4
-device = 'cpu'
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 eval_iters = 200
 n_embd = 384
-n_head = 6
-n_layer = 6
+n_head = 8
+n_layer = 8
 dropout = 0.2 # 20% chance of randomly not being allowed to communicate
 
 # optional seed
 # torch.manual_seed(1337)
+'''def lemmatize(text):
+    doc = nlp(text)
+    return " ".join([token.lemma_ for token in doc])'''
 
 # read the .txt file
-with open('cleanedfile.txt', 'r', encoding='utf-8') as f:
+with open('test.txt', 'r', encoding='utf-8') as f:
     text = f.read()
 
+modified_txt = text.replace('{}', ' ')
+#text = lemmatize(text)
 # create sorted list of all characters that occur in .txt file
 chars = sorted(list(set(text)))
 # amount of characters in .txt file
@@ -225,6 +232,6 @@ if __name__ == "__main__": # don't train model when simply generating
         optimizer.step() # use gradients to update parameters
 
     # Save the trained model
-    model_save_path = "bigram_language_model2.pt"
+    model_save_path = "test_model2.pt"
     torch.save(model.state_dict(), model_save_path)
     print("model trained")

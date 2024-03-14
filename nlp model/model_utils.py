@@ -3,9 +3,10 @@ from train import BigramLanguageModel, encode, decode, device
 
 # load the saved model
 def load_model(model_load_path):
-    device = torch.device('cpu')
+    device1 = 'cuda' if torch.cuda.is_available() else 'cpu'
+    device = torch.device(device1)
     loaded_model = BigramLanguageModel()
-    loaded_model.load_state_dict(torch.load('bigram_language_model2.pt', map_location=device))
+    loaded_model.load_state_dict(torch.load('test_model2.pt', map_location=device))
     loaded_model = loaded_model.to(device)
     return loaded_model
 
