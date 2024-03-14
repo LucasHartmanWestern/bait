@@ -13,62 +13,70 @@ import pymongo
 from pymongo import MongoClient
 import sys  # Import sys for reading command line arguments
 
-mongo_connection_string = 'mongodb+srv://ethanp:pigouEthan@cluster0.mv0wogx.mongodb.net/'
 
-# Connect to the MongoDB client
-client = MongoClient(mongo_connection_string)
-
-# Select your database
-db = client['baitdb']
-
-# Select your collection
-collection = db['ethanData']
-
-collectionDocuments = db['documentData']
-
-# List of paths to your PDF files
-pdf_file_paths = [
-    'C:/Users\epigo/Documents/TempDocs/How to stay connected during a power outage to your fibre-to-the-home phone service using the Giga Hub_Home Hub 4000.pdf',
+def load_Documents(collection):
+    # List of paths to your PDF files
+    pdf_file_paths = [
+    'C:/Users/epigo/Documents/TempDocs/How to stay connected during a power outage to your fibre-to-the-home phone service using the Giga Hub_Home Hub 4000.pdf',
     'C:/Users/epigo/Documents/TempDocs/Manage Bell usernames and passwords _ Bell Wi-Fi and modem administrator.pdf',
-    'C:/Users/epigo\Documents/TempDocs/Rebooting my Home Hub modem _ Reboot directly from the modem.pdf',
-    'C:/Users/epigo\Documents/TempDocs/What is the Bell Wi-Fi app and how do I use it_ _ Block or pause Internet access by user.pdf'
+    'C:/Users/epigo/Documents/TempDocs/Rebooting my Home Hub modem _ Reboot directly from the modem.pdf',
+    'C:/Users/epigo/Documents/TempDocs/What is the Bell Wi-Fi app and how do I use it_ _ Block or pause Internet access by user.pdf',
+    'C:/Users/epigo/Documents/TempDocs/Temporary suspensions.pdf',
+    'C:/Users/epigo/Documents/TempDocs/Bell Mobility in-store device repairs _ Repairs in a Bell store.pdf',
+    'C:/Users/epigo/Documents/TempDocs/How to use Call Blocking on my Bell Home phone.pdf',
+    'C:/Users/epigo/Documents/TempDocs/Video Equipment Installation Guides _ Bell Smart Home _ Support _ _ How to install a Bell Smart Home video doorbell.pdf',
+    'C:/Users/epigo/Documents/TempDocs/Bell Support – Security and Privacy.pdf',
+    'C:/Users/epigo/Documents/TempDocs/Bell Support – Security and Privacy_fraud.pdf',
+    'C:/Users/epigo/Documents/TempDocs/How to use my Qolsys IQ Panel security system _ How to use the Qolsys IQ Panel.pdf',
+    'C:/Users/epigo/Documents/TempDocs/How to order Pay-per-view.pdf',
+    'C:/Users/epigo/Documents/TempDocs/How do equipment returns and refunds work_ _ Return policy for Bell customers _ Return policy for Bell Mobility customers.pdf'
+
     ]
+    # Prepare a list to hold documents
+    pdf_documents = []
+    for path in pdf_file_paths:
+        # Open each PDF file in binary read mode for binary data
+        with open(path, 'rb') as pdf_file:
+            binary_pdf = Binary(pdf_file.read())
+        # Open the PDF file with PyMuPDF for text extraction
+        doc = fitz.open(path)
+        text = ""
+        for page in doc:
+            text += page.get_text()
 
-# Prepare a list to hold documents
-pdf_documents = []
+        # Create a document including the binary data and extracted text
+        pdf_document = {
+            "name": path.split('/')[-1],  # Extract the file name from the path
+            "data": binary_pdf,
+            "text": text  # Add the extracted text
+        }
 
-# for path in pdf_file_paths:
-#     # Open each PDF file in binary read mode for binary data
-#     with open(path, 'rb') as pdf_file:
-#         binary_pdf = Binary(pdf_file.read())
-#
-#     # Open the PDF file with PyMuPDF for text extraction
-#     doc = fitz.open(path)
-#     text = ""
-#     for page in doc:
-#         text += page.get_text()
-#
-#     # Create a document including the binary data and extracted text
-#     pdf_document = {
-#         "name": path.split('/')[-1],  # Extract the file name from the path
-#         "data": binary_pdf,
-#         "text": text  # Add the extracted text
-#     }
-#
-#     # Append the document to the list
-#     pdf_documents.append(pdf_document)
-#
-# # Insert the documents into your collection
-# collectionDocuments.insert_many(pdf_documents)
+        # Append the document to the list
+        pdf_documents.append(pdf_document)
 
-# Fetch documents from MongoDB
-mongo_documents = collectionDocuments.find({})  # Adjust the query as needed
-
-# Extract the text and filename from documents
-documents = [(doc['text'], doc['name']) for doc in mongo_documents if 'text' in doc]
+    # Insert the documents into your collection
+    collection.insert_many(pdf_documents)
 
 
-def find_best_match(documents, input_sentence):
+
+
+def find_best_match(input_sentence):
+    mongo_connection_string = 'mongodb+srv://ethanp:pigouEthan@cluster0.mv0wogx.mongodb.net/'
+
+    # Connect to the MongoDB client
+    client = MongoClient(mongo_connection_string)
+
+    # Select your database
+    db = client['baitdb']
+
+    collection = db['documentData']
+
+    # Fetch documents from MongoDB
+    mongo_documents = collection.find({})  # Adjust the query as needed
+
+    # Extract the text and filename from documents
+    documents = [(doc['text'], doc['name']) for doc in mongo_documents if 'text' in doc]
+
     # Separate titles and texts from documents
     titles = [doc[1] for doc in documents]  # Titles
     texts = [doc[0] for doc in documents]  # Texts
@@ -97,7 +105,7 @@ def find_best_match(documents, input_sentence):
         similarities = cosine_similarities_title
 
     # Find the indices of the top three matches based on the selected similarity measure
-    top_match_indices = similarities.argsort()[0][-10:]
+    top_match_indices = similarities.argsort()[0][-3:]
 
     # Reverse the indices since argsort returns in ascending order and we want the top matches
     top_match_indices = top_match_indices[::-1]
@@ -115,7 +123,7 @@ while (True):
     if input_sentence.upper() == "EXIT":
         break
 
-    top_matches = find_best_match(documents, input_sentence)
+    top_matches = find_best_match(input_sentence)
 
     print("Top 3 matching documents:")
     for filename, score in top_matches:
