@@ -62,69 +62,53 @@ def load_Documents(collection):
 
 def find_best_match(input_sentence):
     mongo_connection_string = 'mongodb+srv://ethanp:pigouEthan@cluster0.mv0wogx.mongodb.net/'
-
-    # Connect to the MongoDB client
     client = MongoClient(mongo_connection_string)
-
-    # Select your database
     db = client['baitdb']
 
-    collection = db['documentData']
+    questions_collection = db['conversationData']
+    documents_collection = db['documentData']
 
-    # Fetch documents from MongoDB
-    mongo_documents = collection.find({})  # Adjust the query as needed
+    # Fetch questions and calculate similarities
+    mongo_questions = questions_collection.find({})
+    questions = [(doc['query'], doc['response'], doc.get('query', 'No Query')) for doc in mongo_questions if 'query' in doc and 'response' in doc]
+    vectorizer_questions = TfidfVectorizer(stop_words=stopwords.words('english'))
+    questions_text = [q[0] for q in questions] + [input_sentence]
+    questions_vectors = vectorizer_questions.fit_transform(questions_text)
+    cosine_similarities_questions = cosine_similarity(questions_vectors[-1], questions_vectors[:-1])
+    if cosine_similarities_questions.size and max(cosine_similarities_questions[0]) > 0.7:
+        best_question_index = cosine_similarities_questions.argmax()
+        return questions[best_question_index][1]  # Assuming you want to return the response for the best matching query
 
-    # Extract the text and filename from documents
-    documents = [(doc['text'], doc['name']) for doc in mongo_documents if 'text' in doc]
-
-    # Separate titles and texts from documents
-    titles = [doc[1] for doc in documents]  # Titles
-    texts = [doc[0] for doc in documents]  # Texts
-
-    # Add input_sentence as a title for vectorization
+    # Matching against document titles
+    mongo_documents = documents_collection.find({})
+    documents = [(doc['text'], doc['name'], doc.get('title', 'No Title')) for doc in mongo_documents if 'text' in doc and 'name' in doc]
+    titles = [doc[2] for doc in documents]
     all_titles = titles + [input_sentence]
+    vectorizer_titles = TfidfVectorizer(stop_words=stopwords.words('english'))
+    titles_vectors = vectorizer_titles.fit_transform(all_titles)
+    cosine_similarities_titles = cosine_similarity(titles_vectors[-1], titles_vectors[:-1])
+    if max(cosine_similarities_titles[0]) > 0.9:
+        best_title_index = cosine_similarities_titles.argmax()
+        return documents[best_title_index][1]  # Return document name for the best title match
 
-    # Create a TF-IDF Vectorizer for titles
-    vectorizer_title = TfidfVectorizer(stop_words=stopwords.words('english'))
-    vectors_title = vectorizer_title.fit_transform(all_titles)
+    # Matching against document texts if no title matches above 0.9
+    texts = [doc[0] for doc in documents]
+    all_texts = texts + [input_sentence]
+    vectorizer_docs = TfidfVectorizer(stop_words=stopwords.words('english'))
+    docs_vectors = vectorizer_docs.fit_transform(all_texts)
+    cosine_similarities_docs = cosine_similarity(docs_vectors[-1], docs_vectors[:-1])
+    top_match_index = cosine_similarities_docs.argsort()[0][-1]  # Get index of top match based on text similarity
+    return documents[top_match_index][1]  # Return document name for the best text match
 
-    # Calculate cosine similarity for titles
-    cosine_similarities_title = cosine_similarity(vectors_title[-1], vectors_title[:-1])
+if __name__ == '__main__':
+    print("Running Documentation Identifier")
+    while True:
+        print("Please enter search:")
+        input_sentence = input()
 
-    # Check if any title similarity is above 90%
-    max_similarity_title = max(cosine_similarities_title[0])
+        if input_sentence.upper() == "EXIT":
+            break
 
-    if max_similarity_title < 0.90:
-        # If no title similarity is above 90%, proceed with texts
-        all_texts = texts + [input_sentence]
-        vectorizer_text = TfidfVectorizer(stop_words=stopwords.words('english'))
-        vectors_text = vectorizer_text.fit_transform(all_texts)
-        cosine_similarities_text = cosine_similarity(vectors_text[-1], vectors_text[:-1])
-        similarities = cosine_similarities_text
-    else:
-        similarities = cosine_similarities_title
+        document_name = find_best_match(input_sentence)
+        print(f"Best matching document name: {document_name}")
 
-    # Find the indices of the top three matches based on the selected similarity measure
-    top_match_indices = similarities.argsort()[0][-3:]
-
-    # Reverse the indices since argsort returns in ascending order and we want the top matches
-    top_match_indices = top_match_indices[::-1]
-
-    # Retrieve the filenames and scores for the top three matches
-    top_matches = [(documents[index][1], similarities[0, index]) for index in top_match_indices]
-
-    return top_matches
-
-
-while (True):
-    print("Please enter search:")
-    input_sentence = input()  # Ask for input interactively
-
-    if input_sentence.upper() == "EXIT":
-        break
-
-    top_matches = find_best_match(input_sentence)
-
-    print("Top 3 matching documents:")
-    for filename, score in top_matches:
-        print(f"Filename: {filename}, Similarity Score: {score}")
