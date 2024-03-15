@@ -14,3 +14,5 @@ pandas
 spacy
 easyocr
 nltk
+pdfplumber
+pymongo

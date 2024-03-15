@@ -1,7 +1,7 @@
 import json
 import re
 import random
-from model_utils import load_model, generate_text
+#from model_utils import load_model, generate_text
 #from image_captioner.ImgCaptionTest.test import process_image
 
 
@@ -31,6 +31,11 @@ spec4 = importlib.util.spec_from_file_location("app", "../documentation identifi
 doc_app = importlib.util.module_from_spec(spec4)
 spec4.loader.exec_module(doc_app)
 
+#Required Imports for Billing parser
+spec5 = importlib.util.spec_from_file_location("app", "../billing parser/app.py")
+bill_app = importlib.util.module_from_spec(spec5)
+#spec5.loader.exec_module(bill_app)
+
 
 # Load JSON data
 def load_json(file):
@@ -48,9 +53,6 @@ def get_response(input_string, image_details):
     split_message = re.split(r'\s+|[,;?!.-]\s*', input_string.lower())
     score_list = []
 
-  
- 
-    doc_found = doc_app.find_best_match(input_string)
     # Check all the responses
     for response in response_data:
         response_score = 0
@@ -84,15 +86,24 @@ def get_response(input_string, image_details):
     if input_string == "":
         return "Please type something so we can chat :("
 
+    #Check if input query matches a previous query
+    doc_found = doc_app.find_best_match(input_string)
+    if ".pdf" not in doc_found.lower():
+        return doc_found
+    
+    #bill_details = bill_app.return_bills()
+    #Check if input has image
     if image_details !="":
         img_cap = captioner_app.process_image(image_details)
         img_class = classifier_app.get_prediction(image_details)
-        return response_data[6]["bot_response"] + input_string + response_data[6]["img_context"]+ "("+img_class +") and ("+img_cap+")}]}" 
+        return response_data[6]["bot_response"] + input_string + response_data[6]["img_context"]+ "("+img_class +") and ("+img_cap+")}]}"
+    
+    #Check if the input has to do with issues or simple conversation
     if best_response != 0:
         if response_index <=2:
             return response_data[response_index]["bot_response"]
         else:
-            return response_data[response_index]["bot_response"] + input_string + response_data[6]["doc_context"]+ doc_found[0][0] +" }]}"
+            return response_data[response_index]["bot_response"] + input_string + response_data[response_index]["doc_context"]+ doc_found +" }]}"
     # If there is no good response, return a gpt.
     
     #return generate_text(loaded_model, 500, input_string)
