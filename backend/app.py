@@ -17,11 +17,11 @@ from dotenv import load_dotenv
 import os
 import importlib.util
 import sys
+import json
 
 sys.path.append("../nlp_model")
 spec = importlib.util.spec_from_file_location("rbmodel", "../nlp_model/rbmodel.py")
 nlp_app = importlib.util.module_from_spec(spec)
-
 
 app = Flask(__name__)
 CORS(app)
@@ -124,7 +124,7 @@ def getAllFeedbackForms():
 @app.route("/api/v1/logConvo", methods=["POST"])
 @jwt_required(locations=["headers"])
 def saveConvo():
-    try:
+    # try:
         convo_details = request.get_json()
         jwtData = request.headers.get('Authorization')
         spec.loader.exec_module(nlp_app)
@@ -138,16 +138,26 @@ def saveConvo():
             max_tokens = 1024
         )
 
-        nlp_resp = nlp_app.get_response(query,image)
-        if ".pdf" not in nlp_resp:
-            convo_details["response"] = nlp_resp
-        else:
-            completion2 = client.chat.completions.create(
-                model=model,
-                messages=nlp_resp
-            )
+        img = ''
+        if "queryImage" in convo_details and convo_details["queryImage"]:
+            img = convo_details["queryImage"]
+
+        print(convo_details["messages"][-1]['content'][-1]['text'])
+
+        nlp_resp = nlp_app.get_response(convo_details["messages"][-1]['content'][-1]['text'], img)
+
+        # if ".pdf" not in nlp_resp:
+        #     convo_details["response"] = nlp_resp
+        # else:
+
+        print(nlp_resp)
+
+        completion2 = client.chat.completions.create(
+            model=model,
+            messages=nlp_resp,
+            max_tokens=1024
+        )
         convo_details["response"] = completion2.choices[0].message.content
-        convo_details["response"] = completion.choices[0].message.content
         current_user = get_jwt_identity()
         user_from_db = db.users_collection.find_one({'username': current_user})
         convo_details["username"] = current_user
@@ -166,9 +176,9 @@ def saveConvo():
             return jsonify(serializable_convo_details), 200
         else:
             return jsonify({'msg': 'Profile not found'}), 404
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    #
+    # except Exception as e:
+    #     return jsonify({'error': str(e)}), 500
 
 @app.route("/api/v1/getAllConvo", methods=["GET"])
 @jwt_required(locations=["headers"])

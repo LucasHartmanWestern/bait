@@ -1,5 +1,5 @@
-const serverPrefix = `https://bait-app-df10e84632ed.herokuapp.com`;
-// const serverPrefix = 'http://127.0.0.1:8000';
+//const serverPrefix = `https://bait-app-df10e84632ed.herokuapp.com`;
+const serverPrefix = 'http://127.0.0.1:8000';
 
 export const Constants = {
   apiPaths: {

@@ -44,7 +44,7 @@ def load_json(file):
         return json.load(bot_responses)
 
 # Store JSON data
-response_data = load_json("responses.json")
+response_data = load_json("../nlp_model/responses.json")
 
 #model_load_path = "test_model.pt"
 #loaded_model = load_model(model_load_path)
@@ -103,8 +103,9 @@ def get_response(input_string, image_details):
         if response_index <=2:
             return response_data[response_index]["bot_response"]
         else:
-            return response_data[response_index]["bot_response"] + input_string + response_data[response_index]["doc_context"]+ doc_found +" }]}"
+            return response_data[response_index]["bot_response"] + input_string + response_data[response_index]["doc_context"] + doc_found +" }]}"
     # If there is no good response, return a gpt.
-    
+
+    return response_data[7]["bot_response"] + input_string + response_data[7]["doc_context"] + doc_found + " }]}]"
     #return generate_text(loaded_model, 500, input_string)
     
