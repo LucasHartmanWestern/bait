@@ -4,6 +4,7 @@ import random
 from model_utils import load_model, generate_text
 #from image_captioner.ImgCaptionTest.test import process_image
 
+
 import importlib.util
 import sys
 #Paths for the folder of each model
@@ -24,12 +25,12 @@ spec3 = importlib.util.spec_from_file_location("test", "../image captioner/ImgCa
 captioner_app = importlib.util.module_from_spec(spec3)
 spec3.loader.exec_module(captioner_app)
 
-'''
+
 #Required Imports for Documentation Identifier
 spec4 = importlib.util.spec_from_file_location("app", "../documentation identifier/app.py")
 doc_app = importlib.util.module_from_spec(spec4)
 spec4.loader.exec_module(doc_app)
-'''
+
 
 # Load JSON data
 def load_json(file):
@@ -49,7 +50,7 @@ def get_response(input_string, image_details):
 
   
  
-    #doc_found = doc_app.find_best_match(input_string)
+    doc_found = doc_app.find_best_match(input_string)
     # Check all the responses
     for response in response_data:
         response_score = 0
@@ -87,12 +88,12 @@ def get_response(input_string, image_details):
         img_cap = captioner_app.process_image(image_details)
         img_class = classifier_app.get_prediction(image_details)
         return response_data[6]["bot_response"] + input_string + response_data[6]["img_context"]+ "("+img_class +") and ("+img_cap+")}]}" 
-    # If there is no good response, return a gpt.
     if best_response != 0:
         if response_index <=2:
             return response_data[response_index]["bot_response"]
         else:
-            return response_data[response_index]["bot_response"] + input_string + "}]}"
+            return response_data[response_index]["bot_response"] + input_string + response_data[6]["doc_context"]+ doc_found[0][0] +" }]}"
+    # If there is no good response, return a gpt.
     
     #return generate_text(loaded_model, 500, input_string)
     

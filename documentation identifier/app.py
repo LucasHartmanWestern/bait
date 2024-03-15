@@ -115,7 +115,7 @@ def find_best_match(input_sentence):
 
     return top_matches
 
-
+'''
 while (True):
     print("Please enter search:")
     input_sentence = input()  # Ask for input interactively
@@ -128,3 +128,4 @@ while (True):
     print("Top 3 matching documents:")
     for filename, score in top_matches:
         print(f"Filename: {filename}, Similarity Score: {score}")
+'''
