@@ -101,7 +101,7 @@ def find_best_match(input_sentence):
     return documents[top_match_index][1]  # Return document name for the best text match
 
 
-
+'''
 while True:
     print("Please enter search:")
     input_sentence = input()
@@ -110,3 +110,4 @@ while True:
         break
     document_name = find_best_match(input_sentence)
     print(f"Best matching document name: {document_name}")
+'''

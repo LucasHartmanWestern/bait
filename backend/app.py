@@ -15,6 +15,13 @@ from jira import JIRA
 from bson.binary import Binary
 from dotenv import load_dotenv
 import os
+import importlib.util
+import sys
+
+sys.path.append("../nlp_model")
+spec = importlib.util.spec_from_file_location("rbmodel", "../nlp_model/rbmodel.py")
+nlp_app = importlib.util.module_from_spec(spec)
+
 
 app = Flask(__name__)
 CORS(app)
@@ -120,6 +127,7 @@ def saveConvo():
     try:
         convo_details = request.get_json()
         jwtData = request.headers.get('Authorization')
+        spec.loader.exec_module(nlp_app)
 
         # model = "gpt-4-vision-preview" # more expensive, use while demoing
         model = "gpt-3.5-turbo" # less expensive, use while testing
@@ -130,11 +138,15 @@ def saveConvo():
             max_tokens = 1024
         )
 
-        completion2 = client.chat.completions.create(
-            model=model,
-            messages=convo_details["messages"]
-        )
-
+        nlp_resp = nlp_app.get_response(query,image)
+        if ".pdf" not in nlp_resp:
+            convo_details["response"] = nlp_resp
+        else:
+            completion2 = client.chat.completions.create(
+                model=model,
+                messages=nlp_resp
+            )
+        convo_details["response"] = completion2.choices[0].message.content
         convo_details["response"] = completion.choices[0].message.content
         current_user = get_jwt_identity()
         user_from_db = db.users_collection.find_one({'username': current_user})
