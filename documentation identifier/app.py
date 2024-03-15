@@ -100,15 +100,13 @@ def find_best_match(input_sentence):
     top_match_index = cosine_similarities_docs.argsort()[0][-1]  # Get index of top match based on text similarity
     return documents[top_match_index][1]  # Return document name for the best text match
 
-if __name__ == '__main__':
-    print("Running Documentation Identifier")
-    while True:
-        print("Please enter search:")
-        input_sentence = input()
 
-        if input_sentence.upper() == "EXIT":
-            break
 
-        document_name = find_best_match(input_sentence)
-        print(f"Best matching document name: {document_name}")
+while True:
+    print("Please enter search:")
+    input_sentence = input()
 
+    if input_sentence.upper() == "EXIT":
+        break
+    document_name = find_best_match(input_sentence)
+    print(f"Best matching document name: {document_name}")

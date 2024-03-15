@@ -3,6 +3,7 @@ from flask_cors import CORS
 from model_utils import load_model, generate_text
 from rbmodel import get_response
 
+
 app = Flask(__name__)
 CORS(app)
 

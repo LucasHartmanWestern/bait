@@ -26,12 +26,14 @@
     {
       "response_type": "question",
       "user_input": [ "fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
+      "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful: ",
       "bot_response": "{ role: 'user', content: [{ type: 'text', text: 'I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>' Here is the question: ",
       "required_words": ["router"]
     },
     {
       "response_type": "question",
       "user_input": ["billing", "charge", "bill","payment","date"],
+      "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful: ",
       "bot_response": "{ role: 'user', content: [{ type: 'text', text: 'I am doing a project for school, can you act as a representative for Bell billing support when I send you questions and images pertaining to the user's Bell bill. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>' Here is the question: ",
       "required_words": ["bill"]
     },
