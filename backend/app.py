@@ -15,7 +15,6 @@ from jira import JIRA
 from bson.binary import Binary
 from dotenv import load_dotenv
 import os
-from nlp_model.rbmodel import get_response
 
 app = Flask(__name__)
 CORS(app)
@@ -24,7 +23,7 @@ app.config['JWT_SECRET_KEY'] = 'aaaa'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
 load_dotenv()
-client = OpenAI(api_key=os.environ.get('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'))
+client = OpenAI(api_key=os.environ.get('OPEN_AI_API_KEY'))
 jira_connection = JIRA(
     basic_auth=(os.environ.get('JIRA_EMAIL'), os.environ.get('JIRA_KEY')),
     server=os.environ.get('JIRA_ADDRESS')
