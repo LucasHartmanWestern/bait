@@ -1,10 +1,10 @@
 <div class="main">
 
   <dialog #dialogElement>
-    <form (submit)="register(user.value, pass.value)">
+    <form (submit)="register(userReg.value, passReg.value)">
 
-      <input type="username" placeholder="Username" #user>
-      <input type="password" placeholder="Password" #pass>
+      <input type="username" placeholder="Username" #userReg>
+      <input type="password" placeholder="Password" #passReg>
 
       <span id="error_msg_reg" [textContent]="errorMsgReg" [className]="!errorMsgReg ? 'hidden' : ''"></span>
 
