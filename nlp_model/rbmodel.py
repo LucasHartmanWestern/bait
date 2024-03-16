@@ -94,12 +94,15 @@ def get_response(input_string, image_details):
     #bill_details = bill_app.return_bills()
     #Check if input has image
     if image_details !="":
+        
         img_cap = captioner_app.process_image(image_details)
         img_class = classifier_app.get_prediction(image_details)
-        response_data[6]["bot_response"][1]["content"][0]["text"] = response_data[6]["bot_response"][1]["content"][0]["text"].replace("{input}", input_string)
-        response_data[6]["bot_response"][1]["content"][0]["text"] = response_data[6]["bot_response"][1]["content"][0]["text"].replace("{doc}", doc_found)
-        response_data[6]["bot_response"][1]["content"][0]["text"] = response_data[6]["bot_response"][1]["content"][0]["text"].replace("{classification}", img_class)
-        response_data[6]["bot_response"][1]["content"][0]["text"] = response_data[6]["bot_response"][1]["content"][0]["text"].replace("{caption}", img_cap)
+        prompt = input_string + " " + img_class
+        doc_find = doc_app.find_best_match(prompt)
+        response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
+        response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{doc}", doc_find)
+        response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{classification}", img_class)
+        response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{caption}", img_cap)
         return response_data[6]["bot_response"]
     
     #Check if the input has to do with issues or simple conversation
@@ -107,13 +110,13 @@ def get_response(input_string, image_details):
         if response_index <=2:
             return response_data[response_index]["bot_response"]
         else:
-            response_data[response_index]["bot_response"][1]["content"][0]["text"] = response_data[response_index]["bot_response"][1]["content"][0]["text"].replace("{input}", input_string)
-            response_data[response_index]["bot_response"][1]["content"][0]["text"] = response_data[response_index]["bot_response"][1]["content"][0]["text"].replace("{doc}", doc_found)
+            response_data[response_index]["bot_response"]["content"][0]["text"] = response_data[response_index]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
+            response_data[response_index]["bot_response"]["content"][0]["text"] = response_data[response_index]["bot_response"]["content"][0]["text"].replace("{doc}", doc_found)
             return response_data[response_index]["bot_response"]
     
     # If there is no good response, return a gpt.
-    response_data[8]["bot_response"][1]["content"][0]["text"] = response_data[8]["bot_response"][1]["content"][0]["text"].replace("{input}", input_string)
-    response_data[8]["bot_response"][1]["content"][0]["text"] = response_data[8]["bot_response"][1]["content"][0]["text"].replace("{doc}", doc_found)
+    response_data[8]["bot_response"]["content"][0]["text"] = response_data[8]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
+    response_data[8]["bot_response"]["content"][0]["text"] = response_data[8]["bot_response"]["content"][0]["text"].replace("{doc}", doc_found)
     return response_data[8]["bot_response"]
     #return generate_text(loaded_model, 500, input_string)
     

@@ -27,41 +27,23 @@
       "response_type": "question",
       "user_input": [ "fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
       "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful: ",
-      "bot_response": [
+      "bot_response":
         {
           "role": "user",
           "content": [
             {
               "type": "text",
-              "text": "I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>"
-            }
-          ]
-        },
-        {
-          "role": "user",
-          "content": [
-            {
-              "type": "text",
-              "text": "Here is the question: {input} And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ({classification}) and ({caption}). Lastly here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful but do not inform the user: {doc}"
+              "text": "Here is the question: {input} And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ({classification}) and ({caption}). Lastly here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful using True or False with your response: {doc}"
             }
           ]
         }
-      ],      
+      ,      
       "required_words": ["router"]
     },
     {
       "response_type": "question",
       "user_input": ["billing", "charge", "bill","payment","date"],
-      "bot_response": [
-        {
-          "role": "user",
-          "content": [
-            {
-              "type": "text",
-              "text": "I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>"
-            }
-          ]
-        },
+      "bot_response": 
         {
           "role": "user",
           "content": [
@@ -71,7 +53,7 @@
             }
           ]
         }
-      ],      
+      ,      
       "required_words": ["bill"]
     },
     {
@@ -79,78 +61,48 @@
       "user_input": [ "help","fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
       "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful along with your response: ",
       "img_context": " And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ",
-      "bot_response": [
+      "bot_response": 
         {
           "role": "user",
           "content": [
             {
               "type": "text",
-              "text": "I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>"
-            }
-          ]
-        },
-        {
-          "role": "user",
-          "content": [
-            {
-              "type": "text",
-              "text": "Here is the question: {input} And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ({classification}) and ({caption}). Lastly here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful but do not inform the user: {doc}"
+              "text": "Here is the question: {input} This is also the output from various models that should not be mentioned in the response: here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ({classification}) and ({caption}) and here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful using True or False with your response: {doc}"
             }
           ]
         }
-      ],      
+      ,      
       "required_words": []
     },
     {
       "response_type": "question",
       "user_input": [""],
-      "img_context": " And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ",
-      "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful: ",
-      "bot_response": [
+      "bot_response": 
         {
           "role": "user",
           "content": [
             {
               "type": "text",
-              "text": "I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>"
-            }
-          ]
-        },
-        {
-          "role": "user",
-          "content": [
-            {
-              "type": "text",
-              "text": "Here is the question: {input} And here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful but do not inform the user: {doc}"
+              "text": "Here is the question: {input}. This is also the output from various models that should not be mentioned in the response: the title of a document a document identifier model found which if it seems it would be helpful for your decesion please return True or False along with your response: {doc}"
             }
           ]
         }
-      ],      
+      ,      
       "required_words": []
     },
     {
       "response_type": "question",
       "user_input": [""],
-      "bot_response": [
+      "bot_response": 
         {
           "role": "user",
           "content": [
             {
               "type": "text",
-              "text": "I am doing a project for school, can you act as a representative for Bell customer support when I send you questions and images pertaining to Bell. After each response, also provide 2 suggested follow-up messages the USER can send (NOT THE SYSTEM). The format your messages ALL need to follow is as such: 'Response goes here' <div><span>'Follow up 1 goes here'</span><span>'Follow up 2 goes here'</span></div> Here is an example: Hello, I'm sorry to hear your router is not working. Can you send me some details about your router so I can better assist you?<div><span>I don't know what my router is?</span><span>How do I find that info?</span></div>"
+              "text": "Here is the question: {input}. This is also the output from various models that should not be mentioned in the response: the title of a document a document identifier model found which if it seems it would be helpful for your decesion please return True or False along with your response: {doc}"
             }
           ]
         },
-        {
-          "role": "user",
-          "content": [
-            {
-              "type": "text",
-              "text": "Here is the question: {input} And here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful but do not inform the user: {doc}"
-            }
-          ]
-        }
-      ],
       "required_words": []
     }
   ]

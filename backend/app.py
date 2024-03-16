@@ -150,15 +150,18 @@ def saveConvo():
         #     convo_details["response"] = nlp_resp
         # else:
 
-        print(nlp_resp)
+        current_chat = convo_details["messages"]
+        current_chat.append(nlp_resp)
+        print(convo_details["messages"])
 
         completion2 = client.chat.completions.create(
             model=model,
-            messages=nlp_resp,
+            messages=convo_details["messages"],
             max_tokens=1024
         )
+        print(completion2.choices[0].message)
         convo_details["response"] = completion2.choices[0].message.content
-        convo_details["pdf"]
+        #convo_details["pdf"]
         current_user = get_jwt_identity()
         user_from_db = db.users_collection.find_one({'username': current_user})
         convo_details["username"] = current_user
