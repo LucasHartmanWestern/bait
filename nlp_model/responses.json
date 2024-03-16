@@ -53,15 +53,13 @@
     {
       "response_type": "question",
       "user_input": [ ""],
-      "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful along with your response: ",
-      "img_context": " And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ",
       "bot_response": 
         {
           "role": "user",
           "content": [
             {
               "type": "text",
-              "text": "Here is the question: {input}. Here is what our custom image classification model classified the image as:\n{classification}\nHere is the text that our custom image captioning model found:\n{caption}\nHere is the title of the document that our document identification model found:\n{doc}\nUse this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\nIf you think the document is relevant to the conversation simply say $$TRUE$$ at the end of your message. Also don't mention the document by name in your response, just say 'See the attached document' or some variation of that."
+              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\nHere is what our custom image classification model classified the image as:\n{classification}\nHere is the text that our custom image captioning model found:\n{caption}\nUse this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\nIf you think the document is relevant to the conversation simply say $$TRUE$$ at the end of your message. Also don't mention the document by name in your response, just say 'See the attached document' or some variation of that."
             }
           ]
         }

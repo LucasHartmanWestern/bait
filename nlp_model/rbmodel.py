@@ -34,7 +34,7 @@ spec4.loader.exec_module(doc_app)
 #Required Imports for Billing parser
 spec5 = importlib.util.spec_from_file_location("app", "../billing parser/app.py")
 bill_app = importlib.util.module_from_spec(spec5)
-#spec5.loader.exec_module(bill_app)
+spec5.loader.exec_module(bill_app)
 
 
 # Load JSON data
