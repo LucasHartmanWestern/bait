@@ -98,11 +98,14 @@ def get_response(input_string, image_details):
         img_class = classifier_app.get_prediction(image_details)
         prompt = input_string + " " + img_class
         doc_find = doc_app.find_best_match(prompt)
-        response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
-        response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{doc}", doc_find)
-        response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{classification}", img_class)
-        response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{caption}", img_cap)
-        return response_data[6]["bot_response"]
+        if ".pdf" not in doc_found.lower():
+            return doc_found
+        else:
+            response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
+            response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{doc}", doc_find)
+            response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{classification}", img_class)
+            response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{caption}", img_cap)
+            return response_data[6]["bot_response"]
     
     #Check if the input has to do with issues or simple conversation
     if best_response != 0:

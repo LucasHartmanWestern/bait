@@ -36,7 +36,7 @@
     },
     {
       "response_type": "question",
-      "user_input": ["billing", "charge", "bill", "payment", "date", "account", "usage", "issues"],
+      "user_input": ["billing", "charge", "bill", "payment", "date", "account", "usage"],
       "bot_response": 
         {
           "role": "user",
