@@ -131,13 +131,6 @@ def saveConvo():
 
         # model = "gpt-4-vision-preview" # more expensive, use while demoing
         model = "gpt-3.5-turbo" # less expensive, use while testing
-
-        completion = client.chat.completions.create(
-            model=model,
-            messages=convo_details["messages"],
-            max_tokens = 1024
-        )
-
         img = ''
         if "queryImage" in convo_details and convo_details["queryImage"]:
             img = convo_details["queryImage"]
@@ -145,23 +138,28 @@ def saveConvo():
         print(convo_details["messages"][-1]['content'][-1]['text'])
 
         nlp_resp = nlp_app.get_response(convo_details["messages"][-1]['content'][-1]['text'], img)
+        print(nlp_resp)
+        reply = None
+        if isinstance(nlp_resp,str):
+            convo_details["response"] = nlp_resp
+        else:
+            current_chat = convo_details["messages"]
+            current_chat.append(nlp_resp)
 
-        # if ".pdf" not in nlp_resp:
-        #     convo_details["response"] = nlp_resp
-        # else:
+            completion2 = client.chat.completions.create(
+                model=model,
+                messages=convo_details["messages"],
+                max_tokens=1024
+            )
 
-        current_chat = convo_details["messages"]
-        current_chat.append(nlp_resp)
-        print(convo_details["messages"])
-
-        completion2 = client.chat.completions.create(
-            model=model,
-            messages=convo_details["messages"],
-            max_tokens=1024
-        )
-        print(completion2.choices[0].message)
-        convo_details["response"] = completion2.choices[0].message.content
-        #convo_details["pdf"]
+            reply = completion2.choices[0].message.content
+            print(reply)
+            if "$$TRUE$$" in reply:
+                reply = reply.replace("$$TRUE$$", " ")
+                convo_details["pdfUsed"]=True
+        
+        if reply:
+            convo_details["response"] = reply
         current_user = get_jwt_identity()
         user_from_db = db.users_collection.find_one({'username': current_user})
         convo_details["username"] = current_user

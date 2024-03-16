@@ -19,12 +19,6 @@
     },
     {
       "response_type": "question",
-      "user_input": ["billing", "charge", "bill","payment"],
-      "bot_response": "Please provide the date of the bill from which your concern arises from.",
-      "required_words": ["bell"]
-    },
-    {
-      "response_type": "question",
       "user_input": [ "fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
       "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful: ",
       "bot_response":
@@ -33,12 +27,12 @@
           "content": [
             {
               "type": "text",
-              "text": "Here is the question: {input} And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ({classification}) and ({caption}). Lastly here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful using True or False with your response: {doc}"
+              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\n Use this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\n If you think the document is relevant to the conversation, also include $$TRUE$$ at the end of the message."
             }
           ]
         }
       ,      
-      "required_words": ["router"]
+      "required_words": [""]
     },
     {
       "response_type": "question",
@@ -49,16 +43,16 @@
           "content": [
             {
               "type": "text",
-              "text": "Here is the question: {input} And here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful but do not inform the user: {doc}"
+              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\n Use this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\n If you think the document is relevant to the conversation, also include $$TRUE$$ at the end of the message."
             }
           ]
         }
       ,      
-      "required_words": ["bill"]
+      "required_words": [""]
     },
     {
       "response_type": "question",
-      "user_input": [ "help","fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
+      "user_input": [ ""],
       "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful along with your response: ",
       "img_context": " And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ",
       "bot_response": 
@@ -67,7 +61,7 @@
           "content": [
             {
               "type": "text",
-              "text": "Here is the question: {input} This is also the output from various models that should not be mentioned in the response: here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ({classification}) and ({caption}) and here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful using True or False with your response: {doc}"
+              "text": "Here is the question: {input}. Here is what our custom image classification model classified the image as:\n{classification}\nHere is the text that our custom image captioning model found:\n{caption}\nHere is the title of the document that our document identification model found:\n{doc}\nUse this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\nIf you think the document is relevant to the conversation, also include $$TRUE$$ at the end of the message."
             }
           ]
         }
@@ -83,7 +77,7 @@
           "content": [
             {
               "type": "text",
-              "text": "Here is the question: {input}. This is also the output from various models that should not be mentioned in the response: the title of a document a document identifier model found which if it seems it would be helpful for your decesion please return True or False along with your response: {doc}"
+              "text": "Here is the question: {input}. Here is what our custom image classification model classified the image as:\n{classification}\nHere is the text that our custom image captioning model found:\n{caption}\nHere is the title of the document that our document identification model found:\n{doc}\nUse this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\nIf you think the document is relevant to the conversation, also include $$TRUE$$ at the end of the message."
             }
           ]
         }
@@ -99,7 +93,7 @@
           "content": [
             {
               "type": "text",
-              "text": "Here is the question: {input}. This is also the output from various models that should not be mentioned in the response: the title of a document a document identifier model found which if it seems it would be helpful for your decesion please return True or False along with your response: {doc}"
+              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\n Use this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\n If you think the document is relevant to the conversation, also include $$TRUE$$ at the end of the message."
             }
           ]
         },

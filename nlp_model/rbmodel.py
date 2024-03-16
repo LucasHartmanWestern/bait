@@ -115,8 +115,8 @@ def get_response(input_string, image_details):
             return response_data[response_index]["bot_response"]
     
     # If there is no good response, return a gpt.
-    response_data[8]["bot_response"]["content"][0]["text"] = response_data[8]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
-    response_data[8]["bot_response"]["content"][0]["text"] = response_data[8]["bot_response"]["content"][0]["text"].replace("{doc}", doc_found)
-    return response_data[8]["bot_response"]
+    response_data[7]["bot_response"]["content"][0]["text"] = response_data[7]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
+    response_data[7]["bot_response"]["content"][0]["text"] = response_data[7]["bot_response"]["content"][0]["text"].replace("{doc}", doc_found)
+    return response_data[7]["bot_response"]
     #return generate_text(loaded_model, 500, input_string)
     
