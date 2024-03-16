@@ -145,7 +145,7 @@ def saveConvo():
         else:
             current_chat = convo_details["messages"]
             current_chat.append(nlp_resp)
-
+            print(current_chat)
             completion2 = client.chat.completions.create(
                 model=model,
                 messages=convo_details["messages"],
@@ -155,8 +155,10 @@ def saveConvo():
             reply = completion2.choices[0].message.content
             print(reply)
             if "$$TRUE$$" in reply:
+                text= nlp_resp["content"][0]["text"]
+                parts = text.split('\n')
                 reply = reply.replace("$$TRUE$$", " ")
-                convo_details["pdfUsed"]=True
+                convo_details["pdf"]= parts[1]
         
         if reply:
             convo_details["response"] = reply

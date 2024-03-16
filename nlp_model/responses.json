@@ -77,7 +77,7 @@
           "content": [
             {
               "type": "text",
-              "text": "Here is the question: {input}. Here is what our custom image classification model classified the image as:\n{classification}\nHere is the text that our custom image captioning model found:\n{caption}\nHere is the title of the document that our document identification model found:\n{doc}\nUse this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\nIf you think the document is relevant to the conversation, also include $$TRUE$$ at the end of the message."
+              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\nHere is what our custom image classification model classified the image as:\n{classification}\nHere is the text that our custom image captioning model found:\n{caption}\nUse this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\nIf you think the document is relevant to the conversation, Also don't mention the document by name. The user will be shown the document name automatically if you say $$TRUE$$."
             }
           ]
         }
@@ -93,7 +93,7 @@
           "content": [
             {
               "type": "text",
-              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\n Use this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\n If you think the document is relevant to the conversation, also include $$TRUE$$ at the end of the message."
+              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\n Use this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\n If you think the document is relevant to the conversation, Also don't mention the document by name. The user will be shown the document name automatically if you say $$TRUE$$."
             }
           ]
         },
