@@ -192,7 +192,7 @@ export class PluginComponent {
 
     this.messageService.sendMessage(this.messages, this.imageSrc).subscribe(res => {
       this.loading = false;
-      this.messages.push({role: 'system', content: [{type: 'text', text: res?.response}]});
+      this.messages.push({role: 'system', content: [{type: 'text', text: res?.response}], pdf: res?.pdf});
       setTimeout(() => {
         this.updateQuickResponseEvents();
       }, 500);
