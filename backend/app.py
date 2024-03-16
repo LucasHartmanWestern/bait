@@ -138,7 +138,6 @@ def saveConvo():
         print(convo_details["messages"][-1]['content'][-1]['text'])
 
         nlp_resp = nlp_app.get_response(convo_details["messages"][-1]['content'][-1]['text'], img)
-        print(nlp_resp)
         reply = None
         if isinstance(nlp_resp,str):
             convo_details["response"] = nlp_resp
@@ -157,8 +156,9 @@ def saveConvo():
             if "$$TRUE$$" in reply:
                 text= nlp_resp["content"][0]["text"]
                 parts = text.split('\n')
+                pdf=parts[1].replace(" ","_")
                 reply = reply.replace("$$TRUE$$", " ")
-                convo_details["pdf"]= parts[1]
+                convo_details["pdf"]= pdf
         
         if reply:
             convo_details["response"] = reply
@@ -168,7 +168,6 @@ def saveConvo():
         convo_details["model"] = model
         convo_details["timestamp"] = dt.now()
         convo_details["jwtData"] = jwtData
-
         if user_from_db:
             db.users_collection.insert_one(convo_details)
 
