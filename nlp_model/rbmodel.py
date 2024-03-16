@@ -100,7 +100,7 @@ def get_response(input_string, image_details):
         response_data[6]["bot_response"][1]["content"][0]["text"] = response_data[6]["bot_response"][1]["content"][0]["text"].replace("{doc}", doc_found)
         response_data[6]["bot_response"][1]["content"][0]["text"] = response_data[6]["bot_response"][1]["content"][0]["text"].replace("{classification}", img_class)
         response_data[6]["bot_response"][1]["content"][0]["text"] = response_data[6]["bot_response"][1]["content"][0]["text"].replace("{caption}", img_cap)
-        return response_data[8]["bot_response"]
+        return response_data[6]["bot_response"]
     
     #Check if the input has to do with issues or simple conversation
     if best_response != 0:

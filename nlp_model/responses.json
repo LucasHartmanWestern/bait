@@ -42,7 +42,7 @@
           "content": [
             {
               "type": "text",
-              "text": "Here is the question: {input} And here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful but do not inform the user: {doc}"
+              "text": "Here is the question: {input} And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ({classification}) and ({caption}). Lastly here is the title of a document a document identifier model found thought to be relevant to the question let us know if this document would be useful but do not inform the user: {doc}"
             }
           ]
         }
@@ -131,8 +131,6 @@
     {
       "response_type": "question",
       "user_input": [""],
-      "img_context": " And here is what both an image classifier model and an image captioning model said respectively about an image they received with the question: ",
-      "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful: ",
       "bot_response": [
         {
           "role": "user",
