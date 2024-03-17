@@ -29,8 +29,8 @@ Werkzeug==3.0.1
 gunicorn==20.0.4
 jira==3.6.0
 python-dotenv==1.0.0
-torch
-torchvision
+torch==2.2.1+cpu
+torchvision==0.17.1+cpu
 numpy
 matplotlib
 scikit-learn
