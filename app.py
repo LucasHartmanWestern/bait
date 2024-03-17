@@ -19,8 +19,8 @@ import importlib.util
 import sys
 import json
 
-sys.path.append("../nlp_model")
-spec = importlib.util.spec_from_file_location("rbmodel", "../nlp_model/rbmodel.py")
+sys.path.append("/nlp_model")
+spec = importlib.util.spec_from_file_location("rbmodel", "/nlp_model/rbmodel.py")
 nlp_app = importlib.util.module_from_spec(spec)
 
 app = Flask(__name__)
