@@ -42,4 +42,3 @@ spacy
 easyocr
 nltk
 pdfplumber
-fitz
