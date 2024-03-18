@@ -143,6 +143,8 @@ def saveConvo():
             convo_details["response"] = nlp_resp
         else:
             current_chat = convo_details["messages"]
+            if "pdf" in convo_details:
+                convo_details["pdf"] = ""
             current_chat.append(nlp_resp)
             print(current_chat)
             completion2 = client.chat.completions.create(
