@@ -101,11 +101,11 @@ def get_response(input_string, image_details):
         if ".pdf" not in doc_found.lower():
             return doc_found
         else:
-            response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
-            response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{doc}", doc_find)
-            response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{classification}", img_class)
-            response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{caption}", img_cap)
-            return response_data[6]["bot_response"]
+            response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
+            response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{doc}", doc_find)
+            response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{classification}", img_class)
+            response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{caption}", img_cap)
+            return response_data[5]["bot_response"]
     
     #Check if the input has to do with issues or simple conversation
     if best_response != 0:
