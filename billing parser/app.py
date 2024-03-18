@@ -4,11 +4,11 @@ import pdfplumber
 if __name__ == '__main__':
     print("Running Billing Parser")
 # Path to the PDF file
-pdf_paths = [r'../billing parser/Current_User.pdf',
-             r'../billing parser/Current_User1.pdf',
-             r'../billing parser/Current_User2.pdf',
-             r'../billing parser/Current_User3.pdf',
-             r'../billing parser/Current_User4.pdf']
+pdf_paths = [r'billing parser/Current_User.pdf',
+             r'billing parser/Current_User1.pdf',
+             r'billing parser/Current_User2.pdf',
+             r'billing parser/Current_User3.pdf',
+             r'billing parser/Current_User4.pdf']
 
 
 # Function to process each PDF
