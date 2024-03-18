@@ -208,20 +208,20 @@ def generate_models():
 
 def predict(image_bytestream):
     # Load the label encoders
-    product_encoder = joblib.load('../image classifier/product_encoder.joblib')
-    light_status_encoder = joblib.load('../image classifier/light_status_encoder.joblib')
+    product_encoder = joblib.load('image classifier/product_encoder.joblib')
+    light_status_encoder = joblib.load('image classifier/light_status_encoder.joblib')
 
     # Determine the total number of unique product classes
     total_product_classes = len(product_encoder.classes_)
 
     # Load the trained models
     product_model = ProductCNN(num_classes=len(product_encoder.classes_))
-    product_model.load_state_dict(torch.load('../image classifier/product_model.pth'))
+    product_model.load_state_dict(torch.load('image classifier/product_model.pth'))
     product_model.eval()  # Set the model to evaluation mode
 
     light_status_model = LightStatusCNN(num_product_classes=total_product_classes,
                                         num_light_status_classes=len(light_status_encoder.classes_))
-    light_status_model.load_state_dict(torch.load('../image classifier/light_status_model.pth'))
+    light_status_model.load_state_dict(torch.load('image classifier/light_status_model.pth'))
     light_status_model.eval()  # Set the model to evaluation mode
 
     # Preprocess the input image
