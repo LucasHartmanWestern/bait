@@ -1,5 +1,6 @@
-//const serverPrefix = `https://bait-app-df10e84632ed.herokuapp.com`;
-const serverPrefix = 'http://127.0.0.1:8000';
+//const serverPrefix = `https://bait-app-df10e84632ed.herokuapp.com`; // Heroku
+//const serverPrefix = 'http://127.0.0.1:8000'; // Localhost
+const serverPrefix = 'http://34.130.172.219:8000'; // GCP
 
 export const Constants = {
   apiPaths: {

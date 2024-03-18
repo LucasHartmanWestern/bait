@@ -8,31 +8,31 @@ import random
 import importlib.util
 import sys
 #Paths for the folder of each model
-sys.path.append("../image classifier")
-sys.path.append("../image captioner")
-sys.path.append("../documentation identifier")
+sys.path.append("image classifier")
+sys.path.append("image captioner")
+sys.path.append("documentation identifier")
 
 #Required imports for image classifier model
-spec = importlib.util.spec_from_file_location("app", "../image classifier/app.py")
-spec2 = importlib.util.spec_from_file_location("model_generator", "../image classifier/model_generator.py")
+spec = importlib.util.spec_from_file_location("app", "image classifier/app.py")
+spec2 = importlib.util.spec_from_file_location("model_generator", "image classifier/model_generator.py")
 classifier_app = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(classifier_app)
 model_generator = importlib.util.module_from_spec(spec2)
 spec2.loader.exec_module(model_generator)
 
 #Required Imports for Image Captioning model
-spec3 = importlib.util.spec_from_file_location("test", "../image captioner/ImgCaptionTest/test.py")
+spec3 = importlib.util.spec_from_file_location("test", "image captioner/ImgCaptionTest/test.py")
 captioner_app = importlib.util.module_from_spec(spec3)
 spec3.loader.exec_module(captioner_app)
 
 
 #Required Imports for Documentation Identifier
-spec4 = importlib.util.spec_from_file_location("app", "../documentation identifier/app.py")
+spec4 = importlib.util.spec_from_file_location("app", "documentation identifier/app.py")
 doc_app = importlib.util.module_from_spec(spec4)
 spec4.loader.exec_module(doc_app)
 
 #Required Imports for Billing parser
-spec5 = importlib.util.spec_from_file_location("app", "../billing parser/app.py")
+spec5 = importlib.util.spec_from_file_location("app", "billing parser/app.py")
 bill_app = importlib.util.module_from_spec(spec5)
 spec5.loader.exec_module(bill_app)
 
@@ -44,7 +44,7 @@ def load_json(file):
         return json.load(bot_responses)
 
 # Store JSON data
-response_data = load_json("../nlp_model/responses.json")
+response_data = load_json("nlp_model/responses.json")
 
 #model_load_path = "test_model.pt"
 #loaded_model = load_model(model_load_path)
