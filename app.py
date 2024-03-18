@@ -19,8 +19,8 @@ import importlib.util
 import sys
 import json
 
-sys.path.append("/nlp_model")
-spec = importlib.util.spec_from_file_location("rbmodel", "/nlp_model/rbmodel.py")
+sys.path.append("nlp_model")
+spec = importlib.util.spec_from_file_location("rbmodel", "nlp_model/rbmodel.py")
 nlp_app = importlib.util.module_from_spec(spec)
 
 app = Flask(__name__)
@@ -282,4 +282,4 @@ def format_message_history(allConvos):
     return ''.join(formatted_messages)[:30000]
 
 if __name__ == '__main__':
-    app.run(port=8000)
+    app.run(host='0.0.0.0', port=8000)
