@@ -76,7 +76,7 @@ def get_response(input_string, image_details):
         # Add score to list
         score_list.append(response_score)
         # Debugging: Find the best phrase
-        print(response_score, response["user_input"])
+        #print(response_score, response["user_input"])
 
     # Find the best response and return it if they're not all 0
     best_response = max(score_list)
@@ -89,6 +89,7 @@ def get_response(input_string, image_details):
     #Check if input query matches a previous query
     doc_found = doc_app.find_best_match(input_string)
     if ".pdf" not in doc_found.lower():
+        #print("found")
         return doc_found
     
 

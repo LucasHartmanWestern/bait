@@ -137,9 +137,6 @@ def saveConvo():
 
         print(convo_details["messages"][-1]['content'][-1]['text'])
 
-        pdf = None
-        if "pdf" in convo_details:
-            pdf = convo_details.pop("pdf")
             
         nlp_resp = nlp_app.get_response(convo_details["messages"][-1]['content'][-1]['text'], img)
         reply = None
@@ -148,11 +145,14 @@ def saveConvo():
             convo_details["response"] = nlp_resp
         else:
             current_chat = convo_details["messages"]
+            for message in current_chat:
+                if 'pdf' in message:
+                    del message['pdf']
             current_chat.append(nlp_resp)
-            print(current_chat)
+            #print(current_chat)
             completion2 = client.chat.completions.create(
                 model=model,
-                messages=convo_details["messages"],
+                messages=current_chat,
                 max_tokens=1024
             )
 
