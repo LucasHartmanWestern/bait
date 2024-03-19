@@ -137,14 +137,17 @@ def saveConvo():
 
         print(convo_details["messages"][-1]['content'][-1]['text'])
 
+        pdf = None
+        if "pdf" in convo_details:
+            pdf = convo_details.pop("pdf")
+            
         nlp_resp = nlp_app.get_response(convo_details["messages"][-1]['content'][-1]['text'], img)
         reply = None
+
         if isinstance(nlp_resp,str):
             convo_details["response"] = nlp_resp
         else:
             current_chat = convo_details["messages"]
-            if "pdf" in convo_details:
-                del convo_details["pdf"]
             current_chat.append(nlp_resp)
             print(current_chat)
             completion2 = client.chat.completions.create(
@@ -170,6 +173,7 @@ def saveConvo():
         convo_details["model"] = model
         convo_details["timestamp"] = dt.now()
         convo_details["jwtData"] = jwtData
+
         if user_from_db:
             db.users_collection.insert_one(convo_details)
 
