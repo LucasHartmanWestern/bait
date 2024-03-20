@@ -70,7 +70,16 @@ def find_best_match(input_sentence):
 
     # Fetch questions and calculate similarities
     mongo_questions = questions_collection.find({})
-    questions = [(doc['query'], doc['response'], doc.get('query', 'No Query')) for doc in mongo_questions if 'query' in doc and 'response' in doc]
+    questions = [
+        (
+            doc['messages'][-1]['content'][0]['text'],
+            doc['response'],
+            doc.get('messages', [{'content': [{'type': 'text', 'text': 'No Query'}]}])[-1]['content'][0]['text'],
+            doc.get('pdf', None)
+        )
+        for doc in mongo_questions if 'messages' in doc and 'response' in doc
+    ]
+
     vectorizer_questions = TfidfVectorizer(stop_words=stopwords.words('english'))
     questions_text = [q[0] for q in questions] + [input_sentence]
     questions_vectors = vectorizer_questions.fit_transform(questions_text)
@@ -101,13 +110,12 @@ def find_best_match(input_sentence):
     return documents[top_match_index][1]  # Return document name for the best text match
 
 
-'''
-while True:
-    print("Please enter search:")
-    input_sentence = input()
+if __name__ == '__main__':
+    while True:
+        print("Please enter search:")
+        input_sentence = input()
 
-    if input_sentence.upper() == "EXIT":
-        break
-    document_name = find_best_match(input_sentence)
-    print(f"Best matching document name: {document_name}")
-'''
+        if input_sentence.upper() == "EXIT":
+            break
+        document_name = find_best_match(input_sentence)
+        print(f"Best matching document name: {document_name}")

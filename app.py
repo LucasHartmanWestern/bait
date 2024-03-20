@@ -124,7 +124,7 @@ def getAllFeedbackForms():
 @app.route("/api/v1/logConvo", methods=["POST"])
 @jwt_required(locations=["headers"])
 def saveConvo():
-    # try:
+    try:
         convo_details = request.get_json()
         jwtData = request.headers.get('Authorization')
         spec.loader.exec_module(nlp_app)
@@ -136,7 +136,6 @@ def saveConvo():
             img = convo_details["queryImage"]
 
         print(convo_details["messages"][-1]['content'][-1]['text'])
-
             
         nlp_resp = nlp_app.get_response(convo_details["messages"][-1]['content'][-1]['text'], img)
         reply = None
@@ -157,7 +156,7 @@ def saveConvo():
             )
 
             reply = completion2.choices[0].message.content
-            print(reply)
+            #print(reply)
             if "$$TRUE$$" in reply:
                 text= nlp_resp["content"][0]["text"]
                 parts = text.split('\n')
@@ -175,7 +174,9 @@ def saveConvo():
         convo_details["jwtData"] = jwtData
 
         if user_from_db:
-            db.users_collection.insert_one(convo_details)
+            convo_details["messages"].pop()
+
+            db.convo_collection.insert_one(convo_details)
 
             # Convert the document for JSON serialization
             serializable_convo_details = {
@@ -185,9 +186,9 @@ def saveConvo():
             return jsonify(serializable_convo_details), 200
         else:
             return jsonify({'msg': 'Profile not found'}), 404
-    #
-    # except Exception as e:
-    #     return jsonify({'error': str(e)}), 500
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route("/api/v1/getAllConvo", methods=["GET"])
 @jwt_required(locations=["headers"])
@@ -220,7 +221,7 @@ def getAllConvo():
 @jwt_required(locations=["headers"])
 def getAllNames():
     current_user = get_jwt_identity()
-    user_from_db = db.users_collection.find_one({'username': current_user})
+    user_from_db = db.conv.find_one({'username': current_user})
 
     if user_from_db["admin"] == "True":
         names = list(db.users_collection.find())
@@ -244,7 +245,7 @@ def makeJiraTicket():
         user_from_db = db.users_collection.find_one({'username':current_user})
 
         if user_from_db:
-            allConvos = list(db.users_collection.find({'username': current_user}))
+            allConvos = list(db.convo_collection.find({'username': current_user}))
             formatted_message_history = format_message_history(allConvos)
 
             issue_dict = {
