@@ -91,9 +91,14 @@ def get_response(input_string, image_details):
 
     print(doc_found)
 
-    if ".pdf" not in doc_found.lower():
-        #print("found")
-        return doc_found
+    if isinstance(doc_found, str):
+        try:
+            doc_found_json = json.loads(doc_found)
+            # If doc_found can be parsed as JSON, it's a JSON object
+            return doc_found
+        except json.JSONDecodeError:
+        # If it can't be parsed as JSON, it's a string
+            pass
     
 
     #Check if input has image
@@ -102,8 +107,14 @@ def get_response(input_string, image_details):
         img_class = classifier_app.get_prediction(image_details)
         prompt = input_string + " " + img_class
         doc_find = doc_app.find_best_match(prompt)
-        if ".pdf" not in doc_found.lower():
-            return doc_found
+        if isinstance(doc_found, str):
+            try:
+                doc_found_json = json.loads(doc_found)
+                # If doc_found can be parsed as JSON, it's a JSON object
+                return doc_found
+            except json.JSONDecodeError:
+        # If it can't be parsed as JSON, it's a string
+                pass
         else:
             response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
             response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{doc}", doc_find)

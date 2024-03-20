@@ -141,7 +141,13 @@ def saveConvo():
         reply = None
 
         if isinstance(nlp_resp,str):
-            convo_details["response"] = nlp_resp
+            try:
+                doc_found_json = json.loads(nlp_resp)
+                convo_details["response"] = doc_found_json["response"]
+                convo_details["pdf"] = doc_found_json["pdf"]
+            except json.JSONDecodeError:
+        # If it can't be parsed as JSON, it's not a JSON object
+                pass
         else:
             current_chat = convo_details["messages"]
             for message in current_chat:
