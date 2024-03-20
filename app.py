@@ -252,7 +252,7 @@ def makeJiraTicket():
             issue_dict = {
                 'project': {'key': 'BELL'},
                 'summary': 'BAIT bug',
-                'description': f'{issue["description"]}\n\n\n{formatted_message_history}',
+                'description': f'Customer Complaint: {issue["description"]}\n\n\n{formatted_message_history}',
                 'issuetype': {'name': 'Emailed request'},
                 'reporter': {'name': current_user}
             }

@@ -68,6 +68,12 @@
       }
 
       img {
+        @media (max-width: 1138px) {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          display: block !important;
+        }
         width: 50%;
       }
     }

@@ -46,8 +46,8 @@ export class LoginComponent {
 
         localStorage.setItem('token', res['access_token']);
 
+        localStorage.setItem('username', username);
         if (remember) {
-          localStorage.setItem('username', username);
           localStorage.setItem('password', password)
         }
 

@@ -11,7 +11,10 @@ export class AccountComponent {
   constructor(private router: Router) {
   }
 
+  username: string | null = 'Username';
+
   ngOnInit(): void {
+    this.username = localStorage.getItem('username');
     let token = localStorage.getItem('token');
     if (!token) this.router.navigate(['login']);
   }
