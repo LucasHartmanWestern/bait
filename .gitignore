@@ -60,6 +60,8 @@ backend/.env
 # Training data images
 image classifier/data/formatted
 image classifier/data/augmented
+
+# Build stuff
 docs/CNAME
 docs/404.html
 docs/3rdpartylicenses.txt
