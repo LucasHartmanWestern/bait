@@ -89,12 +89,11 @@ def get_response(input_string, image_details):
     #Check if input query matches a previous query
     doc_found = doc_app.find_best_match(input_string)
 
-    print(doc_found)
 
-    if ".pdf" not in doc_found.lower():
+
+    if "response" in doc_found:
         #print("found")
         return doc_found
-    
 
     #Check if input has image
     if len(image_details) !=0:
@@ -102,7 +101,7 @@ def get_response(input_string, image_details):
         img_class = classifier_app.get_prediction(image_details)
         prompt = input_string + " " + img_class
         doc_find = doc_app.find_best_match(prompt)
-        if ".pdf" not in doc_found.lower():
+        if "response" in doc_found:
             return doc_found
         else:
             response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{input}", input_string)

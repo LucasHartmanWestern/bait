@@ -140,8 +140,9 @@ def saveConvo():
         nlp_resp = nlp_app.get_response(convo_details["messages"][-1]['content'][-1]['text'], img)
         reply = None
 
-        if isinstance(nlp_resp,str):
-            convo_details["response"] = nlp_resp
+        if "response" in nlp_resp:
+            convo_details["response"] = nlp_resp["response"]
+            convo_details["pdf"] = nlp_resp["pdf"]
         else:
             current_chat = convo_details["messages"]
             for message in current_chat:
