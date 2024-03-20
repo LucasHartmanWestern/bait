@@ -89,17 +89,11 @@ def get_response(input_string, image_details):
     #Check if input query matches a previous query
     doc_found = doc_app.find_best_match(input_string)
 
-    print(doc_found)
 
-    if isinstance(doc_found, str):
-        try:
-            doc_found_json = json.loads(doc_found)
-            # If doc_found can be parsed as JSON, it's a JSON object
-            return doc_found
-        except json.JSONDecodeError:
-        # If it can't be parsed as JSON, it's a string
-            pass
-    
+
+    if "response" in doc_found:
+        #print("found")
+        return doc_found
 
     #Check if input has image
     if len(image_details) !=0:
@@ -107,14 +101,8 @@ def get_response(input_string, image_details):
         img_class = classifier_app.get_prediction(image_details)
         prompt = input_string + " " + img_class
         doc_find = doc_app.find_best_match(prompt)
-        if isinstance(doc_found, str):
-            try:
-                doc_found_json = json.loads(doc_found)
-                # If doc_found can be parsed as JSON, it's a JSON object
-                return doc_found
-            except json.JSONDecodeError:
-        # If it can't be parsed as JSON, it's a string
-                pass
+        if "response" in doc_found:
+            return doc_found
         else:
             response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
             response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{doc}", doc_find)
