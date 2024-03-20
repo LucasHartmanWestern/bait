@@ -1,0 +1,84 @@
+[
+    {
+      "response_type": "greeting",
+      "user_input": ["hello", "hi", "hey"],
+      "bot_response": "Hello, I am Bell's Customer support how can I help you?",
+      "required_words": []
+    },
+    {
+      "response_type": "greeting",
+      "user_input": ["see you", "goodbye", "bye"],
+      "bot_response": "Thank you for using B.A.I.T!",
+      "required_words": ["see you", "goodbye", "bye"]
+    },
+    {
+      "response_type": "greeting",
+      "user_input": ["thanks", "thank you", "thank"],
+      "bot_response": "No problem, and thank you for using B.A.I.T!",
+      "required_words": []
+    },
+    {
+      "response_type": "question",
+      "user_input": [ "fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
+      "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful: ",
+      "bot_response":
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\n Use this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\n If you think the document is relevant to the conversation simply say $$TRUE$$ at the end of your message. Also don't mention the document by name in your response, just say 'See the attached document' or some variation of that."
+            }
+          ]
+        }
+      ,      
+      "required_words": []
+    },
+    {
+      "response_type": "question",
+      "user_input": ["billing", "charge", "bill", "payment", "date", "account", "usage"],
+      "bot_response": 
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Here is the question: {input}. Here is the output from our billing parser model based on the user's previous bills (note that there's different account numbers, but these all belong to the same account so please ignore the account numbers):\n{bills}\n Use this information to inform your response, but don't mention that you used the custom model. The user must think that you found all of this context on your own."
+            }
+          ]
+        }
+      ,      
+      "required_words": []
+    },
+    {
+      "response_type": "question",
+      "user_input": ["internet","issues","connection","router","connectivity","wi-fi"],
+      "bot_response": 
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\nHere is what our custom image classification model classified the image as:\n{classification}\nHere is the text that our custom image captioning model found:\n{caption}\nUse this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\nIf you think the document is relevant to the conversation simply say $$TRUE$$ at the end of your message. Also don't mention the document by name in your response, just say 'See the attached document' or some variation of that."
+            }
+          ]
+        }
+      ,      
+      "required_words": []
+    },
+    {
+      "response_type": "question",
+      "user_input": [""],
+      "bot_response": 
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Here is the question: {input}. Here is the title of the document that our document identification model found:\n{doc}\n Use this information to inform your response, but don't mention that you use custom models. The user must think that you found all of this context on your own.\n If you think the document is relevant to the conversation simply say $$TRUE$$ at the end of your message. Also don't mention the document by name in your response, just say 'See the attached document' or some variation of that."
+            }
+          ]
+        },
+      "required_words": []
+    }
+  ]

@@ -1,7 +1,13 @@
-<div class="splash">
-  <img src="../assets/logo.png">
-  <div>
-    <h1>B.A.I.T. Proof of Concept Coming Soon</h1>
-    <span>Bell Artificial Intelligence Technician</span>
-  </div>
+<app-navbar (navPage)="onNavPageChange($event)"></app-navbar>
+
+<div *ngIf="page == 'Login'">
+  <app-login (navPage)="onNavPageChange($event)"></app-login>
+</div>
+
+<div *ngIf="page == 'User'">
+  <app-account></app-account>
+</div>
+
+<div *ngIf="page == 'Main'">
+  <app-splash-page></app-splash-page>
 </div>

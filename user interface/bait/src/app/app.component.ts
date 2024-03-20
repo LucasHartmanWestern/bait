@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'bait';
+
+  page: string | undefined = 'Main';
+
+  onNavPageChange(newPage: string) {
+    this.page = newPage;
+  }
 }

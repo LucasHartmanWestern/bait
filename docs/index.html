@@ -1,3 +1,22 @@
+<script>
+  (function(l) {
+    if (l.search) {
+      var q = {};
+      l.search.slice(1).split('&').forEach(function(v) {
+        var a = v.split('=');
+        q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
+      });
+      if (q.p !== undefined) {
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + (q.p || '') +
+          (q.q ? ('?' + q.q) : '') +
+          l.hash
+        );
+      }
+    }
+  }(window.location))
+</script>
+
 <!doctype html>
 <html lang="en" data-critters-container>
 <head>
@@ -6,8 +25,8 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="assets/favicon.png">
-<link rel="stylesheet" href="styles.ef46db3751d8e999.css"></head>
+<style>body{margin:0;--bell-blue:#00549a;--bell-white:#fff;--bell-dark-blue:#003778;--bell-background-grey:#f6f6f6;--user-msg-blue:#00baff;font-family:sans-serif}*{scrollbar-width:thin;scrollbar-color:#888 #f1f1f1}</style><link rel="stylesheet" href="styles.913175f66672be7d.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.913175f66672be7d.css"></noscript></head>
 <body>
   <app-root></app-root>
-<script src="runtime.513c80335cf57dff.js" type="module"></script><script src="polyfills.97f3cfe5ba3c5d6c.js" type="module"></script><script src="main.8def903a152c8b29.js" type="module"></script></body>
+<script src="runtime.513c80335cf57dff.js" type="module"></script><script src="polyfills.97f3cfe5ba3c5d6c.js" type="module"></script><script src="main.c6718a59f43a5289.js" type="module"></script></body>
 </html>
