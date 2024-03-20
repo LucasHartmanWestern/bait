@@ -197,6 +197,7 @@ export class PluginComponent {
         this.updateQuickResponseEvents();
       }, 500);
     }, error => {
+      this.messages.push({role: 'system', content: [{type: 'text', text: 'We\'re sorry, it seems our servers are experiencing an unusually large amount of requests right now. Please try again later.'}]});
       this.loading = false;
       console.log(error);
     });
