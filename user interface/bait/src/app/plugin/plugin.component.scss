@@ -35,6 +35,9 @@ $image-path: '~src/assets/';
   }
 
   .chat_window {
+    @media (max-width: 768px) {
+      width: 315px;
+    }
     width: 300px;
     height: 50vh;
     background: var(--bell-white);
