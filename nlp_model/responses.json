@@ -1,23 +1,5 @@
 [
     {
-      "response_type": "greeting",
-      "user_input": ["hello", "hi", "hey"],
-      "bot_response": "Hello, I am Bell's Customer support how can I help you?",
-      "required_words": []
-    },
-    {
-      "response_type": "greeting",
-      "user_input": ["see you", "goodbye", "bye"],
-      "bot_response": "Thank you for using B.A.I.T!",
-      "required_words": ["see you", "goodbye", "bye"]
-    },
-    {
-      "response_type": "greeting",
-      "user_input": ["thanks", "thank you", "thank"],
-      "bot_response": "No problem, and thank you for using B.A.I.T!",
-      "required_words": []
-    },
-    {
       "response_type": "question",
       "user_input": [ "fix", "router", "issues", "problems", "connection", "connectivity", "internet","working"],
       "doc_context": " And here is the title of a document a document identifier model found thought to be relevent to the question let us know if this document would be useful: ",

@@ -32,9 +32,9 @@ doc_app = importlib.util.module_from_spec(spec4)
 spec4.loader.exec_module(doc_app)
 
 #Required Imports for Billing parser
-spec5 = importlib.util.spec_from_file_location("app", "billing parser/app.py")
-bill_app = importlib.util.module_from_spec(spec5)
-spec5.loader.exec_module(bill_app)
+spec2 = importlib.util.spec_from_file_location("app", "billing parser/app.py")
+bill_app = importlib.util.module_from_spec(spec2)
+spec2.loader.exec_module(bill_app)
 
 
 # Load JSON data
@@ -104,17 +104,15 @@ def get_response(input_string, image_details):
         if "response" in doc_found:
             return doc_found
         else:
-            response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
-            response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{doc}", doc_find)
-            response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{classification}", img_class)
-            response_data[5]["bot_response"]["content"][0]["text"] = response_data[5]["bot_response"]["content"][0]["text"].replace("{caption}", img_cap)
-            return response_data[5]["bot_response"]
+            response_data[2]["bot_response"]["content"][0]["text"] = response_data[2]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
+            response_data[2]["bot_response"]["content"][0]["text"] = response_data[2]["bot_response"]["content"][0]["text"].replace("{doc}", doc_find)
+            response_data[2]["bot_response"]["content"][0]["text"] = response_data[2]["bot_response"]["content"][0]["text"].replace("{classification}", img_class)
+            response_data[2]["bot_response"]["content"][0]["text"] = response_data[2]["bot_response"]["content"][0]["text"].replace("{caption}", img_cap)
+            return response_data[2]["bot_response"]
     
     #Check if the input has to do with issues or simple conversation
     if best_response != 0:
-        if response_index <=2:
-            return response_data[response_index]["bot_response"]
-        elif response_index == 4:
+        if response_index == 1:
             bill_details = bill_app.return_bills()
             response_data[response_index]["bot_response"]["content"][0]["text"] = response_data[response_index]["bot_response"]["content"][0]["text"].replace("{bills}", bill_details)
             return response_data[response_index]["bot_response"]
@@ -124,8 +122,8 @@ def get_response(input_string, image_details):
             return response_data[response_index]["bot_response"]
     
     # If there is no good response, return a gpt.
-    response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
-    response_data[6]["bot_response"]["content"][0]["text"] = response_data[6]["bot_response"]["content"][0]["text"].replace("{doc}", doc_found)
-    return response_data[6]["bot_response"]
-    #return generate_text(loaded_model, 500, input_string)
+    response_data[3]["bot_response"]["content"][0]["text"] = response_data[3]["bot_response"]["content"][0]["text"].replace("{input}", input_string)
+    response_data[3]["bot_response"]["content"][0]["text"] = response_data[3]["bot_response"]["content"][0]["text"].replace("{doc}", doc_found)
+    return response_data[3]["bot_response"]
+    #return generate_text(loaded_model, 200, input_string)
     
